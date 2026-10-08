@@ -2,7 +2,6 @@
   "name": "azerst-image-vn",
   "version": "17.0.0",
   "private": true,
-  "description": "Azerst Image VN - Công cụ chèn ảnh tạo link URL",
   "type": "module",
   "dependencies": {
     "@vercel/blob": "^2.8.0"
