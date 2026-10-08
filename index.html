@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL</title>
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0">
 
-<link rel="icon"
-href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png">
+<title>
+AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
+</title>
+
+<link
+  rel="icon"
+  href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png">
 
 <style>
 
 @font-face{
-    font-family:"GFF-Latin-Bold";
-    src:
+  font-family:"GFF";
+  src:
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2")
     format("woff2"),
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff")
@@ -21,241 +29,405 @@ href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png">
 }
 
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
 }
 
 body{
-    min-height:100vh;
-    font-family:"GFF-Latin-Bold",Arial,sans-serif;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    overflow-x:hidden;
 
-    background:
-        radial-gradient(circle at 20% 20%,#5934ff55,transparent 35%),
-        radial-gradient(circle at 80% 80%,#ff2d9b44,transparent 35%),
-        linear-gradient(135deg,#070014,#13052b,#05000e);
+  min-height:100vh;
+
+  padding:18px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:#fff;
+
+  font-family:GFF,Arial,sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(117,76,255,.35),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(255,45,155,.25),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #05000d,
+      #18062e,
+      #05000d
+    );
+
+  overflow-x:hidden;
 }
 
 body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
 
-    background-image:
-        radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1px);
+  content:"";
 
-    background-size:70px 70px;
-    opacity:.18;
+  position:fixed;
+
+  inset:0;
+
+  pointer-events:none;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.8) 1px,
+      transparent 1px
+    );
+
+  background-size:70px 70px;
+
+  opacity:.15;
 }
 
 .card{
-    width:100%;
-    max-width:650px;
 
-    padding:30px 22px;
+  position:relative;
 
-    border:1px solid rgba(255,255,255,.16);
-    border-radius:28px;
+  width:100%;
 
-    background:rgba(15,10,35,.72);
-    backdrop-filter:blur(22px);
+  max-width:650px;
 
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.55),
-        0 0 60px rgba(130,70,255,.15);
+  padding:30px 22px;
+
+  border-radius:28px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+
+  background:
+    rgba(12,8,28,.78);
+
+  backdrop-filter:blur(22px);
+
+  -webkit-backdrop-filter:blur(22px);
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.55),
+    0 0 60px rgba(120,70,255,.15);
 }
 
 .logo{
-    width:90px;
-    height:90px;
-    object-fit:cover;
-    border-radius:22px;
-    display:block;
-    margin:0 auto 18px;
 
-    box-shadow:
-        0 0 30px rgba(140,80,255,.5);
+  display:block;
+
+  width:88px;
+
+  height:88px;
+
+  object-fit:cover;
+
+  margin:0 auto 18px;
+
+  border-radius:22px;
+
+  box-shadow:
+    0 0 35px
+    rgba(130,80,255,.55);
 }
 
 h1{
-    text-align:center;
-    font-size:25px;
-    line-height:1.3;
-    margin-bottom:12px;
+
+  margin:0;
+
+  text-align:center;
+
+  font-size:24px;
+
+  line-height:1.35;
 }
 
 .desc{
-    text-align:center;
-    color:#d8d1e8;
-    font-family:Arial,sans-serif;
-    font-size:14px;
-    line-height:1.6;
-    margin-bottom:25px;
+
+  margin:
+    12px auto 25px;
+
+  max-width:550px;
+
+  text-align:center;
+
+  color:#d5cedf;
+
+  font-family:Arial,sans-serif;
+
+  font-size:14px;
+
+  line-height:1.6;
 }
 
-.drop{
-    border:2px dashed rgba(255,255,255,.25);
-    border-radius:20px;
-    padding:35px 15px;
-    text-align:center;
-    cursor:pointer;
-    transition:.25s;
+.upload{
+
+  display:block;
+
+  padding:36px 15px;
+
+  text-align:center;
+
+  border:
+    2px dashed
+    rgba(255,255,255,.22);
+
+  border-radius:20px;
+
+  cursor:pointer;
+
+  transition:.25s;
 }
 
-.drop:hover{
-    border-color:#9c6cff;
-    background:rgba(140,80,255,.08);
+.upload:hover{
+
+  border-color:#9c72ff;
+
+  background:
+    rgba(130,80,255,.08);
 }
 
-.drop strong{
-    display:block;
-    font-size:18px;
-    margin-bottom:8px;
+.upload-title{
+
+  display:block;
+
+  margin-bottom:9px;
+
+  font-size:18px;
 }
 
-.drop span{
-    color:#aaa2bd;
-    font-family:Arial,sans-serif;
-    font-size:13px;
+.upload-sub{
+
+  color:#aaa2b7;
+
+  font-family:Arial,sans-serif;
+
+  font-size:13px;
+
+  line-height:1.6;
 }
 
-input{
-    display:none;
+#file{
+  display:none;
 }
 
 .info{
-    display:none;
-    margin-top:20px;
-    padding:16px;
 
-    border-radius:16px;
-    background:rgba(255,255,255,.06);
+  display:none;
 
-    font-family:Arial,sans-serif;
-    font-size:14px;
-    line-height:1.8;
+  margin-top:18px;
+
+  padding:15px;
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  font-family:Arial,sans-serif;
+
+  font-size:14px;
+
+  line-height:1.8;
+
+  word-break:break-word;
 }
 
 .progress{
-    display:none;
-    margin-top:18px;
+
+  display:none;
+
+  margin-top:18px;
+}
+
+.progress-bg{
+
+  width:100%;
+
+  height:10px;
+
+  overflow:hidden;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.1);
 }
 
 .progress-bar{
-    width:100%;
-    height:10px;
-    overflow:hidden;
-    border-radius:20px;
-    background:rgba(255,255,255,.1);
-}
 
-.progress-fill{
-    width:0%;
-    height:100%;
-    transition:width:.2s;
-    background:linear-gradient(90deg,#7b4dff,#ff42b0);
+  width:0%;
+
+  height:100%;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #754cff,
+      #e63cff
+    );
+
+  transition:width:.2s;
 }
 
 .status{
-    text-align:center;
-    margin-top:10px;
-    font-family:Arial,sans-serif;
-    font-size:13px;
-    color:#ddd;
-}
 
-.result{
-    display:none;
-    margin-top:20px;
-}
+  margin-top:10px;
 
-.url{
-    width:100%;
-    padding:14px;
-    border:0;
-    outline:0;
-    border-radius:14px;
+  text-align:center;
 
-    background:rgba(0,0,0,.35);
-    color:#fff;
+  color:#ddd;
 
-    font-family:Arial,sans-serif;
-}
+  font-family:Arial,sans-serif;
 
-.buttons{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    margin-top:12px;
-}
-
-button{
-    border:0;
-    padding:13px;
-    border-radius:13px;
-
-    color:white;
-    cursor:pointer;
-
-    font-family:"GFF-Latin-Bold",Arial,sans-serif;
-
-    background:linear-gradient(135deg,#754cff,#d43cff);
-}
-
-button:hover{
-    filter:brightness(1.15);
+  font-size:13px;
 }
 
 .error{
-    display:none;
-    margin-top:15px;
-    padding:14px;
 
-    border-radius:14px;
+  display:none;
 
-    background:rgba(255,40,80,.12);
-    border:1px solid rgba(255,80,100,.3);
+  margin-top:16px;
 
-    color:#ff9aaa;
+  padding:14px;
 
-    font-family:Arial,sans-serif;
-    font-size:14px;
+  border-radius:14px;
+
+  border:
+    1px solid
+    rgba(255,70,100,.25);
+
+  background:
+    rgba(255,40,80,.1);
+
+  color:#ffb0bd;
+
+  font-family:Arial,sans-serif;
+
+  font-size:13px;
+
+  word-break:break-word;
+}
+
+.result{
+
+  display:none;
+
+  margin-top:18px;
+}
+
+.url{
+
+  width:100%;
+
+  padding:14px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.1);
+
+  border-radius:14px;
+
+  outline:none;
+
+  color:#fff;
+
+  background:
+    rgba(0,0,0,.3);
+
+  font-family:Arial,sans-serif;
+
+  font-size:13px;
+}
+
+.buttons{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+  margin-top:12px;
+}
+
+button{
+
+  padding:13px;
+
+  border:0;
+
+  border-radius:13px;
+
+  color:#fff;
+
+  cursor:pointer;
+
+  font-family:GFF,Arial,sans-serif;
+
+  background:
+    linear-gradient(
+      135deg,
+      #754cff,
+      #d73cff
+    );
+}
+
+button:hover{
+  filter:brightness(1.15);
 }
 
 .footer{
-    margin-top:22px;
-    text-align:center;
 
-    color:#837b94;
+  margin-top:22px;
 
-    font-family:Arial,sans-serif;
-    font-size:11px;
+  text-align:center;
+
+  color:#777083;
+
+  font-family:Arial,sans-serif;
+
+  font-size:11px;
 }
 
 @media(max-width:500px){
 
-    .card{
-        padding:24px 16px;
-    }
+  body{
+    padding:10px;
+  }
 
-    h1{
-        font-size:21px;
-    }
+  .card{
+    padding:24px 15px;
+    border-radius:23px;
+  }
 
-    .buttons{
-        grid-template-columns:1fr;
-    }
+  h1{
+    font-size:20px;
+  }
 
+  .buttons{
+    grid-template-columns:1fr;
+  }
 }
 
 </style>
+
 </head>
 
 <body>
@@ -263,9 +435,9 @@ button:hover{
 <div class="card">
 
 <img
-class="logo"
-src="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
-alt="Azerst">
+  class="logo"
+  src="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
+  alt="Azerst">
 
 <h1>
 AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
@@ -276,45 +448,71 @@ Công cụ chèn ảnh và tạo link URL trực tiếp nhanh chóng từ Azerst
 Hỗ trợ Android, iPhone và máy tính.
 </div>
 
-<label class="drop" for="file">
+<label
+  class="upload"
+  for="file">
 
-<strong>📸 Chọn ảnh để tải lên</strong>
+<span class="upload-title">
+📸 CHỌN ẢNH ĐỂ TẢI LÊN
+</span>
 
-<span>
+<span class="upload-sub">
 PNG • JPG • JPEG • WEBP • GIF • AVIF
 <br>
-Dung lượng tối đa hiển thị: 64 GB
+Dung lượng tối đa: <b>10 GB</b>
 </span>
 
 </label>
 
 <input
-id="file"
-type="file"
-accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
+  id="file"
+  type="file"
+  accept="
+    image/png,
+    image/jpeg,
+    image/webp,
+    image/gif,
+    image/avif">
 
-<div id="info" class="info"></div>
-
-<div id="progress" class="progress">
-
-<div class="progress-bar">
-<div id="progressFill" class="progress-fill"></div>
+<div
+  id="info"
+  class="info">
 </div>
 
-<div id="status" class="status">
+<div
+  id="progress"
+  class="progress">
+
+<div class="progress-bg">
+
+<div
+  id="progressBar"
+  class="progress-bar">
+</div>
+
+</div>
+
+<div
+  id="status"
+  class="status">
 Đang chuẩn bị...
 </div>
 
 </div>
 
-<div id="error" class="error"></div>
+<div
+  id="error"
+  class="error">
+</div>
 
-<div id="result" class="result">
+<div
+  id="result"
+  class="result">
 
 <input
-id="url"
-class="url"
-readonly>
+  id="url"
+  class="url"
+  readonly>
 
 <div class="buttons">
 
@@ -346,230 +544,391 @@ AZERST IMAGE VN
 
 <script type="module">
 
-import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
+import {
+  upload
+} from
+"https://esm.sh/@vercel/blob@2.8.0/client";
 
 const fileInput =
-document.getElementById("file");
+  document.getElementById("file");
 
 const info =
-document.getElementById("info");
+  document.getElementById("info");
 
 const progress =
-document.getElementById("progress");
+  document.getElementById("progress");
 
-const progressFill =
-document.getElementById("progressFill");
+const progressBar =
+  document.getElementById("progressBar");
 
 const status =
-document.getElementById("status");
-
-const result =
-document.getElementById("result");
+  document.getElementById("status");
 
 const errorBox =
-document.getElementById("error");
+  document.getElementById("error");
+
+const result =
+  document.getElementById("result");
 
 const urlInput =
-document.getElementById("url");
+  document.getElementById("url");
 
 const IMAGE_DOMAIN =
-"https://Azerst-Image-VN.vercel.app";
+  "https://Azerst-Image-VN.vercel.app";
 
-function formatSize(bytes){
+const MAX_SIZE =
+  10 * 1024 * 1024 * 1024;
 
-    if(bytes < 1024)
-        return bytes + " B";
+const ALLOWED = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/gif",
+  "image/avif"
+];
 
-    if(bytes < 1024 * 1024)
-        return (bytes / 1024).toFixed(2) + " KB";
+function sizeText(bytes){
 
-    if(bytes < 1024 * 1024 * 1024)
-        return (bytes / 1024 / 1024).toFixed(2) + " MB";
+  if(bytes < 1024)
+    return bytes + " B";
 
-    return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
+  if(bytes < 1024 * 1024)
+    return (
+      bytes / 1024
+    ).toFixed(2) + " KB";
+
+  if(bytes < 1024 * 1024 * 1024)
+    return (
+      bytes / 1024 / 1024
+    ).toFixed(2) + " MB";
+
+  return (
+    bytes /
+    1024 /
+    1024 /
+    1024
+  ).toFixed(2) + " GB";
 }
 
-function showError(message){
+function randomName(){
 
-    errorBox.style.display = "block";
-    errorBox.textContent = "❌ " + message;
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  let name = "";
+
+  for(let i = 0; i < 9; i++){
+
+    name +=
+      chars[
+        Math.floor(
+          Math.random() *
+          chars.length
+        )
+      ];
+
+  }
+
+  return name;
 }
 
-function hideError(){
+function extension(type){
 
-    errorBox.style.display = "none";
-    errorBox.textContent = "";
+  const map = {
+
+    "image/png":"png",
+
+    "image/jpeg":"jpg",
+
+    "image/webp":"webp",
+
+    "image/gif":"gif",
+
+    "image/avif":"avif"
+
+  };
+
+  return map[type];
 }
 
-fileInput.addEventListener("change", async () => {
+function error(message){
 
-    hideError();
+  errorBox.style.display =
+    "block";
+
+  errorBox.textContent =
+    "❌ " + message;
+}
+
+function clearError(){
+
+  errorBox.style.display =
+    "none";
+
+  errorBox.textContent =
+    "";
+}
+
+fileInput.addEventListener(
+  "change",
+  async () => {
+
+    clearError();
 
     const file =
-        fileInput.files?.[0];
+      fileInput.files?.[0];
 
     if(!file)
-        return;
+      return;
 
-    const allowed = [
-        "image/png",
-        "image/jpeg",
-        "image/webp",
-        "image/gif",
-        "image/avif"
-    ];
+    if(!ALLOWED.includes(file.type)){
 
-    if(!allowed.includes(file.type)){
+      error(
+        "Định dạng ảnh không được hỗ trợ."
+      );
 
-        showError(
-            "Định dạng ảnh không được hỗ trợ."
-        );
+      fileInput.value = "";
 
-        fileInput.value = "";
-        return;
+      return;
     }
 
-    info.style.display = "block";
+    if(file.size > MAX_SIZE){
 
-    info.innerHTML = `
-        <b>Tên:</b> ${file.name}<br>
-        <b>Dung lượng:</b> ${formatSize(file.size)}<br>
-        <b>Định dạng:</b> ${file.type}
-    `;
+      error(
+        "Ảnh vượt quá giới hạn 10 GB."
+      );
 
-    progress.style.display = "block";
-    result.style.display = "none";
+      fileInput.value = "";
 
-    progressFill.style.width = "0%";
-    status.textContent = "Đang tải ảnh lên...";
+      return;
+    }
+
+    info.style.display =
+      "block";
+
+    info.innerHTML =
+      "<b>Tên file:</b> " +
+      file.name +
+      "<br>" +
+      "<b>Dung lượng:</b> " +
+      sizeText(file.size) +
+      "<br>" +
+      "<b>Định dạng:</b> " +
+      file.type;
+
+    progress.style.display =
+      "block";
+
+    result.style.display =
+      "none";
+
+    progressBar.style.width =
+      "0%";
+
+    status.textContent =
+      "Đang tải lên...";
 
     try{
 
-        const blob =
+      const ext =
+        extension(file.type);
+
+      const pathname =
+        randomName() +
+        "." +
+        ext;
+
+      const blob =
         await upload(
-            file.name,
-            file,
-            {
-                access: "public",
+          pathname,
+          file,
+          {
 
-                handleUploadUrl:
-                    "/api/upload",
+            access:"public",
 
-                multipart: true,
+            handleUploadUrl:
+              "/api/upload",
 
-                onUploadProgress: (event) => {
+            multipart:true,
 
-                    if(event.percentage){
+            onUploadProgress:
+              (event) => {
 
-                        progressFill.style.width =
-                            event.percentage + "%";
+                const percent =
+                  Number(
+                    event.percentage || 0
+                  );
 
-                        status.textContent =
-                            "Đang tải: " +
-                            Math.round(event.percentage) +
-                            "%";
-                    }
-                }
-            }
+                progressBar.style.width =
+                  percent + "%";
+
+                status.textContent =
+                  "Đang tải: " +
+                  Math.round(percent) +
+                  "%";
+
+              }
+
+          }
         );
 
-        const filename =
-            blob.pathname ||
-            file.name;
-
-        const finalURL =
-            IMAGE_DOMAIN +
-            "/images/" +
-            encodeURIComponent(filename);
-
-        urlInput.value =
-            finalURL;
-
-        progressFill.style.width = "100%";
-
-        status.textContent =
-            "✅ Upload thành công!";
-
-        result.style.display = "block";
-
-    }catch(error){
-
-        console.error(error);
-
-        showError(
-            error?.message ||
-            "Không thể tải ảnh lên Vercel Blob."
+      const finalURL =
+        IMAGE_DOMAIN +
+        "/images/" +
+        encodeURIComponent(
+          pathname
         );
 
-        status.textContent =
-            "Upload thất bại.";
+      urlInput.value =
+        finalURL;
+
+      progressBar.style.width =
+        "100%";
+
+      status.textContent =
+        "✅ Upload thành công!";
+
+      result.style.display =
+        "block";
+
+      console.log(
+        "Blob URL:",
+        blob.url
+      );
+
+    }catch(e){
+
+      console.error(
+        "UPLOAD ERROR:",
+        e
+      );
+
+      error(
+        e?.message ||
+        "Lỗi Vercel Blob"
+      );
+
+      status.textContent =
+        "Upload thất bại.";
 
     }
 
-});
+  }
+);
 
 document
 .getElementById("copy")
-.addEventListener("click", async () => {
+.addEventListener(
+  "click",
+  async () => {
 
-    await navigator.clipboard.writeText(
+    if(!urlInput.value)
+      return;
+
+    try{
+
+      await navigator.clipboard.writeText(
         urlInput.value
-    );
+      );
 
-    status.textContent =
+      status.textContent =
         "✅ Đã sao chép URL";
 
-});
+    }catch{
 
-document
-.getElementById("open")
-.addEventListener("click", () => {
+      urlInput.select();
 
-    if(urlInput.value){
+      document.execCommand(
+        "copy"
+      );
 
-        window.open(
-            urlInput.value,
-            "_blank"
-        );
+      status.textContent =
+        "✅ Đã sao chép URL";
 
     }
 
-});
+  }
+);
+
+document
+.getElementById("open")
+.addEventListener(
+  "click",
+  () => {
+
+    if(urlInput.value){
+
+      window.open(
+        urlInput.value,
+        "_blank"
+      );
+
+    }
+
+  }
+);
 
 document
 .getElementById("html")
-.addEventListener("click", async () => {
+.addEventListener(
+  "click",
+  async () => {
+
+    if(!urlInput.value)
+      return;
 
     const html =
-        `<img src="${urlInput.value}" alt="Azerst Image">`;
+      '<img src="' +
+      urlInput.value +
+      '" alt="Azerst Image">';
 
-    await navigator.clipboard.writeText(html);
+    try{
 
-    status.textContent =
+      await navigator.clipboard.writeText(
+        html
+      );
+
+      status.textContent =
         "✅ Đã sao chép HTML";
 
-});
+    }catch{
+
+      status.textContent =
+        "❌ Không thể sao chép";
+
+    }
+
+  }
+);
 
 document
 .getElementById("new")
-.addEventListener("click", () => {
+.addEventListener(
+  "click",
+  () => {
 
-    fileInput.value = "";
+    fileInput.value =
+      "";
 
-    info.style.display = "none";
+    info.style.display =
+      "none";
 
-    progress.style.display = "none";
+    progress.style.display =
+      "none";
 
-    result.style.display = "none";
+    result.style.display =
+      "none";
 
-    hideError();
+    clearError();
 
-    progressFill.style.width = "0%";
+    progressBar.style.width =
+      "0%";
 
     status.textContent =
-        "Đang chuẩn bị...";
+      "Đang chuẩn bị...";
 
-});
+  }
+);
 
 </script>
 
