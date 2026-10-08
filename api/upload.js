@@ -2,25 +2,25 @@ import { put, get } from "@vercel/blob";
 
 const MAX_SIZE = 64 * 1024 * 1024 * 1024;
 
-const ALLOWED_TYPES = new Set([
-  "image/png",
-  "image/jpeg",
-  "image/webp",
-  "image/gif",
-  "image/avif"
-]);
+const ALLOWED_TYPES = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/avif": "avif"
+};
 
 function randomName(length = 9) {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  let result = "";
+  let name = "";
 
   for (let i = 0; i < length; i++) {
-    result += chars[Math.floor(Math.random() * chars.length)];
+    name += chars[Math.floor(Math.random() * chars.length)];
   }
 
-  return result;
+  return name;
 }
 
 export default async function handler(req, res) {
@@ -33,6 +33,7 @@ export default async function handler(req, res) {
 
       if (!filename) {
         return res.status(400).json({
+          success: false,
           error: "Thiếu tên file"
         });
       }
@@ -41,11 +42,14 @@ export default async function handler(req, res) {
         access: "public"
       });
 
-      if (!result?.stream) {
+      if (!result || !result.stream) {
         return res.status(404).json({
+          success: false,
           error: "Không tìm thấy ảnh"
         });
       }
+
+      res.statusCode = 200;
 
       res.setHeader(
         "Content-Type",
@@ -58,6 +62,7 @@ export default async function handler(req, res) {
       );
 
       result.stream.pipe(res);
+
       return;
     }
 
@@ -66,93 +71,90 @@ export default async function handler(req, res) {
     // =========================
     if (req.method !== "POST") {
       return res.status(405).json({
+        success: false,
         error: "Method không được hỗ trợ"
       });
     }
 
     // =========================
-    // CHECK TOKEN
-    // =========================
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      return res.status(500).json({
-        error:
-          "Thiếu BLOB_READ_WRITE_TOKEN. Hãy kết nối Vercel Blob với Project và Redeploy."
-      });
-    }
-
-    // =========================
-    // READ FORM
+    // GET FORM DATA
     // =========================
     const formData = await req.formData();
+
     const file = formData.get("file");
 
     if (!file || typeof file === "string") {
       return res.status(400).json({
-        error: "Không tìm thấy file"
+        success: false,
+        error: "Không tìm thấy file ảnh"
       });
     }
 
     // =========================
-    // CHECK TYPE
+    // CHECK FILE TYPE
     // =========================
-    if (!ALLOWED_TYPES.has(file.type)) {
+    if (!ALLOWED_TYPES[file.type]) {
       return res.status(400).json({
-        error: "Định dạng ảnh không được hỗ trợ"
+        success: false,
+        error: "Chỉ hỗ trợ PNG, JPG, JPEG, WEBP, GIF, AVIF"
       });
     }
 
     // =========================
-    // CHECK SIZE
+    // CHECK FILE SIZE
     // =========================
     if (file.size > MAX_SIZE) {
       return res.status(413).json({
+        success: false,
         error: "File vượt quá giới hạn 64 GB"
       });
     }
 
     // =========================
-    // EXTENSION
+    // CREATE RANDOM FILENAME
     // =========================
-    const extensionMap = {
-      "image/png": "png",
-      "image/jpeg": "jpg",
-      "image/webp": "webp",
-      "image/gif": "gif",
-      "image/avif": "avif"
-    };
-
-    const extension = extensionMap[file.type];
+    const extension = ALLOWED_TYPES[file.type];
 
     const filename = `${randomName(9)}.${extension}`;
 
     // =========================
-    // UPLOAD VERCEL BLOB
+    // UPLOAD TO VERCEL BLOB
+    // OIDC tự động
     // =========================
     const blob = await put(filename, file, {
       access: "public",
       addRandomSuffix: false,
       contentType: file.type,
-      token: process.env.BLOB_READ_WRITE_TOKEN,
       cacheControlMaxAge: 31536000
     });
+
+    // =========================
+    // FINAL IMAGE URL
+    // =========================
+    const imageUrl =
+      "https://Azerst-Image-VN.vercel.app/images/" +
+      encodeURIComponent(filename);
 
     // =========================
     // RESPONSE
     // =========================
     return res.status(200).json({
       success: true,
-      filename,
-      url: `https://Azerst-Image-VN.vercel.app/images/${encodeURIComponent(
-        filename
-      )}`,
-      blobUrl: blob.url
+      filename: filename,
+      url: imageUrl,
+      blobUrl: blob.url,
+      type: file.type,
+      size: file.size
     });
+
   } catch (error) {
-    console.error("UPLOAD ERROR:", error);
+    console.error("VERCEL BLOB ERROR:", error);
 
     return res.status(500).json({
+      success: false,
       error: "Lỗi Vercel Blob",
-      message: error?.message || "Unknown error"
+      message: error?.message || String(error),
+      code: error?.code || null
     });
   }
 }
