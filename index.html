@@ -1,2413 +1,577 @@
 <!DOCTYPE html>
-
 <html lang="vi">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,viewport-fit=cover"
->
+<title>AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL</title>
 
-<title>
-    Azerst - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
-</title>
-
-<meta
-    name="description"
-    content="Công cụ chèn ảnh và tạo link URL trực tiếp nhanh chóng từ Azerst. Hỗ trợ Android, iPhone và máy tính."
->
-
-<link
-    rel="icon"
-    href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
->
-
+<link rel="icon"
+href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png">
 
 <style>
 
-/* ==================================================
-   FONT
-================================================== */
-
-@font-face {
-
-    font-family:
-        "GFF-Latin-Bold";
-
+@font-face{
+    font-family:"GFF-Latin-Bold";
     src:
-
-        url(
-            "https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2"
-        )
-        format("woff2"),
-
-        url(
-            "https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff"
-        )
-        format("woff");
-
-    font-display: swap;
-
+    url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2")
+    format("woff2"),
+    url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff")
+    format("woff");
 }
 
-
-/* ==================================================
-   RESET
-================================================== */
-
-* {
-
-    margin: 0;
-
-    padding: 0;
-
-    box-sizing: border-box;
-
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-
-:root {
-
-    --pink:
-        #ff4fa3;
-
-    --pink2:
-        #ff8bc5;
-
-    --purple:
-        #8c5cff;
-
-    --blue:
-        #4d8cff;
-
-    --white:
-        #ffffff;
-
-}
-
-
-/* ==================================================
-   BODY
-================================================== */
-
-html {
-
-    scroll-behavior: smooth;
-
-}
-
-
-body {
-
-    min-height: 100vh;
-
-    overflow-x: hidden;
-
-    color: #fff;
-
-    font-family:
-        "GFF-Latin-Bold",
-        sans-serif;
+body{
+    min-height:100vh;
+    font-family:"GFF-Latin-Bold",Arial,sans-serif;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow-x:hidden;
 
     background:
-
-        radial-gradient(
-            circle at 10% 10%,
-            rgba(255,79,163,.28),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 90% 15%,
-            rgba(140,92,255,.28),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(77,140,255,.22),
-            transparent 35%
-        ),
-
-        linear-gradient(
-            135deg,
-            #080711,
-            #110919,
-            #070c1b
-        );
-
+        radial-gradient(circle at 20% 20%,#5934ff55,transparent 35%),
+        radial-gradient(circle at 80% 80%,#ff2d9b44,transparent 35%),
+        linear-gradient(135deg,#070014,#13052b,#05000e);
 }
 
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
 
-/* ==================================================
-   STAR BACKGROUND
-================================================== */
+    background-image:
+        radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1px);
 
-body::before {
-
-    content: "";
-
-    position: fixed;
-
-    inset: -50%;
-
-    pointer-events: none;
-
-    z-index: -5;
-
-    opacity: .35;
-
-    background:
-
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.12) 1px,
-            transparent 2px
-        );
-
-    background-size:
-        45px 45px;
-
-    animation:
-        stars 25s linear infinite;
-
+    background-size:70px 70px;
+    opacity:.18;
 }
 
+.card{
+    width:100%;
+    max-width:650px;
 
-@keyframes stars {
+    padding:30px 22px;
 
-    from {
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:28px;
 
-        transform:
-            translate(0,0);
-
-    }
-
-    to {
-
-        transform:
-            translate(45px,45px);
-
-    }
-
-}
-
-
-/* ==================================================
-   GLOW
-================================================== */
-
-.glow {
-
-    position: fixed;
-
-    width: 280px;
-
-    height: 280px;
-
-    border-radius: 50%;
-
-    filter: blur(85px);
-
-    opacity: .28;
-
-    pointer-events: none;
-
-    z-index: -3;
-
-}
-
-
-.glow.one {
-
-    top: -120px;
-
-    left: -100px;
-
-    background:
-        #ff4fa3;
-
-    animation:
-        glowOne 8s ease-in-out infinite;
-
-}
-
-
-.glow.two {
-
-    right: -120px;
-
-    top: 35%;
-
-    background:
-        #805cff;
-
-    animation:
-        glowTwo 10s ease-in-out infinite;
-
-}
-
-
-.glow.three {
-
-    left: 35%;
-
-    bottom: -150px;
-
-    background:
-        #438cff;
-
-    animation:
-        glowThree 12s ease-in-out infinite;
-
-}
-
-
-@keyframes glowOne {
-
-    50% {
-
-        transform:
-            translate(70px,60px)
-            scale(1.2);
-
-    }
-
-}
-
-
-@keyframes glowTwo {
-
-    50% {
-
-        transform:
-            translate(-70px,40px)
-            scale(1.15);
-
-    }
-
-}
-
-
-@keyframes glowThree {
-
-    50% {
-
-        transform:
-            translate(60px,-50px)
-            scale(1.2);
-
-    }
-
-}
-
-
-/* ==================================================
-   ANIME PETALS
-================================================== */
-
-.petal {
-
-    position: fixed;
-
-    top: -30px;
-
-    color:
-        rgba(255,145,201,.75);
-
-    font-size: 18px;
-
-    pointer-events: none;
-
-    z-index: -1;
-
-    animation:
-        fall linear infinite;
-
-}
-
-
-.petal:nth-child(1) {
-
-    left: 8%;
-
-    animation-duration: 9s;
-
-}
-
-
-.petal:nth-child(2) {
-
-    left: 25%;
-
-    animation-duration: 12s;
-
-    animation-delay: 2s;
-
-}
-
-
-.petal:nth-child(3) {
-
-    left: 48%;
-
-    animation-duration: 10s;
-
-    animation-delay: 1s;
-
-}
-
-
-.petal:nth-child(4) {
-
-    left: 72%;
-
-    animation-duration: 13s;
-
-    animation-delay: 4s;
-
-}
-
-
-.petal:nth-child(5) {
-
-    left: 91%;
-
-    animation-duration: 11s;
-
-    animation-delay: 3s;
-
-}
-
-
-@keyframes fall {
-
-    0% {
-
-        transform:
-            translateY(-30px)
-            rotate(0deg);
-
-    }
-
-    100% {
-
-        transform:
-            translateY(110vh)
-            translateX(100px)
-            rotate(360deg);
-
-    }
-
-}
-
-
-/* ==================================================
-   CONTAINER
-================================================== */
-
-.container {
-
-    width:
-        min(920px,94%);
-
-    margin:
-        auto;
-
-}
-
-
-/* ==================================================
-   HEADER
-================================================== */
-
-header {
-
-    text-align: center;
-
-    padding:
-        32px 0 20px;
-
-}
-
-
-.logo {
-
-    width: 88px;
-
-    height: 88px;
-
-    object-fit: cover;
-
-    border-radius: 26px;
-
-    border:
-        2px solid
-        rgba(255,255,255,.35);
+    background:rgba(15,10,35,.72);
+    backdrop-filter:blur(22px);
 
     box-shadow:
-
-        0 0 0 6px
-        rgba(255,79,163,.08),
-
-        0 0 45px
-        rgba(255,79,163,.4);
-
-    animation:
-        logoFloat 4s ease-in-out infinite;
-
+        0 25px 80px rgba(0,0,0,.55),
+        0 0 60px rgba(130,70,255,.15);
 }
 
-
-@keyframes logoFloat {
-
-    50% {
-
-        transform:
-            translateY(-7px)
-            rotate(2deg);
-
-    }
-
-}
-
-
-h1 {
-
-    margin-top: 20px;
-
-    font-size:
-        clamp(
-            25px,
-            6vw,
-            43px
-        );
-
-    line-height: 1.15;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            #fff,
-            #ff8bc5,
-            #a98bff,
-            #fff
-        );
-
-    background-size:
-        250%;
-
-    -webkit-background-clip:
-        text;
-
-    background-clip:
-        text;
-
-    color:
-        transparent;
-
-    animation:
-        title 6s linear infinite;
-
-}
-
-
-@keyframes title {
-
-    to {
-
-        background-position:
-            250%;
-
-    }
-
-}
-
-
-.subtitle {
-
-    max-width: 720px;
-
-    margin:
-        13px auto 0;
-
-    color:
-        rgba(255,255,255,.68);
-
-    font-size: 13px;
-
-    line-height: 1.8;
-
-}
-
-
-/* ==================================================
-   CARD
-================================================== */
-
-.card {
-
-    position: relative;
-
-    margin:
-        24px auto;
-
-    padding: 22px;
-
-    border-radius: 30px;
-
-    background:
-
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.11),
-            rgba(255,255,255,.035)
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,.14);
-
-    backdrop-filter:
-        blur(25px);
-
-    -webkit-backdrop-filter:
-        blur(25px);
+.logo{
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:22px;
+    display:block;
+    margin:0 auto 18px;
 
     box-shadow:
-
-        0 30px 100px
-        rgba(0,0,0,.5),
-
-        inset 0 1px
-        rgba(255,255,255,.12);
-
-    overflow:
-        hidden;
-
+        0 0 30px rgba(140,80,255,.5);
 }
 
-
-/* ==================================================
-   UPLOAD
-================================================== */
-
-.upload {
-
-    position: relative;
-
-    z-index: 2;
-
-    min-height: 230px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 25px;
-
-    border:
-        2px dashed
-        rgba(255,138,197,.4);
-
-    border-radius: 24px;
-
-    cursor: pointer;
-
-    background:
-        rgba(255,255,255,.035);
-
-    transition:
-        .3s;
-
+h1{
+    text-align:center;
+    font-size:25px;
+    line-height:1.3;
+    margin-bottom:12px;
 }
 
-
-.upload:hover {
-
-    transform:
-        translateY(-3px);
-
-    border-color:
-        #ff69ae;
-
-    background:
-        rgba(255,79,163,.08);
-
-    box-shadow:
-        0 15px 45px
-        rgba(255,79,163,.1);
-
+.desc{
+    text-align:center;
+    color:#d8d1e8;
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:25px;
 }
 
-
-.upload-icon {
-
-    width: 75px;
-
-    height: 75px;
-
-    display: grid;
-
-    place-items: center;
-
-    margin-bottom: 17px;
-
-    border-radius: 24px;
-
-    font-size: 38px;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #ff4fa3,
-            #8c5cff
-        );
-
-    box-shadow:
-        0 15px 35px
-        rgba(255,79,163,.3);
-
-    animation:
-        uploadFloat 3s ease-in-out infinite;
-
+.drop{
+    border:2px dashed rgba(255,255,255,.25);
+    border-radius:20px;
+    padding:35px 15px;
+    text-align:center;
+    cursor:pointer;
+    transition:.25s;
 }
 
+.drop:hover{
+    border-color:#9c6cff;
+    background:rgba(140,80,255,.08);
+}
 
-@keyframes uploadFloat {
+.drop strong{
+    display:block;
+    font-size:18px;
+    margin-bottom:8px;
+}
 
-    50% {
+.drop span{
+    color:#aaa2bd;
+    font-family:Arial,sans-serif;
+    font-size:13px;
+}
 
-        transform:
-            translateY(-5px)
-            rotate(-3deg);
+input{
+    display:none;
+}
 
+.info{
+    display:none;
+    margin-top:20px;
+    padding:16px;
+
+    border-radius:16px;
+    background:rgba(255,255,255,.06);
+
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    line-height:1.8;
+}
+
+.progress{
+    display:none;
+    margin-top:18px;
+}
+
+.progress-bar{
+    width:100%;
+    height:10px;
+    overflow:hidden;
+    border-radius:20px;
+    background:rgba(255,255,255,.1);
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    transition:width:.2s;
+    background:linear-gradient(90deg,#7b4dff,#ff42b0);
+}
+
+.status{
+    text-align:center;
+    margin-top:10px;
+    font-family:Arial,sans-serif;
+    font-size:13px;
+    color:#ddd;
+}
+
+.result{
+    display:none;
+    margin-top:20px;
+}
+
+.url{
+    width:100%;
+    padding:14px;
+    border:0;
+    outline:0;
+    border-radius:14px;
+
+    background:rgba(0,0,0,.35);
+    color:#fff;
+
+    font-family:Arial,sans-serif;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:12px;
+}
+
+button{
+    border:0;
+    padding:13px;
+    border-radius:13px;
+
+    color:white;
+    cursor:pointer;
+
+    font-family:"GFF-Latin-Bold",Arial,sans-serif;
+
+    background:linear-gradient(135deg,#754cff,#d43cff);
+}
+
+button:hover{
+    filter:brightness(1.15);
+}
+
+.error{
+    display:none;
+    margin-top:15px;
+    padding:14px;
+
+    border-radius:14px;
+
+    background:rgba(255,40,80,.12);
+    border:1px solid rgba(255,80,100,.3);
+
+    color:#ff9aaa;
+
+    font-family:Arial,sans-serif;
+    font-size:14px;
+}
+
+.footer{
+    margin-top:22px;
+    text-align:center;
+
+    color:#837b94;
+
+    font-family:Arial,sans-serif;
+    font-size:11px;
+}
+
+@media(max-width:500px){
+
+    .card{
+        padding:24px 16px;
     }
 
-}
-
-
-.upload-title {
-
-    font-size:
-        21px;
-
-}
-
-
-.upload-desc {
-
-    margin-top: 9px;
-
-    color:
-        rgba(255,255,255,.55);
-
-    font-size:
-        12px;
-
-    line-height:
-        1.8;
-
-}
-
-
-.upload-desc b {
-
-    color:
-        #ff8ac5;
-
-}
-
-
-#fileInput {
-
-    display: none;
-
-}
-
-
-/* ==================================================
-   PREVIEW
-================================================== */
-
-.preview-section {
-
-    display: none;
-
-    margin-top: 20px;
-
-}
-
-
-.preview {
-
-    width: 100%;
-
-    max-height: 430px;
-
-    display: block;
-
-    object-fit: contain;
-
-    background:
-        rgba(0,0,0,.45);
-
-    border-radius:
-        22px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.35);
-
-}
-
-
-/* ==================================================
-   INFO
-================================================== */
-
-.info {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:
-        10px;
-
-    margin-top:
-        12px;
-
-}
-
-
-.info-box {
-
-    min-width:
-        0;
-
-    padding:
-        15px;
-
-    border-radius:
-        17px;
-
-    background:
-        rgba(255,255,255,.045);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    transition:
-        .25s;
-
-}
-
-
-.info-box:hover {
-
-    background:
-        rgba(255,255,255,.08);
-
-    transform:
-        translateY(-2px);
-
-}
-
-
-.info-label {
-
-    color:
-        rgba(255,255,255,.45);
-
-    font-size:
-        10px;
-
-}
-
-
-.info-value {
-
-    margin-top:
-        6px;
-
-    overflow:
-        hidden;
-
-    text-overflow:
-        ellipsis;
-
-    white-space:
-        nowrap;
-
-    font-size:
-        13px;
-
-}
-
-
-/* ==================================================
-   CREATE URL
-================================================== */
-
-.create-url {
-
-    display:
-        none;
-
-    margin-top:
-        18px;
-
-}
-
-
-#createURLBtn {
-
-    width:
-        100%;
-
-    min-height:
-        57px;
-
-    border:
-        0;
-
-    border-radius:
-        17px;
-
-    cursor:
-        pointer;
-
-    color:
-        #fff;
-
-    font-size:
-        16px;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #ff4fa3,
-            #8c5cff
-        );
-
-    box-shadow:
-
-        0 12px 35px
-        rgba(255,79,163,.22);
-
-    transition:
-        .25s;
-
-}
-
-
-#createURLBtn:hover {
-
-    transform:
-        translateY(-2px);
-
-    filter:
-        brightness(1.08);
-
-}
-
-
-#createURLBtn:disabled {
-
-    opacity:
-        .6;
-
-    cursor:
-        not-allowed;
-
-    transform:
-        none;
-
-}
-
-
-/* ==================================================
-   RESULT
-================================================== */
-
-.result {
-
-    display:
-        none;
-
-    margin-top:
-        20px;
-
-}
-
-
-.result-title {
-
-    margin-bottom:
-        10px;
-
-    font-size:
-        18px;
-
-}
-
-
-.url-box {
-
-    display:
-        flex;
-
-    gap:
-        8px;
-
-    padding:
-        8px;
-
-    border-radius:
-        17px;
-
-    background:
-        rgba(0,0,0,.35);
-
-    border:
-        1px solid
-        rgba(255,138,197,.25);
-
-}
-
-
-.url-input {
-
-    flex:
-        1;
-
-    min-width:
-        0;
-
-    padding:
-        11px;
-
-    border:
-        0;
-
-    outline:
-        0;
-
-    background:
-        transparent;
-
-    color:
-        #fff;
-
-    font-size:
-        12px;
-
-}
-
-
-.copy-btn {
-
-    min-width:
-        115px;
-
-    border:
-        0;
-
-    border-radius:
-        13px;
-
-    color:
-        #fff;
-
-    cursor:
-        pointer;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #ff4fa3,
-            #8c5cff
-        );
-
-    font-size:
-        12px;
-
-}
-
-
-/* ==================================================
-   BUTTONS
-================================================== */
-
-.buttons {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:
-        10px;
-
-    margin-top:
-        10px;
-
-}
-
-
-.action-btn {
-
-    min-height:
-        47px;
-
-    border-radius:
-        14px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    cursor:
-        pointer;
-
-    color:
-        #fff;
-
-    background:
-        rgba(255,255,255,.06);
-
-    font-size:
-        12px;
-
-    transition:
-        .2s;
-
-}
-
-
-.action-btn:hover {
-
-    background:
-        rgba(255,255,255,.12);
-
-    transform:
-        translateY(-1px);
-
-}
-
-
-/* ==================================================
-   MESSAGE
-================================================== */
-
-.message {
-
-    display:
-        none;
-
-    margin-top:
-        15px;
-
-    padding:
-        14px 16px;
-
-    border-radius:
-        15px;
-
-    font-size:
-        12px;
-
-    line-height:
-        1.6;
-
-}
-
-
-.message.success {
-
-    display:
-        block;
-
-    color:
-        #baffdd;
-
-    background:
-        rgba(40,255,150,.06);
-
-    border:
-        1px solid
-        rgba(40,255,150,.16);
-
-}
-
-
-.message.error {
-
-    display:
-        block;
-
-    color:
-        #ffc0d4;
-
-    background:
-        rgba(255,50,100,.07);
-
-    border:
-        1px solid
-        rgba(255,50,100,.17);
-
-}
-
-
-/* ==================================================
-   FOOTER
-================================================== */
-
-footer {
-
-    padding:
-        10px 20px 30px;
-
-    text-align:
-        center;
-
-    color:
-        rgba(255,255,255,.38);
-
-    font-size:
-        10px;
-
-}
-
-
-/* ==================================================
-   MOBILE
-================================================== */
-
-@media(max-width:650px) {
-
-    .card {
-
-        padding:
-            15px;
-
-        border-radius:
-            23px;
-
+    h1{
+        font-size:21px;
     }
 
-
-    .info {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-
-    .url-box {
-
-        flex-direction:
-            column;
-
-    }
-
-
-    .copy-btn {
-
-        min-height:
-            45px;
-
-    }
-
-
-    .buttons {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-
-    .upload {
-
-        min-height:
-            195px;
-
-    }
-
-
-    h1 {
-
-        font-size:
-            25px;
-
-    }
-
-
-    .logo {
-
-        width:
-            75px;
-
-        height:
-            75px;
-
+    .buttons{
+        grid-template-columns:1fr;
     }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
-<div class="glow one"></div>
-
-<div class="glow two"></div>
-
-<div class="glow three"></div>
-
-
-<div class="petal">✦</div>
-
-<div class="petal">✿</div>
-
-<div class="petal">✦</div>
-
-<div class="petal">✿</div>
-
-<div class="petal">✦</div>
-
-
-
-<div class="container">
-
-
-<header>
-
+<div class="card">
 
 <img
-    class="logo"
-    src="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
-    alt="Azerst"
->
-
+class="logo"
+src="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
+alt="Azerst">
 
 <h1>
-
-    AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
-
+AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
 </h1>
 
+<div class="desc">
+Công cụ chèn ảnh và tạo link URL trực tiếp nhanh chóng từ Azerst.
+Hỗ trợ Android, iPhone và máy tính.
+</div>
 
-<p class="subtitle">
+<label class="drop" for="file">
 
-    Công cụ chèn ảnh và tạo link URL trực tiếp
-    nhanh chóng từ Azerst.
-    Hỗ trợ Android, iPhone và máy tính.
+<strong>📸 Chọn ảnh để tải lên</strong>
 
-</p>
-
-
-</header>
-
-
-
-<main class="card">
-
-
-<label
-    class="upload"
-    for="fileInput"
->
-
-
-    <div class="upload-icon">
-
-        ＋
-
-    </div>
-
-
-    <div class="upload-title">
-
-        CHỌN HÌNH ẢNH
-
-    </div>
-
-
-    <div class="upload-desc">
-
-        Nhấn để chọn ảnh từ Album hoặc thiết bị<br>
-
-        PNG • JPG • JPEG • WEBP • GIF • AVIF<br>
-
-        Dung lượng tối đa <b>64 GB</b>
-
-    </div>
-
+<span>
+PNG • JPG • JPEG • WEBP • GIF • AVIF
+<br>
+Dung lượng tối đa hiển thị: 64 GB
+</span>
 
 </label>
 
+<input
+id="file"
+type="file"
+accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
 
+<div id="info" class="info"></div>
+
+<div id="progress" class="progress">
+
+<div class="progress-bar">
+<div id="progressFill" class="progress-fill"></div>
+</div>
+
+<div id="status" class="status">
+Đang chuẩn bị...
+</div>
+
+</div>
+
+<div id="error" class="error"></div>
+
+<div id="result" class="result">
 
 <input
-    id="fileInput"
-    type="file"
-    accept="
-        image/png,
-        image/jpeg,
-        image/webp,
-        image/gif,
-        image/avif
-    "
->
+id="url"
+class="url"
+readonly>
 
+<div class="buttons">
 
+<button id="copy">
+📋 Sao chép URL
+</button>
 
-<section
-    id="previewSection"
-    class="preview-section"
->
+<button id="open">
+🔗 Mở ảnh
+</button>
 
+<button id="html">
+🧩 Copy HTML
+</button>
 
-    <img
-        id="preview"
-        class="preview"
-        alt="Preview"
-    >
-
-
-    <div class="info">
-
-
-        <div class="info-box">
-
-            <div class="info-label">
-
-                TÊN FILE
-
-            </div>
-
-
-            <div
-                id="fileName"
-                class="info-value"
-            >
-
-                -
-
-            </div>
-
-        </div>
-
-
-
-        <div class="info-box">
-
-            <div class="info-label">
-
-                DUNG LƯỢNG
-
-            </div>
-
-
-            <div
-                id="fileSize"
-                class="info-value"
-            >
-
-                -
-
-            </div>
-
-        </div>
-
-
-
-        <div class="info-box">
-
-            <div class="info-label">
-
-                ĐỊNH DẠNG
-
-            </div>
-
-
-            <div
-                id="fileType"
-                class="info-value"
-            >
-
-                -
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-</section>
-
-
-
-<div
-    id="createURLBox"
-    class="create-url"
->
-
-
-    <button
-        id="createURLBtn"
-    >
-
-        🔗 TẠO URL ẢNH
-
-    </button>
-
+<button id="new">
+🔄 Ảnh mới
+</button>
 
 </div>
 
+</div>
 
-
-<section
-    id="result"
-    class="result"
->
-
-
-    <div class="result-title">
-
-        🔗 LINK URL ẢNH
-
-    </div>
-
-
-    <div class="url-box">
-
-
-        <input
-            id="urlInput"
-            class="url-input"
-            type="text"
-            readonly
-        >
-
-
-        <button
-            id="copyBtn"
-            class="copy-btn"
-        >
-
-            SAO CHÉP
-
-        </button>
-
-
-    </div>
-
-
-
-    <div class="buttons">
-
-
-        <button
-            id="openBtn"
-            class="action-btn"
-        >
-
-            MỞ ẢNH
-
-        </button>
-
-
-        <button
-            id="htmlBtn"
-            class="action-btn"
-        >
-
-            COPY HTML
-
-        </button>
-
-
-        <button
-            id="newBtn"
-            class="action-btn"
-        >
-
-            ẢNH MỚI
-
-        </button>
-
-
-    </div>
-
-
-</section>
-
-
-
-<div
-    id="message"
-    class="message"
-></div>
-
-
-</main>
-
-
-
-<footer>
-
-    © 2026 AZERST IMAGE VN - ALL RIGHTS RESERVED.
-
-</footer>
-
+<div class="footer">
+AZERST IMAGE VN
+</div>
 
 </div>
 
+<script type="module">
 
+import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
-<script>
+const fileInput =
+document.getElementById("file");
 
-/* ==================================================
-   AZERST CONFIG
-================================================== */
+const info =
+document.getElementById("info");
 
-const API_URL =
-    "/api/upload";
+const progress =
+document.getElementById("progress");
 
+const progressFill =
+document.getElementById("progressFill");
 
-/*
-==================================================
-  DOMAIN TẠO LINK ẢNH
-==================================================
-*/
-
-const IMAGE_DOMAIN =
-    "https://Azerst-Image-VN.vercel.app";
-
-
-/*
-==================================================
-  WEBSITE
-==================================================
-*/
-
-const WEBSITE_URL =
-    "https://azerstimagev1.vercel.app/";
-
-
-/*
-==================================================
-  64 GB
-==================================================
-*/
-
-const MAX_SIZE =
-    64 *
-    1024 *
-    1024 *
-    1024;
-
-
-/* ==================================================
-   ELEMENTS
-================================================== */
-
-const input =
-    document.getElementById(
-        "fileInput"
-    );
-
-
-const preview =
-    document.getElementById(
-        "preview"
-    );
-
-
-const previewSection =
-    document.getElementById(
-        "previewSection"
-    );
-
-
-const createURLBox =
-    document.getElementById(
-        "createURLBox"
-    );
-
-
-const createURLBtn =
-    document.getElementById(
-        "createURLBtn"
-    );
-
+const status =
+document.getElementById("status");
 
 const result =
-    document.getElementById(
-        "result"
-    );
+document.getElementById("result");
 
+const errorBox =
+document.getElementById("error");
 
 const urlInput =
-    document.getElementById(
-        "urlInput"
-    );
+document.getElementById("url");
 
+const IMAGE_DOMAIN =
+"https://Azerst-Image-VN.vercel.app";
 
-const fileName =
-    document.getElementById(
-        "fileName"
-    );
+function formatSize(bytes){
 
+    if(bytes < 1024)
+        return bytes + " B";
 
-const fileSize =
-    document.getElementById(
-        "fileSize"
-    );
+    if(bytes < 1024 * 1024)
+        return (bytes / 1024).toFixed(2) + " KB";
 
+    if(bytes < 1024 * 1024 * 1024)
+        return (bytes / 1024 / 1024).toFixed(2) + " MB";
 
-const fileType =
-    document.getElementById(
-        "fileType"
-    );
+    return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
+}
 
+function showError(message){
 
-const message =
-    document.getElementById(
-        "message"
-    );
+    errorBox.style.display = "block";
+    errorBox.textContent = "❌ " + message;
+}
 
+function hideError(){
 
-const copyBtn =
-    document.getElementById(
-        "copyBtn"
-    );
+    errorBox.style.display = "none";
+    errorBox.textContent = "";
+}
 
+fileInput.addEventListener("change", async () => {
 
-const openBtn =
-    document.getElementById(
-        "openBtn"
-    );
+    hideError();
 
+    const file =
+        fileInput.files?.[0];
 
-const htmlBtn =
-    document.getElementById(
-        "htmlBtn"
-    );
+    if(!file)
+        return;
 
+    const allowed = [
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+        "image/gif",
+        "image/avif"
+    ];
 
-const newBtn =
-    document.getElementById(
-        "newBtn"
-    );
+    if(!allowed.includes(file.type)){
 
-
-let selectedFile = null;
-
-let uploadedFilename = "";
-
-let currentURL = "";
-
-
-/* ==================================================
-   FORMAT SIZE
-================================================== */
-
-function formatSize(bytes) {
-
-    if (
-        bytes <
-        1024
-    ) {
-
-        return (
-            bytes +
-            " B"
+        showError(
+            "Định dạng ảnh không được hỗ trợ."
         );
 
+        fileInput.value = "";
+        return;
     }
 
+    info.style.display = "block";
 
-    if (
-        bytes <
-        1024 *
-        1024
-    ) {
+    info.innerHTML = `
+        <b>Tên:</b> ${file.name}<br>
+        <b>Dung lượng:</b> ${formatSize(file.size)}<br>
+        <b>Định dạng:</b> ${file.type}
+    `;
 
-        return (
-            bytes /
-            1024
-        ).toFixed(1) +
-        " KB";
+    progress.style.display = "block";
+    result.style.display = "none";
 
-    }
+    progressFill.style.width = "0%";
+    status.textContent = "Đang tải ảnh lên...";
 
+    try{
 
-    if (
-        bytes <
-        1024 *
-        1024 *
-        1024
-    ) {
-
-        return (
-            bytes /
-            1024 /
-            1024
-        ).toFixed(2) +
-        " MB";
-
-    }
-
-
-    return (
-        bytes /
-        1024 /
-        1024 /
-        1024
-    ).toFixed(2) +
-    " GB";
-
-}
-
-
-/* ==================================================
-   MESSAGE
-================================================== */
-
-function showMessage(
-    text,
-    type
-) {
-
-    message.textContent =
-        text;
-
-    message.className =
-        "message " +
-        type;
-
-}
-
-
-/* ==================================================
-   EXTENSION
-================================================== */
-
-function getExtension(file) {
-
-    let ext =
-        file.name
-            .split(".")
-            .pop()
-            .toLowerCase();
-
-
-    if (
-        ext === "jpeg"
-    ) {
-
-        ext = "jpg";
-
-    }
-
-
-    return ext;
-
-}
-
-
-/* ==================================================
-   UPLOAD
-================================================== */
-
-async function uploadImage(
-    file
-) {
-
-    const ext =
-        getExtension(
-            file
-        );
-
-
-    /*
-    Tên gửi lên API
-    */
-
-    const formData =
-        new FormData();
-
-
-    formData.append(
-        "file",
-        file,
-        "upload." + ext
-    );
-
-
-    const response =
-        await fetch(
-            API_URL,
+        const blob =
+        await upload(
+            file.name,
+            file,
             {
-                method:
-                    "POST",
+                access: "public",
 
-                body:
-                    formData
+                handleUploadUrl:
+                    "/api/upload",
+
+                multipart: true,
+
+                onUploadProgress: (event) => {
+
+                    if(event.percentage){
+
+                        progressFill.style.width =
+                            event.percentage + "%";
+
+                        status.textContent =
+                            "Đang tải: " +
+                            Math.round(event.percentage) +
+                            "%";
+                    }
+                }
             }
         );
 
-
-    let data;
-
-
-    try {
-
-        data =
-            await response.json();
-
-    } catch {
-
-        throw new Error(
-            "API không trả về JSON hợp lệ."
-        );
-
-    }
-
-
-    if (
-        !response.ok ||
-        !data ||
-        !data.success ||
-        !data.filename
-    ) {
-
-        throw new Error(
-            data?.error ||
-            "Upload hình ảnh thất bại."
-        );
-
-    }
-
-
-    uploadedFilename =
-        data.filename;
-
-
-    return uploadedFilename;
-
-}
-
-
-/* ==================================================
-   CHỌN ẢNH
-================================================== */
-
-input.addEventListener(
-    "change",
-    function () {
-
-        const file =
-            this.files?.[0];
-
-
-        if (!file) {
-
-            return;
-
-        }
-
-
-        selectedFile =
-            file;
-
-
-        uploadedFilename =
-            "";
-
-
-        currentURL =
-            "";
-
-
-        result.style.display =
-            "none";
-
-
-        /* SIZE */
-
-        if (
-            file.size >
-            MAX_SIZE
-        ) {
-
-            showMessage(
-                "❌ Hình ảnh vượt quá dung lượng tối đa 64 GB.",
-                "error"
-            );
-
-
-            input.value =
-                "";
-
-
-            return;
-
-        }
-
-
-        /* TYPE */
-
-        const allowed = [
-
-            "image/png",
-
-            "image/jpeg",
-
-            "image/webp",
-
-            "image/gif",
-
-            "image/avif"
-
-        ];
-
-
-        if (
-            !allowed.includes(
-                file.type
-            )
-        ) {
-
-            showMessage(
-                "❌ Định dạng hình ảnh không được hỗ trợ.",
-                "error"
-            );
-
-
-            input.value =
-                "";
-
-
-            return;
-
-        }
-
-
-        /* PREVIEW */
-
-        preview.src =
-            URL.createObjectURL(
-                file
-            );
-
-
-        previewSection.style.display =
-            "block";
-
-
-        /* INFO */
-
-        fileName.textContent =
+        const filename =
+            blob.pathname ||
             file.name;
 
+        const finalURL =
+            IMAGE_DOMAIN +
+            "/images/" +
+            encodeURIComponent(filename);
 
-        fileSize.textContent =
-            formatSize(
-                file.size
-            );
+        urlInput.value =
+            finalURL;
 
+        progressFill.style.width = "100%";
 
-        fileType.textContent =
-            file.type;
+        status.textContent =
+            "✅ Upload thành công!";
 
+        result.style.display = "block";
 
-        /* BUTTON */
+    }catch(error){
 
-        createURLBox.style.display =
-            "block";
+        console.error(error);
 
-
-        createURLBtn.disabled =
-            false;
-
-
-        createURLBtn.textContent =
-            "🔗 TẠO URL ẢNH";
-
-
-        showMessage(
-            "✨ Ảnh đã được chọn. Nhấn TẠO URL ẢNH để tạo link.",
-            "success"
+        showError(
+            error?.message ||
+            "Không thể tải ảnh lên Vercel Blob."
         );
 
-    }
-);
-
-
-/* ==================================================
-   CREATE URL
-================================================== */
-
-createURLBtn.addEventListener(
-    "click",
-    async function () {
-
-        if (!selectedFile) {
-
-            showMessage(
-                "❌ Vui lòng chọn hình ảnh trước.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            createURLBtn.disabled =
-                true;
-
-
-            createURLBtn.textContent =
-                "🔗 ĐANG UPLOAD...";
-
-
-            if (
-                !uploadedFilename
-            ) {
-
-                await uploadImage(
-                    selectedFile
-                );
-
-            }
-
-
-            if (
-                !uploadedFilename
-            ) {
-
-                throw new Error(
-                    "Không lấy được tên hình ảnh."
-                );
-
-            }
-
-
-            /*
-            ======================================
-            URL CUỐI CÙNG
-            ======================================
-            */
-
-            currentURL =
-                IMAGE_DOMAIN +
-                "/images/" +
-                encodeURIComponent(
-                    uploadedFilename
-                );
-
-
-            urlInput.value =
-                currentURL;
-
-
-            result.style.display =
-                "block";
-
-
-            createURLBtn.disabled =
-                false;
-
-
-            createURLBtn.textContent =
-                "✅ URL ĐÃ ĐƯỢC TẠO";
-
-
-            showMessage(
-                "✅ Link URL ảnh đã được tạo thành công.",
-                "success"
-            );
-
-
-            result.scrollIntoView({
-                behavior:
-                    "smooth",
-
-                block:
-                    "center"
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-
-            createURLBtn.disabled =
-                false;
-
-
-            createURLBtn.textContent =
-                "🔗 TẠO URL ẢNH";
-
-
-            showMessage(
-                "❌ " +
-                (
-                    error.message ||
-                    "Không thể tạo URL."
-                ),
-                "error"
-            );
-
-        }
+        status.textContent =
+            "Upload thất bại.";
 
     }
-);
 
+});
 
-/* ==================================================
-   COPY URL
-================================================== */
+document
+.getElementById("copy")
+.addEventListener("click", async () => {
 
-copyBtn.addEventListener(
-    "click",
-    async function () {
+    await navigator.clipboard.writeText(
+        urlInput.value
+    );
 
-        if (!currentURL) {
+    status.textContent =
+        "✅ Đã sao chép URL";
 
-            return;
+});
 
-        }
+document
+.getElementById("open")
+.addEventListener("click", () => {
 
-
-        try {
-
-            await navigator.clipboard.writeText(
-                currentURL
-            );
-
-
-            copyBtn.textContent =
-                "ĐÃ SAO CHÉP";
-
-
-            setTimeout(
-                () => {
-
-                    copyBtn.textContent =
-                        "SAO CHÉP";
-
-                },
-                1500
-            );
-
-
-        } catch {
-
-            urlInput.select();
-
-            document.execCommand(
-                "copy"
-            );
-
-        }
-
-    }
-);
-
-
-/* ==================================================
-   OPEN
-================================================== */
-
-openBtn.addEventListener(
-    "click",
-    function () {
-
-        if (!currentURL) {
-
-            return;
-
-        }
-
+    if(urlInput.value){
 
         window.open(
-            currentURL,
+            urlInput.value,
             "_blank"
         );
 
     }
-);
 
+});
 
-/* ==================================================
-   COPY HTML
-================================================== */
+document
+.getElementById("html")
+.addEventListener("click", async () => {
 
-htmlBtn.addEventListener(
-    "click",
-    async function () {
+    const html =
+        `<img src="${urlInput.value}" alt="Azerst Image">`;
 
-        if (!currentURL) {
+    await navigator.clipboard.writeText(html);
 
-            return;
+    status.textContent =
+        "✅ Đã sao chép HTML";
 
-        }
+});
 
+document
+.getElementById("new")
+.addEventListener("click", () => {
 
-        const html =
-            `<img src="${currentURL}" alt="Azerst">`;
+    fileInput.value = "";
 
+    info.style.display = "none";
 
-        try {
+    progress.style.display = "none";
 
-            await navigator.clipboard.writeText(
-                html
-            );
+    result.style.display = "none";
 
+    hideError();
 
-            htmlBtn.textContent =
-                "ĐÃ SAO CHÉP";
+    progressFill.style.width = "0%";
 
+    status.textContent =
+        "Đang chuẩn bị...";
 
-            setTimeout(
-                () => {
-
-                    htmlBtn.textContent =
-                        "COPY HTML";
-
-                },
-                1500
-            );
-
-
-        } catch {
-
-            alert(
-                html
-            );
-
-        }
-
-    }
-);
-
-
-/* ==================================================
-   NEW IMAGE
-================================================== */
-
-newBtn.addEventListener(
-    "click",
-    function () {
-
-        selectedFile =
-            null;
-
-
-        uploadedFilename =
-            "";
-
-
-        currentURL =
-            "";
-
-
-        input.value =
-            "";
-
-
-        preview.removeAttribute(
-            "src"
-        );
-
-
-        previewSection.style.display =
-            "none";
-
-
-        createURLBox.style.display =
-            "none";
-
-
-        result.style.display =
-            "none";
-
-
-        urlInput.value =
-            "";
-
-
-        createURLBtn.disabled =
-            false;
-
-
-        createURLBtn.textContent =
-            "🔗 TẠO URL ẢNH";
-
-
-        message.textContent =
-            "";
-
-
-        message.className =
-            "message";
-
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior:
-                "smooth"
-
-        });
-
-    }
-);
+});
 
 </script>
 
 </body>
-
-  </html>
+</html>
