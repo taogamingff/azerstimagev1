@@ -1,6 +1,6 @@
 {
   "name": "azerst-image-vn",
-  "version": "17.0.0",
+  "version": "20.0.0",
   "private": true,
   "type": "module",
   "dependencies": {
