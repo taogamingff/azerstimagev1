@@ -7,7 +7,7 @@
 
 <meta
   name="viewport"
-  content="width=device-width,initial-scale=1.0">
+  content="width=device-width, initial-scale=1.0">
 
 <title>
 AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
@@ -15,15 +15,18 @@ AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
 
 <link
   rel="icon"
-  href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png">
+  href="https://azerst-image-vn.vercel.app/images/3rYKxqbI.png">
 
 <style>
 
 @font-face{
-  font-family:"GFF";
+
+  font-family:"GFF-Latin-Bold";
+
   src:
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2")
     format("woff2"),
+
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff")
     format("woff");
 }
@@ -42,7 +45,7 @@ body{
 
   min-height:100vh;
 
-  padding:18px;
+  padding:15px;
 
   display:flex;
 
@@ -52,90 +55,65 @@ body{
 
   color:#fff;
 
-  font-family:GFF,Arial,sans-serif;
+  font-family:"GFF-Latin-Bold",Arial,sans-serif;
 
   background:
     radial-gradient(
-      circle at 10% 10%,
-      rgba(117,76,255,.35),
+      circle at 15% 10%,
+      rgba(113,64,255,.35),
       transparent 35%
     ),
+
     radial-gradient(
-      circle at 90% 90%,
-      rgba(255,45,155,.25),
+      circle at 85% 90%,
+      rgba(255,40,160,.25),
       transparent 35%
     ),
+
     linear-gradient(
       135deg,
-      #05000d,
-      #18062e,
-      #05000d
+      #05000b,
+      #18052d,
+      #05000b
     );
-
-  overflow-x:hidden;
-}
-
-body::before{
-
-  content:"";
-
-  position:fixed;
-
-  inset:0;
-
-  pointer-events:none;
-
-  background-image:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.8) 1px,
-      transparent 1px
-    );
-
-  background-size:70px 70px;
-
-  opacity:.15;
 }
 
 .card{
-
-  position:relative;
 
   width:100%;
 
   max-width:650px;
 
-  padding:30px 22px;
+  padding:30px 20px;
 
   border-radius:28px;
 
-  border:
-    1px solid
-    rgba(255,255,255,.14);
+  border:1px solid
+    rgba(255,255,255,.13);
 
   background:
-    rgba(12,8,28,.78);
+    rgba(12,8,28,.80);
 
-  backdrop-filter:blur(22px);
+  backdrop-filter:blur(25px);
 
-  -webkit-backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(25px);
 
   box-shadow:
-    0 30px 80px rgba(0,0,0,.55),
-    0 0 60px rgba(120,70,255,.15);
+    0 30px 80px
+    rgba(0,0,0,.55);
 }
 
 .logo{
 
   display:block;
 
-  width:88px;
+  width:85px;
 
-  height:88px;
-
-  object-fit:cover;
+  height:85px;
 
   margin:0 auto 18px;
+
+  object-fit:cover;
 
   border-radius:22px;
 
@@ -150,21 +128,20 @@ h1{
 
   text-align:center;
 
-  font-size:24px;
+  font-size:23px;
 
-  line-height:1.35;
+  line-height:1.4;
 }
 
-.desc{
+.description{
 
-  margin:
-    12px auto 25px;
+  margin:12px auto 25px;
 
   max-width:550px;
 
   text-align:center;
 
-  color:#d5cedf;
+  color:#cfc7dc;
 
   font-family:Arial,sans-serif;
 
@@ -173,16 +150,15 @@ h1{
   line-height:1.6;
 }
 
-.upload{
+.upload-box{
 
   display:block;
 
-  padding:36px 15px;
+  padding:38px 15px;
 
   text-align:center;
 
-  border:
-    2px dashed
+  border:2px dashed
     rgba(255,255,255,.22);
 
   border-radius:20px;
@@ -192,19 +168,19 @@ h1{
   transition:.25s;
 }
 
-.upload:hover{
-
-  border-color:#9c72ff;
+.upload-box:hover{
 
   background:
-    rgba(130,80,255,.08);
+    rgba(120,70,255,.08);
+
+  border-color:#936aff;
 }
 
 .upload-title{
 
   display:block;
 
-  margin-bottom:9px;
+  margin-bottom:10px;
 
   font-size:18px;
 }
@@ -239,7 +215,7 @@ h1{
 
   font-family:Arial,sans-serif;
 
-  font-size:14px;
+  font-size:13px;
 
   line-height:1.8;
 
@@ -302,20 +278,19 @@ h1{
 
   display:none;
 
-  margin-top:16px;
+  margin-top:15px;
 
   padding:14px;
 
   border-radius:14px;
 
-  border:
-    1px solid
-    rgba(255,70,100,.25);
-
   background:
     rgba(255,40,80,.1);
 
-  color:#ffb0bd;
+  border:1px solid
+    rgba(255,70,100,.25);
+
+  color:#ffb4c1;
 
   font-family:Arial,sans-serif;
 
@@ -337,18 +312,17 @@ h1{
 
   padding:14px;
 
-  border:
-    1px solid
-    rgba(255,255,255,.1);
+  outline:none;
 
   border-radius:14px;
 
-  outline:none;
+  border:1px solid
+    rgba(255,255,255,.12);
 
   color:#fff;
 
   background:
-    rgba(0,0,0,.3);
+    rgba(0,0,0,.30);
 
   font-family:Arial,sans-serif;
 
@@ -359,8 +333,7 @@ h1{
 
   display:grid;
 
-  grid-template-columns:
-    1fr 1fr;
+  grid-template-columns:1fr 1fr;
 
   gap:10px;
 
@@ -379,7 +352,10 @@ button{
 
   cursor:pointer;
 
-  font-family:GFF,Arial,sans-serif;
+  font-family:
+    "GFF-Latin-Bold",
+    Arial,
+    sans-serif;
 
   background:
     linear-gradient(
@@ -390,7 +366,7 @@ button{
 }
 
 button:hover{
-  filter:brightness(1.15);
+  filter:brightness(1.12);
 }
 
 .footer{
@@ -408,13 +384,8 @@ button:hover{
 
 @media(max-width:500px){
 
-  body{
-    padding:10px;
-  }
-
   .card{
     padding:24px 15px;
-    border-radius:23px;
   }
 
   h1{
@@ -436,20 +407,22 @@ button:hover{
 
 <img
   class="logo"
-  src="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
+  src="https://azerst-image-vn.vercel.app/images/3rYKxqbI.png"
   alt="Azerst">
 
 <h1>
 AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
 </h1>
 
-<div class="desc">
+<div class="description">
+
 Công cụ chèn ảnh và tạo link URL trực tiếp nhanh chóng từ Azerst.
 Hỗ trợ Android, iPhone và máy tính.
+
 </div>
 
 <label
-  class="upload"
+  class="upload-box"
   for="file">
 
 <span class="upload-title">
@@ -457,9 +430,13 @@ Hỗ trợ Android, iPhone và máy tính.
 </span>
 
 <span class="upload-sub">
+
 PNG • JPG • JPEG • WEBP • GIF • AVIF
+
 <br>
+
 Dung lượng tối đa: <b>10 GB</b>
+
 </span>
 
 </label>
@@ -474,29 +451,24 @@ Dung lượng tối đa: <b>10 GB</b>
     image/gif,
     image/avif">
 
-<div
-  id="info"
-  class="info">
-</div>
+<div id="info" class="info"></div>
 
-<div
-  id="progress"
-  class="progress">
+<div id="progress" class="progress">
 
-<div class="progress-bg">
+  <div class="progress-bg">
 
-<div
-  id="progressBar"
-  class="progress-bar">
-</div>
+    <div
+      id="progressBar"
+      class="progress-bar">
+    </div>
 
-</div>
+  </div>
 
-<div
-  id="status"
-  class="status">
-Đang chuẩn bị...
-</div>
+  <div
+    id="status"
+    class="status">
+    Đang chuẩn bị...
+  </div>
 
 </div>
 
@@ -509,30 +481,30 @@ Dung lượng tối đa: <b>10 GB</b>
   id="result"
   class="result">
 
-<input
-  id="url"
-  class="url"
-  readonly>
+  <input
+    id="url"
+    class="url"
+    readonly>
 
-<div class="buttons">
+  <div class="buttons">
 
-<button id="copy">
-📋 Sao chép URL
-</button>
+    <button id="copy">
+      📋 Sao chép URL
+    </button>
 
-<button id="open">
-🔗 Mở ảnh
-</button>
+    <button id="open">
+      🔗 Mở ảnh
+    </button>
 
-<button id="html">
-🧩 Copy HTML
-</button>
+    <button id="html">
+      🧩 Copy HTML
+    </button>
 
-<button id="new">
-🔄 Ảnh mới
-</button>
+    <button id="new">
+      🔄 Ảnh mới
+    </button>
 
-</div>
+  </div>
 
 </div>
 
@@ -546,8 +518,42 @@ AZERST IMAGE VN
 
 import {
   upload
-} from
+}
+from
 "https://esm.sh/@vercel/blob@2.8.0/client";
+
+
+/*
+ * WEBSITE CHÍNH
+ */
+const IMAGE_SERVER =
+  "https://azerst-image-vn.vercel.app";
+
+
+/*
+ * GIỚI HẠN 10 GB
+ */
+const MAX_SIZE =
+  10 * 1024 * 1024 * 1024;
+
+
+/*
+ * ĐỊNH DẠNG
+ */
+const ALLOWED = [
+
+  "image/png",
+
+  "image/jpeg",
+
+  "image/webp",
+
+  "image/gif",
+
+  "image/avif"
+
+];
+
 
 const fileInput =
   document.getElementById("file");
@@ -573,21 +579,8 @@ const result =
 const urlInput =
   document.getElementById("url");
 
-const IMAGE_DOMAIN =
-  "https://Azerst-Image-VN.vercel.app";
 
-const MAX_SIZE =
-  10 * 1024 * 1024 * 1024;
-
-const ALLOWED = [
-  "image/png",
-  "image/jpeg",
-  "image/webp",
-  "image/gif",
-  "image/avif"
-];
-
-function sizeText(bytes){
+function formatSize(bytes){
 
   if(bytes < 1024)
     return bytes + " B";
@@ -610,6 +603,10 @@ function sizeText(bytes){
   ).toFixed(2) + " GB";
 }
 
+
+/*
+ * TẠO TÊN 9 KÝ TỰ
+ */
 function randomName(){
 
   const chars =
@@ -617,7 +614,11 @@ function randomName(){
 
   let name = "";
 
-  for(let i = 0; i < 9; i++){
+  for(
+    let i = 0;
+    i < 9;
+    i++
+  ){
 
     name +=
       chars[
@@ -632,26 +633,39 @@ function randomName(){
   return name;
 }
 
-function extension(type){
+
+/*
+ * LẤY ĐUÔI FILE
+ */
+function getExtension(type){
 
   const map = {
 
-    "image/png":"png",
+    "image/png":
+      "png",
 
-    "image/jpeg":"jpg",
+    "image/jpeg":
+      "jpg",
 
-    "image/webp":"webp",
+    "image/webp":
+      "webp",
 
-    "image/gif":"gif",
+    "image/gif":
+      "gif",
 
-    "image/avif":"avif"
+    "image/avif":
+      "avif"
 
   };
 
   return map[type];
 }
 
-function error(message){
+
+/*
+ * HIỆN LỖI
+ */
+function showError(message){
 
   errorBox.style.display =
     "block";
@@ -660,6 +674,10 @@ function error(message){
     "❌ " + message;
 }
 
+
+/*
+ * XÓA LỖI
+ */
 function clearError(){
 
   errorBox.style.display =
@@ -669,6 +687,10 @@ function clearError(){
     "";
 }
 
+
+/*
+ * UPLOAD
+ */
 fileInput.addEventListener(
   "change",
   async () => {
@@ -681,10 +703,14 @@ fileInput.addEventListener(
     if(!file)
       return;
 
+
+    /*
+     * KIỂM TRA FORMAT
+     */
     if(!ALLOWED.includes(file.type)){
 
-      error(
-        "Định dạng ảnh không được hỗ trợ."
+      showError(
+        "Định dạng không được hỗ trợ."
       );
 
       fileInput.value = "";
@@ -692,10 +718,14 @@ fileInput.addEventListener(
       return;
     }
 
+
+    /*
+     * KIỂM TRA 10GB
+     */
     if(file.size > MAX_SIZE){
 
-      error(
-        "Ảnh vượt quá giới hạn 10 GB."
+      showError(
+        "File vượt quá giới hạn 10 GB."
       );
 
       fileInput.value = "";
@@ -703,18 +733,28 @@ fileInput.addEventListener(
       return;
     }
 
+
+    /*
+     * THÔNG TIN FILE
+     */
     info.style.display =
       "block";
 
     info.innerHTML =
+
       "<b>Tên file:</b> " +
       file.name +
+
       "<br>" +
+
       "<b>Dung lượng:</b> " +
-      sizeText(file.size) +
+      formatSize(file.size) +
+
       "<br>" +
+
       "<b>Định dạng:</b> " +
       file.type;
+
 
     progress.style.display =
       "block";
@@ -726,29 +766,47 @@ fileInput.addEventListener(
       "0%";
 
     status.textContent =
-      "Đang tải lên...";
+      "Đang bắt đầu upload...";
+
 
     try{
 
-      const ext =
-        extension(file.type);
-
+      /*
+       * TẠO TÊN
+       */
       const pathname =
         randomName() +
         "." +
-        ext;
+        getExtension(
+          file.type
+        );
 
+
+      /*
+       * UPLOAD THẲNG
+       * SANG PROJECT ẢNH
+       */
       const blob =
         await upload(
           pathname,
           file,
           {
 
-            access:"public",
+            access:
+              "public",
 
+            /*
+             * QUAN TRỌNG:
+             * KHÔNG dùng /api/upload
+             * của website chính.
+             */
             handleUploadUrl:
+              IMAGE_SERVER +
               "/api/upload",
 
+            /*
+             * MULTIPART CHO FILE LỚN
+             */
             multipart:true,
 
             onUploadProgress:
@@ -772,15 +830,19 @@ fileInput.addEventListener(
           }
         );
 
+
+      /*
+       * LINK CUỐI CÙNG
+       */
       const finalURL =
-        IMAGE_DOMAIN +
+        IMAGE_SERVER +
         "/images/" +
-        encodeURIComponent(
-          pathname
-        );
+        pathname;
+
 
       urlInput.value =
         finalURL;
+
 
       progressBar.style.width =
         "100%";
@@ -791,31 +853,37 @@ fileInput.addEventListener(
       result.style.display =
         "block";
 
+
       console.log(
         "Blob URL:",
         blob.url
       );
 
-    }catch(e){
+
+    }catch(error){
 
       console.error(
         "UPLOAD ERROR:",
-        e
+        error
       );
 
-      error(
-        e?.message ||
-        "Lỗi Vercel Blob"
+      showError(
+        error?.message ||
+        "Upload thất bại."
       );
 
       status.textContent =
-        "Upload thất bại.";
+        "❌ Upload thất bại.";
 
     }
 
   }
 );
 
+
+/*
+ * COPY URL
+ */
 document
 .getElementById("copy")
 .addEventListener(
@@ -850,6 +918,10 @@ document
   }
 );
 
+
+/*
+ * OPEN
+ */
 document
 .getElementById("open")
 .addEventListener(
@@ -868,6 +940,10 @@ document
   }
 );
 
+
+/*
+ * HTML
+ */
 document
 .getElementById("html")
 .addEventListener(
@@ -901,6 +977,10 @@ document
   }
 );
 
+
+/*
+ * ẢNH MỚI
+ */
 document
 .getElementById("new")
 .addEventListener(
@@ -933,4 +1013,5 @@ document
 </script>
 
 </body>
+
 </html>
