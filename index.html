@@ -1,0 +1,2413 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
+<title>
+    Azerst - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
+</title>
+
+<meta
+    name="description"
+    content="Công cụ chèn ảnh và tạo link URL trực tiếp nhanh chóng từ Azerst. Hỗ trợ Android, iPhone và máy tính."
+>
+
+<link
+    rel="icon"
+    href="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
+>
+
+
+<style>
+
+/* ==================================================
+   FONT
+================================================== */
+
+@font-face {
+
+    font-family:
+        "GFF-Latin-Bold";
+
+    src:
+
+        url(
+            "https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2"
+        )
+        format("woff2"),
+
+        url(
+            "https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff"
+        )
+        format("woff");
+
+    font-display: swap;
+
+}
+
+
+/* ==================================================
+   RESET
+================================================== */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+:root {
+
+    --pink:
+        #ff4fa3;
+
+    --pink2:
+        #ff8bc5;
+
+    --purple:
+        #8c5cff;
+
+    --blue:
+        #4d8cff;
+
+    --white:
+        #ffffff;
+
+}
+
+
+/* ==================================================
+   BODY
+================================================== */
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    color: #fff;
+
+    font-family:
+        "GFF-Latin-Bold",
+        sans-serif;
+
+    background:
+
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(255,79,163,.28),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(140,92,255,.28),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(77,140,255,.22),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #080711,
+            #110919,
+            #070c1b
+        );
+
+}
+
+
+/* ==================================================
+   STAR BACKGROUND
+================================================== */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: -50%;
+
+    pointer-events: none;
+
+    z-index: -5;
+
+    opacity: .35;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.12) 1px,
+            transparent 2px
+        );
+
+    background-size:
+        45px 45px;
+
+    animation:
+        stars 25s linear infinite;
+
+}
+
+
+@keyframes stars {
+
+    from {
+
+        transform:
+            translate(0,0);
+
+    }
+
+    to {
+
+        transform:
+            translate(45px,45px);
+
+    }
+
+}
+
+
+/* ==================================================
+   GLOW
+================================================== */
+
+.glow {
+
+    position: fixed;
+
+    width: 280px;
+
+    height: 280px;
+
+    border-radius: 50%;
+
+    filter: blur(85px);
+
+    opacity: .28;
+
+    pointer-events: none;
+
+    z-index: -3;
+
+}
+
+
+.glow.one {
+
+    top: -120px;
+
+    left: -100px;
+
+    background:
+        #ff4fa3;
+
+    animation:
+        glowOne 8s ease-in-out infinite;
+
+}
+
+
+.glow.two {
+
+    right: -120px;
+
+    top: 35%;
+
+    background:
+        #805cff;
+
+    animation:
+        glowTwo 10s ease-in-out infinite;
+
+}
+
+
+.glow.three {
+
+    left: 35%;
+
+    bottom: -150px;
+
+    background:
+        #438cff;
+
+    animation:
+        glowThree 12s ease-in-out infinite;
+
+}
+
+
+@keyframes glowOne {
+
+    50% {
+
+        transform:
+            translate(70px,60px)
+            scale(1.2);
+
+    }
+
+}
+
+
+@keyframes glowTwo {
+
+    50% {
+
+        transform:
+            translate(-70px,40px)
+            scale(1.15);
+
+    }
+
+}
+
+
+@keyframes glowThree {
+
+    50% {
+
+        transform:
+            translate(60px,-50px)
+            scale(1.2);
+
+    }
+
+}
+
+
+/* ==================================================
+   ANIME PETALS
+================================================== */
+
+.petal {
+
+    position: fixed;
+
+    top: -30px;
+
+    color:
+        rgba(255,145,201,.75);
+
+    font-size: 18px;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    animation:
+        fall linear infinite;
+
+}
+
+
+.petal:nth-child(1) {
+
+    left: 8%;
+
+    animation-duration: 9s;
+
+}
+
+
+.petal:nth-child(2) {
+
+    left: 25%;
+
+    animation-duration: 12s;
+
+    animation-delay: 2s;
+
+}
+
+
+.petal:nth-child(3) {
+
+    left: 48%;
+
+    animation-duration: 10s;
+
+    animation-delay: 1s;
+
+}
+
+
+.petal:nth-child(4) {
+
+    left: 72%;
+
+    animation-duration: 13s;
+
+    animation-delay: 4s;
+
+}
+
+
+.petal:nth-child(5) {
+
+    left: 91%;
+
+    animation-duration: 11s;
+
+    animation-delay: 3s;
+
+}
+
+
+@keyframes fall {
+
+    0% {
+
+        transform:
+            translateY(-30px)
+            rotate(0deg);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(110vh)
+            translateX(100px)
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* ==================================================
+   CONTAINER
+================================================== */
+
+.container {
+
+    width:
+        min(920px,94%);
+
+    margin:
+        auto;
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+header {
+
+    text-align: center;
+
+    padding:
+        32px 0 20px;
+
+}
+
+
+.logo {
+
+    width: 88px;
+
+    height: 88px;
+
+    object-fit: cover;
+
+    border-radius: 26px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.35);
+
+    box-shadow:
+
+        0 0 0 6px
+        rgba(255,79,163,.08),
+
+        0 0 45px
+        rgba(255,79,163,.4);
+
+    animation:
+        logoFloat 4s ease-in-out infinite;
+
+}
+
+
+@keyframes logoFloat {
+
+    50% {
+
+        transform:
+            translateY(-7px)
+            rotate(2deg);
+
+    }
+
+}
+
+
+h1 {
+
+    margin-top: 20px;
+
+    font-size:
+        clamp(
+            25px,
+            6vw,
+            43px
+        );
+
+    line-height: 1.15;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #fff,
+            #ff8bc5,
+            #a98bff,
+            #fff
+        );
+
+    background-size:
+        250%;
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+
+    animation:
+        title 6s linear infinite;
+
+}
+
+
+@keyframes title {
+
+    to {
+
+        background-position:
+            250%;
+
+    }
+
+}
+
+
+.subtitle {
+
+    max-width: 720px;
+
+    margin:
+        13px auto 0;
+
+    color:
+        rgba(255,255,255,.68);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+}
+
+
+/* ==================================================
+   CARD
+================================================== */
+
+.card {
+
+    position: relative;
+
+    margin:
+        24px auto;
+
+    padding: 22px;
+
+    border-radius: 30px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.11),
+            rgba(255,255,255,.035)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    backdrop-filter:
+        blur(25px);
+
+    -webkit-backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+
+        0 30px 100px
+        rgba(0,0,0,.5),
+
+        inset 0 1px
+        rgba(255,255,255,.12);
+
+    overflow:
+        hidden;
+
+}
+
+
+/* ==================================================
+   UPLOAD
+================================================== */
+
+.upload {
+
+    position: relative;
+
+    z-index: 2;
+
+    min-height: 230px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 25px;
+
+    border:
+        2px dashed
+        rgba(255,138,197,.4);
+
+    border-radius: 24px;
+
+    cursor: pointer;
+
+    background:
+        rgba(255,255,255,.035);
+
+    transition:
+        .3s;
+
+}
+
+
+.upload:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        #ff69ae;
+
+    background:
+        rgba(255,79,163,.08);
+
+    box-shadow:
+        0 15px 45px
+        rgba(255,79,163,.1);
+
+}
+
+
+.upload-icon {
+
+    width: 75px;
+
+    height: 75px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-bottom: 17px;
+
+    border-radius: 24px;
+
+    font-size: 38px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff4fa3,
+            #8c5cff
+        );
+
+    box-shadow:
+        0 15px 35px
+        rgba(255,79,163,.3);
+
+    animation:
+        uploadFloat 3s ease-in-out infinite;
+
+}
+
+
+@keyframes uploadFloat {
+
+    50% {
+
+        transform:
+            translateY(-5px)
+            rotate(-3deg);
+
+    }
+
+}
+
+
+.upload-title {
+
+    font-size:
+        21px;
+
+}
+
+
+.upload-desc {
+
+    margin-top: 9px;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size:
+        12px;
+
+    line-height:
+        1.8;
+
+}
+
+
+.upload-desc b {
+
+    color:
+        #ff8ac5;
+
+}
+
+
+#fileInput {
+
+    display: none;
+
+}
+
+
+/* ==================================================
+   PREVIEW
+================================================== */
+
+.preview-section {
+
+    display: none;
+
+    margin-top: 20px;
+
+}
+
+
+.preview {
+
+    width: 100%;
+
+    max-height: 430px;
+
+    display: block;
+
+    object-fit: contain;
+
+    background:
+        rgba(0,0,0,.45);
+
+    border-radius:
+        22px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.35);
+
+}
+
+
+/* ==================================================
+   INFO
+================================================== */
+
+.info {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:
+        10px;
+
+    margin-top:
+        12px;
+
+}
+
+
+.info-box {
+
+    min-width:
+        0;
+
+    padding:
+        15px;
+
+    border-radius:
+        17px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    transition:
+        .25s;
+
+}
+
+
+.info-box:hover {
+
+    background:
+        rgba(255,255,255,.08);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.info-label {
+
+    color:
+        rgba(255,255,255,.45);
+
+    font-size:
+        10px;
+
+}
+
+
+.info-value {
+
+    margin-top:
+        6px;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+
+    font-size:
+        13px;
+
+}
+
+
+/* ==================================================
+   CREATE URL
+================================================== */
+
+.create-url {
+
+    display:
+        none;
+
+    margin-top:
+        18px;
+
+}
+
+
+#createURLBtn {
+
+    width:
+        100%;
+
+    min-height:
+        57px;
+
+    border:
+        0;
+
+    border-radius:
+        17px;
+
+    cursor:
+        pointer;
+
+    color:
+        #fff;
+
+    font-size:
+        16px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff4fa3,
+            #8c5cff
+        );
+
+    box-shadow:
+
+        0 12px 35px
+        rgba(255,79,163,.22);
+
+    transition:
+        .25s;
+
+}
+
+
+#createURLBtn:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.08);
+
+}
+
+
+#createURLBtn:disabled {
+
+    opacity:
+        .6;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+}
+
+
+/* ==================================================
+   RESULT
+================================================== */
+
+.result {
+
+    display:
+        none;
+
+    margin-top:
+        20px;
+
+}
+
+
+.result-title {
+
+    margin-bottom:
+        10px;
+
+    font-size:
+        18px;
+
+}
+
+
+.url-box {
+
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    padding:
+        8px;
+
+    border-radius:
+        17px;
+
+    background:
+        rgba(0,0,0,.35);
+
+    border:
+        1px solid
+        rgba(255,138,197,.25);
+
+}
+
+
+.url-input {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+    padding:
+        11px;
+
+    border:
+        0;
+
+    outline:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        #fff;
+
+    font-size:
+        12px;
+
+}
+
+
+.copy-btn {
+
+    min-width:
+        115px;
+
+    border:
+        0;
+
+    border-radius:
+        13px;
+
+    color:
+        #fff;
+
+    cursor:
+        pointer;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff4fa3,
+            #8c5cff
+        );
+
+    font-size:
+        12px;
+
+}
+
+
+/* ==================================================
+   BUTTONS
+================================================== */
+
+.buttons {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:
+        10px;
+
+    margin-top:
+        10px;
+
+}
+
+
+.action-btn {
+
+    min-height:
+        47px;
+
+    border-radius:
+        14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    cursor:
+        pointer;
+
+    color:
+        #fff;
+
+    background:
+        rgba(255,255,255,.06);
+
+    font-size:
+        12px;
+
+    transition:
+        .2s;
+
+}
+
+
+.action-btn:hover {
+
+    background:
+        rgba(255,255,255,.12);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* ==================================================
+   MESSAGE
+================================================== */
+
+.message {
+
+    display:
+        none;
+
+    margin-top:
+        15px;
+
+    padding:
+        14px 16px;
+
+    border-radius:
+        15px;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.6;
+
+}
+
+
+.message.success {
+
+    display:
+        block;
+
+    color:
+        #baffdd;
+
+    background:
+        rgba(40,255,150,.06);
+
+    border:
+        1px solid
+        rgba(40,255,150,.16);
+
+}
+
+
+.message.error {
+
+    display:
+        block;
+
+    color:
+        #ffc0d4;
+
+    background:
+        rgba(255,50,100,.07);
+
+    border:
+        1px solid
+        rgba(255,50,100,.17);
+
+}
+
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+footer {
+
+    padding:
+        10px 20px 30px;
+
+    text-align:
+        center;
+
+    color:
+        rgba(255,255,255,.38);
+
+    font-size:
+        10px;
+
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media(max-width:650px) {
+
+    .card {
+
+        padding:
+            15px;
+
+        border-radius:
+            23px;
+
+    }
+
+
+    .info {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .url-box {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .copy-btn {
+
+        min-height:
+            45px;
+
+    }
+
+
+    .buttons {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .upload {
+
+        min-height:
+            195px;
+
+    }
+
+
+    h1 {
+
+        font-size:
+            25px;
+
+    }
+
+
+    .logo {
+
+        width:
+            75px;
+
+        height:
+            75px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="glow one"></div>
+
+<div class="glow two"></div>
+
+<div class="glow three"></div>
+
+
+<div class="petal">✦</div>
+
+<div class="petal">✿</div>
+
+<div class="petal">✦</div>
+
+<div class="petal">✿</div>
+
+<div class="petal">✦</div>
+
+
+
+<div class="container">
+
+
+<header>
+
+
+<img
+    class="logo"
+    src="https://Azerst-Image-VN.vercel.app/images/3rYKxqbI.png"
+    alt="Azerst"
+>
+
+
+<h1>
+
+    AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL
+
+</h1>
+
+
+<p class="subtitle">
+
+    Công cụ chèn ảnh và tạo link URL trực tiếp
+    nhanh chóng từ Azerst.
+    Hỗ trợ Android, iPhone và máy tính.
+
+</p>
+
+
+</header>
+
+
+
+<main class="card">
+
+
+<label
+    class="upload"
+    for="fileInput"
+>
+
+
+    <div class="upload-icon">
+
+        ＋
+
+    </div>
+
+
+    <div class="upload-title">
+
+        CHỌN HÌNH ẢNH
+
+    </div>
+
+
+    <div class="upload-desc">
+
+        Nhấn để chọn ảnh từ Album hoặc thiết bị<br>
+
+        PNG • JPG • JPEG • WEBP • GIF • AVIF<br>
+
+        Dung lượng tối đa <b>64 GB</b>
+
+    </div>
+
+
+</label>
+
+
+
+<input
+    id="fileInput"
+    type="file"
+    accept="
+        image/png,
+        image/jpeg,
+        image/webp,
+        image/gif,
+        image/avif
+    "
+>
+
+
+
+<section
+    id="previewSection"
+    class="preview-section"
+>
+
+
+    <img
+        id="preview"
+        class="preview"
+        alt="Preview"
+    >
+
+
+    <div class="info">
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+
+                TÊN FILE
+
+            </div>
+
+
+            <div
+                id="fileName"
+                class="info-value"
+            >
+
+                -
+
+            </div>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+
+                DUNG LƯỢNG
+
+            </div>
+
+
+            <div
+                id="fileSize"
+                class="info-value"
+            >
+
+                -
+
+            </div>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+
+                ĐỊNH DẠNG
+
+            </div>
+
+
+            <div
+                id="fileType"
+                class="info-value"
+            >
+
+                -
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<div
+    id="createURLBox"
+    class="create-url"
+>
+
+
+    <button
+        id="createURLBtn"
+    >
+
+        🔗 TẠO URL ẢNH
+
+    </button>
+
+
+</div>
+
+
+
+<section
+    id="result"
+    class="result"
+>
+
+
+    <div class="result-title">
+
+        🔗 LINK URL ẢNH
+
+    </div>
+
+
+    <div class="url-box">
+
+
+        <input
+            id="urlInput"
+            class="url-input"
+            type="text"
+            readonly
+        >
+
+
+        <button
+            id="copyBtn"
+            class="copy-btn"
+        >
+
+            SAO CHÉP
+
+        </button>
+
+
+    </div>
+
+
+
+    <div class="buttons">
+
+
+        <button
+            id="openBtn"
+            class="action-btn"
+        >
+
+            MỞ ẢNH
+
+        </button>
+
+
+        <button
+            id="htmlBtn"
+            class="action-btn"
+        >
+
+            COPY HTML
+
+        </button>
+
+
+        <button
+            id="newBtn"
+            class="action-btn"
+        >
+
+            ẢNH MỚI
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<div
+    id="message"
+    class="message"
+></div>
+
+
+</main>
+
+
+
+<footer>
+
+    © 2026 AZERST IMAGE VN - ALL RIGHTS RESERVED.
+
+</footer>
+
+
+</div>
+
+
+
+<script>
+
+/* ==================================================
+   AZERST CONFIG
+================================================== */
+
+const API_URL =
+    "/api/upload";
+
+
+/*
+==================================================
+  DOMAIN TẠO LINK ẢNH
+==================================================
+*/
+
+const IMAGE_DOMAIN =
+    "https://Azerst-Image-VN.vercel.app";
+
+
+/*
+==================================================
+  WEBSITE
+==================================================
+*/
+
+const WEBSITE_URL =
+    "https://azerstimagev1.vercel.app/";
+
+
+/*
+==================================================
+  64 GB
+==================================================
+*/
+
+const MAX_SIZE =
+    64 *
+    1024 *
+    1024 *
+    1024;
+
+
+/* ==================================================
+   ELEMENTS
+================================================== */
+
+const input =
+    document.getElementById(
+        "fileInput"
+    );
+
+
+const preview =
+    document.getElementById(
+        "preview"
+    );
+
+
+const previewSection =
+    document.getElementById(
+        "previewSection"
+    );
+
+
+const createURLBox =
+    document.getElementById(
+        "createURLBox"
+    );
+
+
+const createURLBtn =
+    document.getElementById(
+        "createURLBtn"
+    );
+
+
+const result =
+    document.getElementById(
+        "result"
+    );
+
+
+const urlInput =
+    document.getElementById(
+        "urlInput"
+    );
+
+
+const fileName =
+    document.getElementById(
+        "fileName"
+    );
+
+
+const fileSize =
+    document.getElementById(
+        "fileSize"
+    );
+
+
+const fileType =
+    document.getElementById(
+        "fileType"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const copyBtn =
+    document.getElementById(
+        "copyBtn"
+    );
+
+
+const openBtn =
+    document.getElementById(
+        "openBtn"
+    );
+
+
+const htmlBtn =
+    document.getElementById(
+        "htmlBtn"
+    );
+
+
+const newBtn =
+    document.getElementById(
+        "newBtn"
+    );
+
+
+let selectedFile = null;
+
+let uploadedFilename = "";
+
+let currentURL = "";
+
+
+/* ==================================================
+   FORMAT SIZE
+================================================== */
+
+function formatSize(bytes) {
+
+    if (
+        bytes <
+        1024
+    ) {
+
+        return (
+            bytes +
+            " B"
+        );
+
+    }
+
+
+    if (
+        bytes <
+        1024 *
+        1024
+    ) {
+
+        return (
+            bytes /
+            1024
+        ).toFixed(1) +
+        " KB";
+
+    }
+
+
+    if (
+        bytes <
+        1024 *
+        1024 *
+        1024
+    ) {
+
+        return (
+            bytes /
+            1024 /
+            1024
+        ).toFixed(2) +
+        " MB";
+
+    }
+
+
+    return (
+        bytes /
+        1024 /
+        1024 /
+        1024
+    ).toFixed(2) +
+    " GB";
+
+}
+
+
+/* ==================================================
+   MESSAGE
+================================================== */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " +
+        type;
+
+}
+
+
+/* ==================================================
+   EXTENSION
+================================================== */
+
+function getExtension(file) {
+
+    let ext =
+        file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    if (
+        ext === "jpeg"
+    ) {
+
+        ext = "jpg";
+
+    }
+
+
+    return ext;
+
+}
+
+
+/* ==================================================
+   UPLOAD
+================================================== */
+
+async function uploadImage(
+    file
+) {
+
+    const ext =
+        getExtension(
+            file
+        );
+
+
+    /*
+    Tên gửi lên API
+    */
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file,
+        "upload." + ext
+    );
+
+
+    const response =
+        await fetch(
+            API_URL,
+            {
+                method:
+                    "POST",
+
+                body:
+                    formData
+            }
+        );
+
+
+    let data;
+
+
+    try {
+
+        data =
+            await response.json();
+
+    } catch {
+
+        throw new Error(
+            "API không trả về JSON hợp lệ."
+        );
+
+    }
+
+
+    if (
+        !response.ok ||
+        !data ||
+        !data.success ||
+        !data.filename
+    ) {
+
+        throw new Error(
+            data?.error ||
+            "Upload hình ảnh thất bại."
+        );
+
+    }
+
+
+    uploadedFilename =
+        data.filename;
+
+
+    return uploadedFilename;
+
+}
+
+
+/* ==================================================
+   CHỌN ẢNH
+================================================== */
+
+input.addEventListener(
+    "change",
+    function () {
+
+        const file =
+            this.files?.[0];
+
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+        selectedFile =
+            file;
+
+
+        uploadedFilename =
+            "";
+
+
+        currentURL =
+            "";
+
+
+        result.style.display =
+            "none";
+
+
+        /* SIZE */
+
+        if (
+            file.size >
+            MAX_SIZE
+        ) {
+
+            showMessage(
+                "❌ Hình ảnh vượt quá dung lượng tối đa 64 GB.",
+                "error"
+            );
+
+
+            input.value =
+                "";
+
+
+            return;
+
+        }
+
+
+        /* TYPE */
+
+        const allowed = [
+
+            "image/png",
+
+            "image/jpeg",
+
+            "image/webp",
+
+            "image/gif",
+
+            "image/avif"
+
+        ];
+
+
+        if (
+            !allowed.includes(
+                file.type
+            )
+        ) {
+
+            showMessage(
+                "❌ Định dạng hình ảnh không được hỗ trợ.",
+                "error"
+            );
+
+
+            input.value =
+                "";
+
+
+            return;
+
+        }
+
+
+        /* PREVIEW */
+
+        preview.src =
+            URL.createObjectURL(
+                file
+            );
+
+
+        previewSection.style.display =
+            "block";
+
+
+        /* INFO */
+
+        fileName.textContent =
+            file.name;
+
+
+        fileSize.textContent =
+            formatSize(
+                file.size
+            );
+
+
+        fileType.textContent =
+            file.type;
+
+
+        /* BUTTON */
+
+        createURLBox.style.display =
+            "block";
+
+
+        createURLBtn.disabled =
+            false;
+
+
+        createURLBtn.textContent =
+            "🔗 TẠO URL ẢNH";
+
+
+        showMessage(
+            "✨ Ảnh đã được chọn. Nhấn TẠO URL ẢNH để tạo link.",
+            "success"
+        );
+
+    }
+);
+
+
+/* ==================================================
+   CREATE URL
+================================================== */
+
+createURLBtn.addEventListener(
+    "click",
+    async function () {
+
+        if (!selectedFile) {
+
+            showMessage(
+                "❌ Vui lòng chọn hình ảnh trước.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            createURLBtn.disabled =
+                true;
+
+
+            createURLBtn.textContent =
+                "🔗 ĐANG UPLOAD...";
+
+
+            if (
+                !uploadedFilename
+            ) {
+
+                await uploadImage(
+                    selectedFile
+                );
+
+            }
+
+
+            if (
+                !uploadedFilename
+            ) {
+
+                throw new Error(
+                    "Không lấy được tên hình ảnh."
+                );
+
+            }
+
+
+            /*
+            ======================================
+            URL CUỐI CÙNG
+            ======================================
+            */
+
+            currentURL =
+                IMAGE_DOMAIN +
+                "/images/" +
+                encodeURIComponent(
+                    uploadedFilename
+                );
+
+
+            urlInput.value =
+                currentURL;
+
+
+            result.style.display =
+                "block";
+
+
+            createURLBtn.disabled =
+                false;
+
+
+            createURLBtn.textContent =
+                "✅ URL ĐÃ ĐƯỢC TẠO";
+
+
+            showMessage(
+                "✅ Link URL ảnh đã được tạo thành công.",
+                "success"
+            );
+
+
+            result.scrollIntoView({
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            createURLBtn.disabled =
+                false;
+
+
+            createURLBtn.textContent =
+                "🔗 TẠO URL ẢNH";
+
+
+            showMessage(
+                "❌ " +
+                (
+                    error.message ||
+                    "Không thể tạo URL."
+                ),
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   COPY URL
+================================================== */
+
+copyBtn.addEventListener(
+    "click",
+    async function () {
+
+        if (!currentURL) {
+
+            return;
+
+        }
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                currentURL
+            );
+
+
+            copyBtn.textContent =
+                "ĐÃ SAO CHÉP";
+
+
+            setTimeout(
+                () => {
+
+                    copyBtn.textContent =
+                        "SAO CHÉP";
+
+                },
+                1500
+            );
+
+
+        } catch {
+
+            urlInput.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   OPEN
+================================================== */
+
+openBtn.addEventListener(
+    "click",
+    function () {
+
+        if (!currentURL) {
+
+            return;
+
+        }
+
+
+        window.open(
+            currentURL,
+            "_blank"
+        );
+
+    }
+);
+
+
+/* ==================================================
+   COPY HTML
+================================================== */
+
+htmlBtn.addEventListener(
+    "click",
+    async function () {
+
+        if (!currentURL) {
+
+            return;
+
+        }
+
+
+        const html =
+            `<img src="${currentURL}" alt="Azerst">`;
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                html
+            );
+
+
+            htmlBtn.textContent =
+                "ĐÃ SAO CHÉP";
+
+
+            setTimeout(
+                () => {
+
+                    htmlBtn.textContent =
+                        "COPY HTML";
+
+                },
+                1500
+            );
+
+
+        } catch {
+
+            alert(
+                html
+            );
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   NEW IMAGE
+================================================== */
+
+newBtn.addEventListener(
+    "click",
+    function () {
+
+        selectedFile =
+            null;
+
+
+        uploadedFilename =
+            "";
+
+
+        currentURL =
+            "";
+
+
+        input.value =
+            "";
+
+
+        preview.removeAttribute(
+            "src"
+        );
+
+
+        previewSection.style.display =
+            "none";
+
+
+        createURLBox.style.display =
+            "none";
+
+
+        result.style.display =
+            "none";
+
+
+        urlInput.value =
+            "";
+
+
+        createURLBtn.disabled =
+            false;
+
+
+        createURLBtn.textContent =
+            "🔗 TẠO URL ẢNH";
+
+
+        message.textContent =
+            "";
+
+
+        message.className =
+            "message";
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior:
+                "smooth"
+
+        });
+
+    }
+);
+
+</script>
+
+</body>
+
+  </html>
