@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/images/:filename",
-      "destination": "/api/upload?filename=:filename"
+      "destination": "/api/image?filename=:filename"
     }
   ]
 }
