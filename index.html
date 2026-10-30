@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -13,69 +14,236 @@
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
 }
+
 *{box-sizing:border-box}
+
 html,body{margin:0;min-height:100%}
+
 body{
-  min-height:100vh;padding:15px;display:flex;align-items:center;justify-content:center;
-  color:#fff;font-family:"GFF-Latin-Bold",Arial,sans-serif;
+  min-height:100vh;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-family:"GFF-Latin-Bold",Arial,sans-serif;
   background:
     radial-gradient(circle at 15% 10%,rgba(113,64,255,.35),transparent 35%),
     radial-gradient(circle at 85% 90%,rgba(255,40,160,.25),transparent 35%),
     linear-gradient(135deg,#05000b,#18052d,#05000b);
 }
+
 .card{
-  width:100%;max-width:650px;padding:30px 20px;border-radius:28px;
-  border:1px solid rgba(255,255,255,.13);background:rgba(12,8,28,.80);
-  backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);
+  width:100%;
+  max-width:650px;
+  padding:30px 20px;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(12,8,28,.80);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
   box-shadow:0 30px 80px rgba(0,0,0,.55);
 }
-.logo{display:block;width:85px;height:85px;margin:0 auto 18px;object-fit:cover;border-radius:22px;box-shadow:0 0 35px rgba(130,80,255,.55)}
-h1{margin:0;text-align:center;font-size:23px;line-height:1.4}
-.description{margin:12px auto 25px;max-width:550px;text-align:center;color:#cfc7dc;font-family:Arial,sans-serif;font-size:14px;line-height:1.6}
+
+.logo{
+  display:block;
+  width:85px;
+  height:85px;
+  margin:0 auto 18px;
+  object-fit:cover;
+  border-radius:22px;
+  box-shadow:0 0 35px rgba(130,80,255,.55)
+}
+
+h1{
+  margin:0;
+  text-align:center;
+  font-size:23px;
+  line-height:1.4
+}
+
+.description{
+  margin:12px auto 25px;
+  max-width:550px;
+  text-align:center;
+  color:#cfc7dc;
+  font-size:14px;
+  line-height:1.6
+}
+
 .upload-box{
-  display:block;padding:38px 15px;text-align:center;border:2px dashed rgba(255,255,255,.22);
-  border-radius:20px;cursor:pointer;transition:.25s
+  display:block;
+  padding:38px 15px;
+  text-align:center;
+  border:2px dashed rgba(255,255,255,.22);
+  border-radius:20px;
+  cursor:pointer;
+  transition:.25s
 }
-.upload-box:hover{background:rgba(120,70,255,.08);border-color:#936aff}
-.upload-title{display:block;margin-bottom:10px;font-size:18px}
-.upload-sub{color:#aaa2b7;font-family:Arial,sans-serif;font-size:13px;line-height:1.6}
+
+.upload-box:hover{
+  background:rgba(120,70,255,.08);
+  border-color:#936aff
+}
+
+.upload-title{
+  display:block;
+  margin-bottom:10px;
+  font-size:18px
+}
+
+.upload-sub{
+  color:#aaa2b7;
+  font-size:13px;
+  line-height:1.6
+}
+
 #file{display:none}
+
 .info{
-  display:none;margin-top:18px;padding:15px;border-radius:16px;background:rgba(255,255,255,.06);
-  font-family:Arial,sans-serif;font-size:13px;line-height:1.8;word-break:break-word
+  display:none;
+  margin-top:18px;
+  padding:15px;
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  font-size:13px;
+  line-height:1.8;
+  word-break:break-word
 }
+
 .progress{display:none;margin-top:18px}
-.progress-bg{width:100%;height:10px;overflow:hidden;border-radius:20px;background:rgba(255,255,255,.1)}
-.progress-bar{width:0%;height:100%;border-radius:20px;background:linear-gradient(90deg,#754cff,#e63cff);transition:width:.2s}
-.status{margin-top:10px;text-align:center;color:#ddd;font-family:Arial,sans-serif;font-size:13px}
+
+.progress-bg{
+  width:100%;
+  height:10px;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.1)
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#754cff,#e63cff);
+  transition:width:.2s
+}
+
+.status{
+  margin-top:10px;
+  text-align:center;
+  color:#ddd;
+  font-size:13px
+}
+
 .error{
-  display:none;margin-top:15px;padding:14px;border-radius:14px;background:rgba(255,40,80,.1);
-  border:1px solid rgba(255,70,100,.25);color:#ffb4c1;font-family:Arial,sans-serif;font-size:13px;word-break:break-word
+  display:none;
+  margin-top:15px;
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,40,80,.1);
+  border:1px solid rgba(255,70,100,.25);
+  color:#ffb4c1;
+  font-size:13px;
+  word-break:break-word
 }
+
 .result{display:none;margin-top:18px}
+
 .url{
-  width:100%;padding:14px;outline:none;border-radius:14px;border:1px solid rgba(255,255,255,.12);
-  color:#fff;background:rgba(0,0,0,.30);font-family:Arial,sans-serif;font-size:13px
+  width:100%;
+  padding:14px;
+  outline:none;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  background:rgba(0,0,0,.30);
+  font-size:13px
 }
-.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px
+}
+
 button{
-  padding:13px;border:0;border-radius:13px;color:#fff;cursor:pointer;
-  font-family:"GFF-Latin-Bold",Arial,sans-serif;background:linear-gradient(135deg,#754cff,#d73cff)
+  padding:13px;
+  border:0;
+  border-radius:13px;
+  color:#fff;
+  cursor:pointer;
+  font-family:"GFF-Latin-Bold",Arial,sans-serif;
+  background:linear-gradient(135deg,#754cff,#d73cff)
 }
+
 button:hover{filter:brightness(1.12)}
 button:disabled{opacity:.55;cursor:not-allowed}
-.footer{margin-top:22px;text-align:center;color:#777083;font-family:Arial,sans-serif;font-size:11px}
-.name-field{margin:0 0 17px}
-.name-label{display:block;margin-bottom:9px;font-size:14px}
-.name-input{
-  width:100%;padding:14px;outline:none;border-radius:14px;border:1px solid rgba(255,255,255,.16);
-  color:#fff;background:rgba(0,0,0,.30);font-family:Arial,sans-serif;font-size:14px
+
+.footer{
+  margin-top:22px;
+  text-align:center;
+  color:#777083;
+  font-size:11px
 }
-.name-input:focus{border-color:#936aff;box-shadow:0 0 0 3px rgba(147,106,255,.13)}
-.name-hint{margin-top:8px;color:#aaa2b7;font-family:Arial,sans-serif;font-size:12px;line-height:1.6}
-.preview{display:none;max-width:100%;max-height:360px;margin:16px auto;border-radius:14px;border:1px solid rgba(255,255,255,.15)}
-.section-label{display:block;margin:16px 0 9px;font-size:14px}
-.rename-help{margin:8px 0;color:#aaa2b7;font:12px/1.6 Arial,sans-serif}
+
+.name-field{margin:0 0 17px}
+
+.name-label{
+  display:block;
+  margin-bottom:9px;
+  font-size:14px
+}
+
+.name-input{
+  width:100%;
+  padding:14px;
+  outline:none;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  background:rgba(0,0,0,.30);
+  font-family:"GFF-Latin-Bold",Arial,sans-serif;
+  font-size:14px
+}
+
+.name-input:focus{
+  border-color:#936aff;
+  box-shadow:0 0 0 3px rgba(147,106,255,.13)
+}
+
+.name-hint{
+  margin-top:8px;
+  color:#aaa2b7;
+  font-size:12px;
+  line-height:1.6
+}
+
+.preview{
+  display:none;
+  max-width:100%;
+  max-height:360px;
+  margin:16px auto;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.15)
+}
+
+.section-label{
+  display:block;
+  margin:16px 0 9px;
+  font-size:14px
+}
+
+/* Áp dụng font GFF cho toàn bộ thành phần */
+*{
+  font-family:"GFF-Latin-Bold",Arial,sans-serif;
+}
+
+input,button{
+  font-family:"GFF-Latin-Bold",Arial,sans-serif;
+}
+
 @media(max-width:500px){
   .card{padding:24px 15px}
   h1{font-size:20px}
@@ -99,9 +267,23 @@ Hỗ trợ Android, iPhone và máy tính.
 </div>
 
 <div class="name-field">
-  <label class="name-label" for="imageName">📝 TÊN ẢNH MUỐN LƯU (KHÔNG BẮT BUỘC)</label>
-  <input id="imageName" class="name-input" type="text" maxlength="80" placeholder="Ví dụ: Ten_Anh_Muon_Ghi" autocomplete="off">
-  <div class="name-hint">Chỉ nhập tên, không cần đuôi file. Dùng chữ không dấu, số, dấu gạch dưới (_) hoặc gạch ngang (-). Bỏ trống sẽ tự tạo tên ngẫu nhiên 9 ký tự.</div>
+  <label class="name-label" for="imageName">
+    📝 TÊN ẢNH MUỐN LƯU (KHÔNG BẮT BUỘC)
+  </label>
+
+  <input
+    id="imageName"
+    class="name-input"
+    type="text"
+    maxlength="80"
+    placeholder="Ví dụ: Ten_Anh_Muon_Ghi"
+    autocomplete="off">
+
+  <div class="name-hint">
+    Chỉ nhập tên, không cần đuôi file. Dùng chữ không dấu, số,
+    dấu gạch dưới (_) hoặc gạch ngang (-).
+    Bỏ trống sẽ tự tạo tên ngẫu nhiên 9 ký tự.
+  </div>
 </div>
 
 <label class="upload-box" for="file">
@@ -113,12 +295,17 @@ Hỗ trợ Android, iPhone và máy tính.
   </span>
 </label>
 
-<input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
+<input
+  id="file"
+  type="file"
+  accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
 
 <div id="info" class="info"></div>
 
 <div id="progress" class="progress">
-  <div class="progress-bg"><div id="progressBar" class="progress-bar"></div></div>
+  <div class="progress-bg">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
   <div id="status" class="status">Đang chuẩn bị...</div>
 </div>
 
@@ -126,9 +313,13 @@ Hỗ trợ Android, iPhone và máy tính.
 
 <div id="result" class="result">
   <div id="resultName" class="info" style="display:block;margin:0 0 12px"></div>
+
   <img id="preview" class="preview" alt="Ảnh vừa tải lên">
 
-  <label class="section-label" for="url">🔗 LINK HIỂN THỊ ẢNH</label>
+  <label class="section-label" for="url">
+    🔗 LINK HIỂN THỊ ẢNH
+  </label>
+
   <input id="url" class="url" readonly>
 
   <div class="buttons">
@@ -137,18 +328,10 @@ Hỗ trợ Android, iPhone và máy tính.
     <button id="html">🧩 Copy HTML</button>
     <button id="new">🔄 Ảnh mới</button>
   </div>
-
-  <div class="name-field" style="margin-top:20px">
-    <label class="name-label" for="renameName">✏️ ĐỔI TÊN ẢNH SAU KHI UPLOAD</label>
-    <input id="renameName" class="name-input" type="text" maxlength="80" placeholder="Ví dụ: Anh_Moi">
-    <input id="renameKey" class="name-input" type="password" placeholder="Khóa đổi tên (AZERST_RENAME_KEY)" style="margin-top:9px">
-    <div class="rename-help">Đổi tên tạo bản sao mới rồi xóa file cũ. Cần khóa quản trị do chủ website đặt trong Environment Variables trên Vercel.</div>
-    <button id="renameBtn" type="button" style="width:100%">✏️ ĐỔI TÊN ẢNH</button>
-    <div id="renameStatus" class="status"></div>
-  </div>
 </div>
 
 <div class="footer">AZERST IMAGE VN</div>
+
 </div>
 
 <script type="module">
@@ -180,21 +363,27 @@ const urlInput = document.getElementById("url");
 const preview = document.getElementById("preview");
 const uploadLabel = document.querySelector(".upload-box");
 
-let currentFilename = "";
-
 /* Định dạng dung lượng */
 function formatSize(bytes) {
   if (bytes < 1024) return bytes + " B";
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
-  if (bytes < 1024 * 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + " MB";
+  if (bytes < 1024 * 1024)
+    return (bytes / 1024).toFixed(2) + " KB";
+  if (bytes < 1024 * 1024 * 1024)
+    return (bytes / 1024 / 1024).toFixed(2) + " MB";
   return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
 }
 
-/* Tạo tên ngẫu nhiên 9 ký tự khi người dùng bỏ trống */
+/* Tạo tên ngẫu nhiên 9 ký tự */
 function randomName() {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
   const bytes = crypto.getRandomValues(new Uint8Array(9));
-  return Array.from(bytes, value => chars[value % chars.length]).join("");
+
+  return Array.from(
+    bytes,
+    value => chars[value % chars.length]
+  ).join("");
 }
 
 /* Lấy đuôi file */
@@ -206,6 +395,7 @@ function getExtension(type) {
     "image/gif":"gif",
     "image/avif":"avif"
   };
+
   return map[type];
 }
 
@@ -214,7 +404,7 @@ function cleanName(value) {
   return value.trim().replace(/\s+/g, "_");
 }
 
-/* Tạo URL ảnh qua domain riêng */
+/* Tạo URL ảnh */
 function imageURL(filename) {
   return IMAGE_SERVER + "/images/" + encodeURIComponent(filename);
 }
@@ -231,16 +421,16 @@ function clearError() {
   errorBox.textContent = "";
 }
 
-/* Cập nhật khu vực kết quả và mã HTML */
+/* Hiển thị kết quả */
 function showResult(filename) {
-  currentFilename = filename;
   const finalURL = imageURL(filename);
 
-  document.getElementById("resultName").textContent = "Tên ảnh: " + filename;
+  document.getElementById("resultName").textContent =
+    "Tên ảnh: " + filename;
+
   urlInput.value = finalURL;
   preview.src = finalURL;
   preview.style.display = "block";
-  document.getElementById("renameName").value = filename.replace(/\.[^.]+$/, "");
   result.style.display = "block";
 }
 
@@ -264,15 +454,21 @@ fileInput.addEventListener("change", async () => {
   }
 
   let baseName = cleanName(nameInput.value);
-  if (!baseName) baseName = randomName();
+
+  if (!baseName) {
+    baseName = randomName();
+  }
 
   if (!/^[A-Za-z0-9_-]{1,80}$/.test(baseName)) {
-    showError("Tên ảnh không hợp lệ. Chỉ dùng chữ không dấu, số, _ hoặc -.");
+    showError(
+      "Tên ảnh không hợp lệ. Chỉ dùng chữ không dấu, số, _ hoặc -."
+    );
     fileInput.value = "";
     return;
   }
 
   const extension = getExtension(file.type);
+
   if (!extension) {
     showError("Không xác định được định dạng ảnh.");
     fileInput.value = "";
@@ -283,11 +479,11 @@ fileInput.addEventListener("change", async () => {
   const pathname = "images/" + filename;
 
   info.style.display = "block";
-  info.innerHTML =
-    "<b>Tên file:</b> " + file.name +
-    "<br><b>Tên lưu:</b> " + filename +
-    "<br><b>Dung lượng:</b> " + formatSize(file.size) +
-    "<br><b>Định dạng:</b> " + file.type;
+  info.textContent =
+    "Tên file: " + file.name +
+    "\nTên lưu: " + filename +
+    "\nDung lượng: " + formatSize(file.size) +
+    "\nĐịnh dạng: " + file.type;
 
   progress.style.display = "block";
   result.style.display = "none";
@@ -301,18 +497,23 @@ fileInput.addEventListener("change", async () => {
       multipart: true,
       onUploadProgress: (event) => {
         const percent = Number(event.percentage || 0);
+
         progressBar.style.width = percent + "%";
-        status.textContent = "Đang tải: " + Math.round(percent) + "%";
+        status.textContent =
+          "Đang tải: " + Math.round(percent) + "%";
       }
     });
 
     progressBar.style.width = "100%";
     status.textContent = "✅ Upload thành công!";
+
     showResult(filename);
 
     console.log("Vercel Blob URL:", blob.url);
+
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
+
     showError(error?.message || "Upload thất bại.");
     status.textContent = "❌ Upload thất bại.";
   }
@@ -321,6 +522,7 @@ fileInput.addEventListener("change", async () => {
 /* Sao chép URL */
 document.getElementById("copy").addEventListener("click", async () => {
   if (!urlInput.value) return;
+
   try {
     await navigator.clipboard.writeText(urlInput.value);
     status.textContent = "✅ Đã sao chép URL";
@@ -333,13 +535,18 @@ document.getElementById("copy").addEventListener("click", async () => {
 
 /* Mở ảnh trực tiếp */
 document.getElementById("open").addEventListener("click", () => {
-  if (urlInput.value) window.open(urlInput.value, "_blank", "noopener");
+  if (urlInput.value) {
+    window.open(urlInput.value, "_blank", "noopener");
+  }
 });
 
-/* Sao chép mã HTML chèn ảnh */
+/* Sao chép mã HTML */
 document.getElementById("html").addEventListener("click", async () => {
   if (!urlInput.value) return;
-  const html = '<img src="' + urlInput.value + '" alt="Azerst Image">';
+
+  const html =
+    '<img src="' + urlInput.value + '" alt="Azerst Image">';
+
   try {
     await navigator.clipboard.writeText(html);
     status.textContent = "✅ Đã sao chép HTML";
@@ -348,71 +555,24 @@ document.getElementById("html").addEventListener("click", async () => {
   }
 });
 
-/* Đổi tên sau khi upload - gọi API rename của image server */
-document.getElementById("renameBtn").addEventListener("click", async () => {
-  const newBase = cleanName(document.getElementById("renameName").value);
-  const key = document.getElementById("renameKey").value;
-  const renameStatus = document.getElementById("renameStatus");
-
-  if (!currentFilename) return;
-  if (!/^[A-Za-z0-9_-]{1,80}$/.test(newBase)) {
-    renameStatus.textContent = "Tên mới không hợp lệ. Chỉ dùng chữ không dấu, số, _ hoặc -.";
-    return;
-  }
-  if (!key) {
-    renameStatus.textContent = "Hãy nhập khóa đổi tên.";
-    return;
-  }
-
-  const extension = currentFilename.split(".").pop();
-  const newFilename = newBase + "." + extension;
-
-  if (newFilename === currentFilename) {
-    renameStatus.textContent = "Tên mới giống tên hiện tại.";
-    return;
-  }
-
-  renameStatus.textContent = "Đang đổi tên...";
-  const button = document.getElementById("renameBtn");
-  button.disabled = true;
-
-  try {
-    const response = await fetch(IMAGE_SERVER + "/api/rename", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        oldFilename: currentFilename,
-        newFilename,
-        key
-      })
-    });
-
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Không thể đổi tên ảnh.");
-
-    showResult(newFilename);
-    document.getElementById("renameKey").value = "";
-    renameStatus.textContent = "✅ Đổi tên ảnh thành công!";
-  } catch (error) {
-    renameStatus.textContent = "❌ " + (error?.message || "Không thể đổi tên.");
-  } finally {
-    button.disabled = false;
-  }
-});
-
 /* Ảnh mới */
 document.getElementById("new").addEventListener("click", () => {
   fileInput.value = "";
   nameInput.value = "";
+
   info.style.display = "none";
   progress.style.display = "none";
   result.style.display = "none";
+
   preview.removeAttribute("src");
   preview.style.display = "none";
+
+  urlInput.value = "";
+
   clearError();
+
   progressBar.style.width = "0%";
   status.textContent = "Đang chuẩn bị...";
-  currentFilename = "";
 });
 
 /* Hỗ trợ kéo thả ảnh */
@@ -420,19 +580,25 @@ uploadLabel.addEventListener("dragover", event => {
   event.preventDefault();
   uploadLabel.style.borderColor = "#936aff";
 });
+
 uploadLabel.addEventListener("dragleave", () => {
   uploadLabel.style.borderColor = "";
 });
+
 uploadLabel.addEventListener("drop", event => {
   event.preventDefault();
   uploadLabel.style.borderColor = "";
+
   const droppedFile = event.dataTransfer.files?.[0];
   if (!droppedFile) return;
+
   const transfer = new DataTransfer();
   transfer.items.add(droppedFile);
+
   fileInput.files = transfer.files;
   fileInput.dispatchEvent(new Event("change"));
 });
 </script>
+
 </body>
 </html>
