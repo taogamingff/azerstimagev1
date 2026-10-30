@@ -1,5 +1,9 @@
 {
   "name": "azerst-image-website",
-  "version": "1.0.0",
-  "private": true
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
 }
