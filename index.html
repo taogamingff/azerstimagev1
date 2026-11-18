@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AZERST - CHÈN ẢNH TẠO LINK URL</title>
-<link rel="icon" href="https://azerstimagev1.vercel.app/images/svJpDNoeX.png">
+<link rel="icon" href="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png">
 
 <style>
 @font-face{
@@ -15,7 +15,7 @@
 }
 
 :root {
-  --glass-bg: rgba(22, 16, 48, 0.65);
+  --glass-bg: rgba(18, 12, 38, 0.7);
   --glass-border: rgba(255, 255, 255, 0.15);
   --neon-purple: #9d62ff;
   --neon-pink: #ff47c3;
@@ -47,7 +47,20 @@ body{
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  /* Cắt góc chéo trên-phải và dưới-trái */
+  /* Cắt góc trên-phải và dưới-trái */
+  clip-path: polygon(
+    0 0, 
+    calc(100% - var(--bevel-size)) 0, 
+    100% var(--bevel-size), 
+    100% 100%, 
+    var(--bevel-size) 100%, 
+    0 calc(100% - var(--bevel-size))
+  );
+  z-index: 1;
+}
+
+/* Đảo ngược góc cắt cho thẻ ảnh xen kẽ (tùy chọn thẩm mỹ) */
+.file-item:nth-child(even) {
   clip-path: polygon(
     var(--bevel-size) 0, 
     100% 0, 
@@ -56,7 +69,6 @@ body{
     0 100%, 
     0 var(--bevel-size)
   );
-  z-index: 1;
 }
 
 /* Lớp viền gradient cho hiệu ứng vát góc */
@@ -72,7 +84,7 @@ body{
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  padding: 1.5px; /* Độ dày viền */
+  padding: 1.5px;
 }
 
 .card {
@@ -424,7 +436,8 @@ h1{
 <body>
 <div class="card">
 
-<img class="logo" src="https://azerstimagev1.vercel.app/images/svJpDNoeX.png" alt="Azerst">
+<!-- Đã sửa link logo theo đúng domain của bạn -->
+<img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst">
 
 <h1>AZERST - CHÈN ẢNH TẠO LINK</h1>
 
@@ -482,7 +495,8 @@ Hỗ trợ tốt nhất trên Android, iPhone và Máy tính.
 <script type="module">
 import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
-const IMAGE_SERVER = "https://azerstimagev1.vercel.app";
+// ĐÃ SỬA: Đổi domain máy chủ theo đúng HTML gốc của bạn
+const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 
 const ALLOWED = [
@@ -637,7 +651,7 @@ async function uploadOne(file, filename, id) {
   }
 
   try {
-    const blob = await upload(pathname, file, {
+    await upload(pathname, file, {
       access: "public",
       handleUploadUrl: IMAGE_SERVER + "/api/upload",
       multipart: true,
@@ -650,7 +664,8 @@ async function uploadOne(file, filename, id) {
       }
     });
 
-    const finalURL = blob.url || (IMAGE_SERVER + "/images/" + encodeURIComponent(filename));
+    // Cố định link theo đúng cấu trúc của bạn
+    const finalURL = `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
     
     if (el) {
       el.querySelector(".file-progress-bar").style.width = "100%";
@@ -702,6 +717,7 @@ async function handleFiles(fileList) {
   const queue = [];
   fileInput.value = "";
 
+  // Hiển thị giao diện ngay lập tức
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const ext = getExtension(file.type);
@@ -725,6 +741,7 @@ async function handleFiles(fileList) {
   resultsHeader.style.display = "flex";
   updateGlobalStatus();
 
+  // Upload tuần tự để không bị lỗi Token / Nghẽn server
   for (const task of queue) {
     if (!uploads.find(u => u.id === task.id)) continue;
     await uploadOne(task.file, task.filename, task.id);
