@@ -350,6 +350,287 @@ import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
 const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
+const MAX_CONCURRENT = 3; 
+
+// Chấp nhận cả trường hợp trình duyệt trả về MIME type lạ (image/jpg)
+const ALLOWED_MIMES = ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/gif", "image/avif"];
+const ALLOWED_EXTS = ["png", "jpg", "jpeg", "webp", "gif", "avif"];
+
+const fileInput = document.getElementById("file");
+const nameInput = document.getElementById("imageName");
+const dropZone = document.getElementById("dropZone");
+const resultSection = document.getElementById("resultSection");
+const filesList = document.getElementById("filesList");
+const btnCopyAll = document.getElementById("btnCopyAll");
+const toast = document.getElementById("toast");
+const globalTrack = document.getElementById("globalProgressTrack");
+const globalFill = document.getElementById("globalProgressFill");
+
+let uploads = [];
+let idCounter = 0;
+let activeUploads = 0;
+
+// Hàm tiện ích
+const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
+
+const getExt = (t, filename) => {
+  const map = {
+    "image/png":"png", "image/jpeg":"jpg", "image/jpg":"jpg", 
+    "image/webp":"webp", "image/gif":"gif", "image/avif":"avif"
+  };
+  // Nếu map không có, lấy đuôi từ tên file gốc
+  return map[t] || filename.split('.').pop().toLowerCase();
+};
+
+const cleanName = (v) => v.trim().normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .replace(/đ/g, "d").replace(/Đ/g, "D")
+  .replace(/\s+/g, "_")
+  .replace(/[^A-Za-z0-9_-]/g, ""); 
+
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+const showToast = (msg) => {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+};
+
+const copyText = async (text) => {
+  try { await navigator.clipboard.writeText(text); return true; } 
+  catch { 
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); document.body.removeChild(ta); return true;
+    } catch { return false; }
+  }
+};
+
+function createItem(file, filename) {
+  const id = ++idCounter;
+  const thumbURL = URL.createObjectURL(file);
+  const div = document.createElement("div");
+  div.className = "file-item";
+  div.dataset.id = id;
+  div.innerHTML = `
+    <div class="file-top">
+      <div class="thumb"><img src="${thumbURL}" alt=""></div>
+      <div class="info">
+        <div class="f-name" title="${filename}">${filename}</div>
+        <div class="f-status" id="st-${id}">
+          <span>Đang chờ...</span>
+        </div>
+        <div class="progress-track" id="track-${id}">
+          <div class="progress-fill" id="fill-${id}"></div>
+        </div>
+        <button class="btn-retry" data-retry="${id}">Thử lại</button>
+      </div>
+    </div>
+    <div class="url-box" id="box-${id}">
+      <div class="url-group">
+        <input class="f-url" id="url-${id}" readonly>
+        <button class="btn-copy" data-copy="${id}">COPY</button>
+      </div>
+    </div>
+    <button class="remove-btn" data-remove="${id}">×</button>
+  `;
+  return { div, id };
+}
+
+function updateGlobalProgress() {
+  const total = uploads.length;
+  if (total === 0) return;
+
+  const done = uploads.filter(u => u.status === "success" || u.status === "error").length;
+  const percent = Math.round((done / total) * 100);
+  
+  globalFill.style.width = `${percent}%`;
+  
+  if (done === total) {
+    setTimeout(() => {
+      globalTrack.style.display = "none";
+      globalFill.style.width = "0%";
+    }, 1000);
+  }
+}
+
+function updateUI() {
+  const total = uploads.length;
+  if (total === 0) { resultSection.style.display = "none"; return; }
+  
+  btnCopyAll.style.display = total >= 2 ? "block" : "none";
+  const success = uploads.filter(u => u.status === "success").length;
+  btnCopyAll.disabled = success === 0;
+}
+
+// Upload an toàn, chống crash
+async function uploadSingle(file, filename, id, attempt = 1) {
+  const stEl = document.getElementById(`st-${id}`);
+  const boxEl = document.getElementById(`box-${id}`);
+  const urlEl = document.getElementById(`url-${id}`);
+  const trackEl = document.getElementById(`track-${id}`);
+  const fillEl = document.getElementById(`fill-${id}`);
+  
+  // Nếu người dùng xoá ảnh trong lúc đang chờ -> Bỏ qua
+  if (!stEl || !boxEl || !urlEl || !trackEl || !fillEl) return;
+  
+  const retryBtn = stEl.parentElement.querySelector('.btn-retry');
+  
+  stEl.className = "f-status";
+  stEl.querySelector('span').textContent = `Đang tải...`;
+  if(retryBtn) retryBtn.style.display = "none";
+  
+  trackEl.style.display = "block";
+  fillEl.style.width = "0%";
+  
+  const entry = uploads.find(u => u.id === id);
+  if(entry) entry.status = "uploading";
+
+  try {
+    await upload(`images/${filename}`, file, {
+      access: "public",
+      handleUploadUrl: IMAGE_SERVER + "/api/upload",
+      multipart: true, 
+      onUploadProgress: (progress) => {
+        if (!progress) return;
+        let pct = Math.round(progress.percentage || 0);
+        if (pct === 0) pct = 1; 
+        fillEl.style.width = `${pct}%`;
+        stEl.querySelector('span').textContent = `Đang tải... ${pct}%`;
+      }
+    });
+
+    const finalURL = `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
+    
+    stEl.className = "f-status ok";
+    stEl.querySelector('span').textContent = "Tải lên thành công"; 
+    fillEl.style.width = "100%";
+    
+    setTimeout(() => { 
+      if(trackEl) trackEl.style.display = "none"; 
+    }, 500);
+    
+    boxEl.style.display = "block";
+    urlEl.value = finalURL;
+
+    if(entry) { entry.url = finalURL; entry.status = "success"; }
+
+  } catch (err) {
+    console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`, err);
+    
+    let errorMsg = typeof err === "string" ? err : (err?.message || "Lỗi không xác định");
+    if (errorMsg.includes("Failed to retrieve the client token")) {
+      errorMsg = "Lỗi Token Server";
+    } else if (errorMsg.includes("fetch") || errorMsg.includes("NetworkError")) {
+      errorMsg = "Lỗi mạng";
+    }
+
+    // Tự động thử lại nếu lỗi mạng (tối đa 5 lần)
+    if ((errorMsg === "Lỗi mạng" || attempt < 3) && attempt <= 5) {
+      if(stEl) stEl.querySelector('span').textContent = `Lỗi mạng, thử lại (${attempt}/5)...`;
+      if(fillEl) fillEl.style.background = "#ffaa00";
+      
+      await delay(attempt * 1500); 
+      
+      // Kiểm tra lại xem người dùng có xoá ảnh trong lúc chờ không
+      if (!document.getElementById(`st-${id}`)) return; 
+      
+      if(fillEl) fillEl.style.background = "linear-gradient(90deg, var(--red), var(--orange))";
+      return uploadSingle(file, filename, id, attempt + 1);
+    }
+
+    // Thất bại hoàn toàn
+    if(stEl) {
+      stEl.className = "f-status err";
+      stEl.querySelector('span').textContent = `❌ ${errorMsg}`;
+    }
+    if(retryBtn) retryBtn.style.display = "inline-block";
+    if(fillEl) fillEl00%; }
+  .url-group {
+    display: flex; background: rgba(255,255,255,0.7); 
+    border: 1.5px solid rgba(217,56,40,0.3);
+    clip-path: polygon(var(--item-cut) 0, 100% 0, 100% calc(100% - var(--item-cut)), calc(100% - var(--item-cut)) 100%, 0 100%, 0 var(--item-cut));
+    overflow: hidden;
+  }
+  .f-url {
+    flex: 1; padding: 10px 12px; background: transparent; border: none;
+    color: var(--red); font-family: var(--font-body); font-size: 12px; outline: none; width: 100%;
+  }
+  .btn-copy {
+    background: var(--red); border: none; color: #fff; padding: 0 16px;
+    cursor: pointer; font-family: var(--font-body); font-size: 13px; transition: .2s;
+  }
+  .btn-copy:hover { background: var(--orange); }
+
+  .remove-btn {
+    position: absolute; top: 10px; right: 12px; background: transparent;
+    border: none; color: #888; cursor: pointer; transition: .2s; font-size: 18px;
+    line-height: 1;
+  }
+  .remove-btn:hover { color: var(--red); }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
+    background: rgba(20, 20, 20, 0.9); color: #fff; padding: 12px 24px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    opacity: 0; pointer-events: none; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 500px) {
+    :root { --cut: 18px; }
+    .content-area { padding: 20px 15px; }
+    .btn-copy-all { padding: 12px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow" aria-hidden="true"></div>
+
+<div class="glass-wrapper">
+  <div class="glass-inner"></div>
+  
+  <div class="content-area">
+    
+    <div class="header">
+      <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst" />
+      <h1>AZERST UPLOAD</h1>
+      <p class="desc">Tải ảnh nhanh, nhận link trực tiếp</p>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" for="imageName">Tên ảnh muốn lưu (Không bắt buộc)</label>
+      <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="VD: AZERST_IMG" autocomplete="off" />
+    </div>
+
+    <label class="upload-zone" for="file" id="dropZone">
+      <h3>Chọn hoặc kéo thả ảnh</h3>
+      <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
+    </label>
+    <input id="file" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif" />
+
+    <div class="global-progress-container" id="globalProgressTrack">
+      <div class="global-progress-fill" id="globalProgressFill"></div>
+    </div>
+
+    <div id="resultSection" class="result-section">
+      <button class="btn-copy-all" id="btnCopyAll" style="display: none;">COPY TẤT CẢ LINK</button>
+      <div id="filesList" style="display: flex; flex-direction: column; gap: 12px;"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
+
+const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
+const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/avif"];
 const MAX_CONCURRENT = 3; // Tải 3 ảnh cùng lúc để tăng tốc
 
