@@ -54,8 +54,9 @@
     background-position:center top;
     display:flex;
     justify-content:center;
-    align-items:center;
-    padding:20px 15px;
+    /* Dịch web lên trên */
+    align-items: flex-start;
+    padding: 40px 15px;
     -webkit-font-smoothing:antialiased;
   }
 
@@ -75,7 +76,7 @@
   /* ============ KHUNG KÍNH LỎNG CHÍNH ============ */
   .glass-wrapper {
     width:min(600px, 100%);
-    max-height: 88vh;
+    max-height: 85vh;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -96,7 +97,7 @@
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
     z-index: 0;
-    border: 2px solid var(--glass-border); /* Viền kính sáng, không dùng viền đỏ */
+    border: 2px solid var(--glass-border);
     pointer-events: none;
   }
   
@@ -140,13 +141,22 @@
     transition: transform 0.3s;
   }
   .logo:hover { transform: scale(1.05) rotate(3deg); }
+  
+  /* Chữ AZERST UPLOAD loang màu */
   h1 { 
     font-family: var(--font-heading);
-    color: var(--red); 
     font-size: 24px; 
     letter-spacing: 1px; 
     margin-bottom: 4px;
     text-transform: uppercase;
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--red));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 3s linear infinite;
+  }
+  @keyframes textShine {
+    to { background-position: 200% center; }
   }
   .desc { color: #555; font-size: 12px; }
 
@@ -155,7 +165,6 @@
   .input-label { font-size: 13px; color: #333; }
   .name-input {
     width: 100%; padding: 12px 15px; 
-    /* Cắt góc nhỏ cho input */
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
     border: 1.5px solid var(--glass-border); 
     background: rgba(255,255,255,0.5);
@@ -191,32 +200,38 @@
   /* ============ KHU VỰC KẾT QUẢ ============ */
   .result-section { display: none; flex-direction: column; gap: 15px; }
   
-  /* Nút Copy Tất Cả */
+  /* Nút Copy Tất Cả (Font GFF Bold) */
   .btn-copy-all {
     width: 100%;
     background: linear-gradient(135deg, var(--red), var(--orange)); 
     color: #fff; border: none; padding: 14px;
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-    font-family: var(--font-heading); font-size: 15px; letter-spacing: 1px;
+    font-family: var(--font-body); font-size: 15px; letter-spacing: 1px;
     cursor: pointer; transition: .3s;
     box-shadow: 0 6px 15px rgba(217,56,40,0.3);
   }
   .btn-copy-all:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
   .btn-copy-all:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-  /* Thẻ ảnh kết quả (Liquid Glass) */
+  /* Thẻ ảnh kết quả (Không viền đỏ, loang đỏ ở góc) */
   .file-item {
     --item-cut: 14px;
     display: flex; flex-direction: column; padding: 15px; gap: 12px;
-    background: rgba(255,255,255,0.4);
+    /* Loang đỏ nhẹ ở góc trên bên phải */
+    background: 
+      radial-gradient(circle at 100% 0%, rgba(217,56,40,0.15) 0%, transparent 50%),
+      rgba(255,255,255,0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid var(--glass-border);
+    border: 1.5px solid rgba(255,255,255,0.9); /* Viền kính trắng, không viền đỏ */
     clip-path: polygon(0 0, calc(100% - var(--item-cut)) 0, 100% var(--item-cut), 100% 100%, var(--item-cut) 100%, 0 calc(100% - var(--item-cut)));
     position: relative; transition: .3s; animation: slideIn .3s ease;
   }
-  .file-item:hover { background: rgba(255,255,255,0.6); }
-  .file-item.error-item { border-color: rgba(255,59,48,0.4); background: rgba(255,245,245,0.6); }
+  .file-item:hover { background: radial-gradient(circle at 100% 0%, rgba(217,56,40,0.25) 0%, transparent 50%), rgba(255,255,255,0.6); }
+  .file-item.error-item { 
+    background: radial-gradient(circle at 100% 0%, rgba(255,0,0,0.15) 0%, transparent 50%), rgba(255,245,245,0.6);
+    border-color: rgba(255,150,150,0.8);
+  }
 
   .file-top { display: flex; gap: 12px; align-items: center; }
   .thumb { width: 50px; height: 50px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: #eee; border: 1px solid rgba(0,0,0,0.1); }
@@ -248,7 +263,7 @@
   }
   .btn-copy {
     background: var(--red); border: none; color: #fff; padding: 0 16px;
-    cursor: pointer; font-family: var(--font-heading); font-size: 13px; transition: .2s;
+    cursor: pointer; font-family: var(--font-body); font-size: 13px; transition: .2s;
   }
   .btn-copy:hover { background: var(--orange); }
 
@@ -307,7 +322,7 @@
 
     <!-- KHU VỰC HIỂN THỊ KẾT QUẢ -->
     <div id="resultSection" class="result-section">
-      <button class="btn-copy-all" id="btnCopyAll" disabled>COPY TẤT CẢ LINK</button>
+      <button class="btn-copy-all" id="btnCopyAll" style="display: none;">COPY TẤT CẢ LINK</button>
       <div id="filesList" style="display: flex; flex-direction: column; gap: 12px;"></div>
     </div>
 
@@ -358,7 +373,7 @@ const copyText = async (text) => {
   }
 };
 
-// Tạo giao diện thẻ ảnh mới (Gộp URL + Nút Copy)
+// Tạo giao diện thẻ ảnh
 function createItem(file, filename) {
   const id = ++idCounter;
   const thumbURL = URL.createObjectURL(file);
@@ -387,23 +402,33 @@ function createItem(file, filename) {
   return { div, id };
 }
 
-// Cập nhật trạng thái nút Copy All
+// Cập nhật trạng thái nút Copy All (Chỉ hiện khi >= 2 ảnh)
 function updateUI() {
   const total = uploads.length;
-  if (total === 0) { resultSection.style.display = "none"; return; }
+  if (total === 0) { 
+    resultSection.style.display = "none"; 
+    return; 
+  }
   
+  if (total >= 2) {
+    btnCopyAll.style.display = "block";
+  } else {
+    btnCopyAll.style.display = "none";
+  }
+
   const success = uploads.filter(u => u.status === "success").length;
   btnCopyAll.disabled = success === 0;
 }
 
-async function uploadSingle(file, filename, id) {
+// Hàm Upload có cơ chế tự động thử lại (Auto-Retry)
+async function uploadSingle(file, filename, id, attempt = 1) {
   const stEl = document.getElementById(`st-${id}`);
   const boxEl = document.getElementById(`box-${id}`);
   const urlEl = document.getElementById(`url-${id}`);
   const retryBtn = stEl.querySelector('.btn-retry');
   
   stEl.className = "f-status";
-  stEl.querySelector('span').textContent = "Đang tải lên...";
+  stEl.querySelector('span').textContent = `Đang tải lên... (Lần ${attempt})`;
   retryBtn.style.display = "none";
   
   const entry = uploads.find(u => u.id === id);
@@ -427,7 +452,16 @@ async function uploadSingle(file, filename, id) {
     entry.status = "success";
 
   } catch (err) {
-    console.error(`Lỗi up ảnh ${filename}:`, err);
+    console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`, err);
+    
+    // Tự động thử lại 2 lần nếu lỗi mạng
+    if (attempt < 3) {
+      stEl.querySelector('span').textContent = `Lỗi mạng, thử lại (${attempt}/2)...`;
+      await delay(2000);
+      return uploadSingle(file, filename, id, attempt + 1);
+    }
+
+    // Nếu thất bại hoàn toàn
     stEl.className = "f-status err";
     stEl.querySelector('span').textContent = "Lỗi kết nối mạng";
     retryBtn.style.display = "inline-block";
@@ -438,6 +472,7 @@ async function uploadSingle(file, filename, id) {
   updateUI();
 }
 
+// Hàng đợi (Queue) tránh nghẽn server
 async function processQueue() {
   if (isUploading) return;
   isUploading = true;
@@ -450,9 +485,9 @@ async function processQueue() {
 
     await uploadSingle(item.file, item.filename, item.id);
     
-    // Nghỉ 1.5s tránh nghẽn mạng
+    // Nghỉ 2 giây trước khi tải ảnh tiếp theo
     if (i < pendingItems.length - 1) {
-      await delay(1500);
+      await delay(2000);
     }
   }
 
