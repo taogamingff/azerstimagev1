@@ -72,7 +72,7 @@
     100%{ transform:scale(1.05); opacity:1; }
   }
 
-  /* ============ KHUNG KÍNH LỎNG CHÍNH (Không giới hạn chiều cao) ============ */
+  /* ============ KHUNG KÍNH LỎNG CHÍNH ============ */
   .glass-wrapper {
     width:min(600px, 100%);
     position: relative;
@@ -88,11 +88,14 @@
     margin-bottom: 20px;
   }
 
-  /* Khung nền Liquid Glass */
+  /* Khung nền Liquid Glass (Loang đỏ ở góc) */
   .glass-inner {
     position: absolute;
     inset: 0;
-    background: var(--glass-bg);
+    background: 
+      radial-gradient(circle at 100% 0%, rgba(217,56,40,0.2) 0%, transparent 40%),
+      radial-gradient(circle at 0% 100%, rgba(255,94,58,0.15) 0%, transparent 40%),
+      var(--glass-bg);
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
     z-index: 0;
@@ -115,7 +118,7 @@
     to  { opacity:1; transform:translateY(0);    filter:blur(0); }
   }
 
-  /* Vùng nội dung (Bỏ thanh cuộn riêng) */
+  /* Vùng nội dung */
   .content-area {
     position: relative;
     z-index: 1;
@@ -170,18 +173,20 @@
     box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
   }
 
-  /* ============ VÙNG UPLOAD (Đã xoá icon) ============ */
+  /* ============ VÙNG UPLOAD (Viền nổi bật) ============ */
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 25px 15px; 
+    padding: 28px 15px; 
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-    border: 2px dashed var(--orange); 
+    border: 2px dashed rgba(255, 94, 58, 0.6); 
     background: rgba(255,255,255,0.3); 
     cursor: pointer; transition: .3s;
+    box-shadow: inset 0 0 20px rgba(255,94,58,0.05);
   }
   .upload-zone:hover, .upload-zone.dragover {
-    background: rgba(255, 94, 58, 0.08); 
+    background: rgba(255, 94, 58, 0.1); 
     border-color: var(--red);
+    box-shadow: inset 0 0 30px rgba(217,56,40,0.15), 0 8px 25px rgba(217,56,40,0.15);
     transform: translateY(-2px);
   }
   .upload-zone h3 { color: #222; font-size: 15px; margin-bottom: 6px; }
@@ -191,7 +196,7 @@
   /* ============ KHU VỰC KẾT QUẢ ============ */
   .result-section { display: none; flex-direction: column; gap: 15px; }
   
-  /* Nút Copy Tất Cả (Font GFF Bold) */
+  /* Nút Copy Tất Cả */
   .btn-copy-all {
     width: 100%;
     background: linear-gradient(135deg, var(--red), var(--orange)); 
@@ -204,7 +209,7 @@
   .btn-copy-all:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
   .btn-copy-all:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-  /* Thẻ ảnh kết quả (Loang đỏ ở góc) */
+  /* Thẻ ảnh kết quả */
   .file-item {
     --item-cut: 14px;
     display: flex; flex-direction: column; padding: 15px; gap: 12px;
@@ -239,7 +244,7 @@
   }
   .btn-retry:hover { background: #b52a1c; }
 
-  /* Thanh URL & Nút Copy gộp chung */
+  /* Thanh URL & Nút Copy */
   .url-box { display: none; width: 100%; }
   .url-group {
     display: flex; background: rgba(255,255,255,0.7); 
@@ -301,7 +306,7 @@
       <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="VD: AZERST_IMG" autocomplete="off" />
     </div>
 
-    <!-- Vùng Upload (Đã xoá icon) -->
+    <!-- Vùng Upload -->
     <label class="upload-zone" for="file" id="dropZone">
       <h3>Chọn hoặc kéo thả ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
@@ -390,7 +395,7 @@ function createItem(file, filename) {
   return { div, id };
 }
 
-// Cập nhật trạng thái nút Copy All (Chỉ hiện khi >= 2 ảnh)
+// Cập nhật trạng thái nút Copy All
 function updateUI() {
   const total = uploads.length;
   if (total === 0) { 
@@ -408,7 +413,7 @@ function updateUI() {
   btnCopyAll.disabled = success === 0;
 }
 
-// Hàm Upload có cơ chế tự động thử lại (Auto-Retry)
+// Hàm Upload với cơ chế Auto-Retry (Thử lại tự động)
 async function uploadSingle(file, filename, id, attempt = 1) {
   const stEl = document.getElementById(`st-${id}`);
   const boxEl = document.getElementById(`box-${id}`);
@@ -420,7 +425,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   retryBtn.style.display = "none";
   
   const entry = uploads.find(u => u.id === id);
-  entry.status = "uploading";
+  if(entry) entry.status = "uploading";
 
   try {
     await upload(`images/${filename}`, file, {
@@ -436,13 +441,12 @@ async function uploadSingle(file, filename, id, attempt = 1) {
     boxEl.style.display = "block";
     urlEl.value = finalURL;
 
-    entry.url = finalURL; 
-    entry.status = "success";
+    if(entry) { entry.url = finalURL; entry.status = "success"; }
 
   } catch (err) {
     console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`, err);
     
-    // Tự động thử lại 2 lần nếu lỗi mạng
+    // Thử lại tối đa 2 lần
     if (attempt < 3) {
       stEl.querySelector('span').textContent = `Lỗi mạng, thử lại (${attempt}/2)...`;
       await delay(2000);
@@ -451,16 +455,16 @@ async function uploadSingle(file, filename, id, attempt = 1) {
 
     // Nếu thất bại hoàn toàn
     stEl.className = "f-status err";
-    stEl.querySelector('span').textContent = "Lỗi kết nối mạng";
+    stEl.querySelector('span').textContent = "Lỗi kết nối";
     retryBtn.style.display = "inline-block";
     stEl.closest(".file-item").classList.add("error-item");
-    entry.status = "error";
+    if(entry) entry.status = "error";
   }
   
   updateUI();
 }
 
-// Hàng đợi (Queue) tránh nghẽn server
+// Hàng đợi (Queue) xử lý tuần tự tránh quá tải server
 async function processQueue() {
   if (isUploading) return;
   isUploading = true;
@@ -473,15 +477,16 @@ async function processQueue() {
 
     await uploadSingle(item.file, item.filename, item.id);
     
-    // Nghỉ 2 giây trước khi tải ảnh tiếp theo
+    // Nghỉ 1.5s trước khi tải ảnh tiếp theo
     if (i < pendingItems.length - 1) {
-      await delay(2000);
+      await delay(1500);
     }
   }
 
   isUploading = false;
 }
 
+// Xử lý khi chọn file
 function handleFiles(files) {
   const validFiles = Array.from(files);
   if (!validFiles.length) return;
@@ -516,7 +521,7 @@ dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classL
 dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
 dropZone.addEventListener("drop", e => { e.preventDefault(); dropZone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
 
-// Xử lý tương tác
+// Tương tác thẻ
 filesList.addEventListener("click", async (e) => {
   const copyBtn = e.target.closest("[data-copy]");
   const removeBtn = e.target.closest("[data-remove]");
