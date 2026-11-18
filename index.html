@@ -15,13 +15,13 @@
 }
 
 :root {
-  --glass-bg: rgba(18, 12, 38, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-bg: rgba(14, 9, 30, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
   --primary: #8c52ff;
   --secondary: #ff47c3;
   --text-main: #ffffff;
-  --text-muted: #b0a8c7;
-  --bevel: 18px;
+  --text-muted: #a399c4;
+  --bevel: 20px;
 }
 
 * { box-sizing: border-box; font-family: "GFF-Latin-Bold", Arial, sans-serif; }
@@ -35,13 +35,13 @@ body {
   justify-content: center;
   color: var(--text-main);
   background:
-    radial-gradient(circle at 10% 20%, rgba(140, 82, 255, .3), transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255, 71, 195, .25), transparent 40%),
-    linear-gradient(135deg, #030008, #12052b, #030008);
+    radial-gradient(circle at 0% 0%, rgba(140, 82, 255, .3), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(255, 71, 195, .2), transparent 40%),
+    linear-gradient(135deg, #020005, #0d0420, #020005);
   background-attachment: fixed;
 }
 
-/* Khung Kính Lỏng + Vát Góc */
+/* Khung chính */
 .card {
   width: 100%;
   max-width: 700px;
@@ -50,178 +50,162 @@ body {
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   clip-path: polygon(
-    0 0, 
-    calc(100% - var(--bevel)) 0, 
-    100% var(--bevel), 
-    100% 100%, 
-    var(--bevel) 100%, 
-    0 calc(100% - var(--bevel))
+    0 0, calc(100% - var(--bevel)) 0, 
+    100% var(--bevel), 100% 100%, 
+    var(--bevel) 100%, 0 calc(100% - var(--bevel))
   );
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(140, 82, 255, 0.1);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(140, 82, 255, 0.05);
   position: relative;
 }
 
 .card::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent 40%, rgba(140,82,255,0.3));
-  clip-path: inherit;
-  z-index: -1;
-  pointer-events: none;
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent 30%, rgba(140,82,255,0.3));
+  clip-path: inherit; z-index: -1; pointer-events: none;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  padding: 1.5px;
+  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1.5px;
 }
 
+/* Header */
 .header { text-align: center; margin-bottom: 25px; }
 .logo {
-  width: 80px; height: 80px;
-  margin: 0 auto 15px;
-  object-fit: cover;
-  border-radius: 20px;
+  width: 75px; height: 75px; margin: 0 auto 15px;
+  object-fit: cover; border-radius: 18px;
   filter: drop-shadow(0 0 15px rgba(140, 82, 255, .6));
   transition: transform .3s;
 }
-.logo:hover { transform: scale(1.05); }
+.logo:hover { transform: scale(1.05) rotate(2deg); }
 
 h1 {
-  margin: 0 0 10px;
-  font-size: 22px;
+  margin: 0 0 8px; font-size: 22px; letter-spacing: 1px;
   background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 0.5px;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
+.desc { color: var(--text-muted); font-size: 13px; }
 
-.desc { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
-
-/* Phần nhập tên */
+/* Nhập tên */
 .input-group { margin-bottom: 20px; }
 .input-label { display: block; font-size: 13px; margin-bottom: 8px; color: #d1c4f5; }
 .name-input {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.3);
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-  transition: .3s;
+  width: 100%; padding: 14px 16px; border-radius: 12px;
+  border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.4);
+  color: #fff; font-size: 14px; outline: none; transition: .3s;
 }
-.name-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 12px rgba(140, 82, 255, 0.3);
-  background: rgba(0, 0, 0, 0.5);
-}
+.name-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(140, 82, 255, 0.2); }
 
-/* Vùng Upload */
+/* Khung Upload (Đã nâng cấp) */
 .upload-zone {
-  --bevel: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  border: 2px dashed rgba(140, 82, 255, 0.4);
-  border-radius: 16px;
-  background: rgba(140, 82, 255, 0.05);
-  cursor: pointer;
-  transition: .3s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 35px 20px; border: 2px dashed rgba(140, 82, 255, 0.4); border-radius: 16px;
+  background: rgba(140, 82, 255, 0.03); cursor: pointer; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; overflow: hidden;
+}
+.upload-zone::before {
+  content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(140,82,255,0.1) 0%, transparent 70%);
+  opacity: 0; transition: .3s;
 }
 .upload-zone:hover, .upload-zone.dragover {
-  background: rgba(140, 82, 255, 0.15);
-  border-color: var(--secondary);
-  transform: translateY(-2px);
+  background: rgba(140, 82, 255, 0.1); border-color: var(--secondary);
+  transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 71, 195, 0.15);
 }
-.upload-zone h3 { margin: 0 0 8px; font-size: 16px; color: #fff; }
-.upload-zone p { margin: 0; font-size: 12px; color: var(--text-muted); }
+.upload-zone:hover::before, .upload-zone.dragover::before { opacity: 1; }
+
+.upload-icon {
+  width: 45px; height: 45px; margin-bottom: 12px; color: var(--secondary);
+  filter: drop-shadow(0 0 10px rgba(255,71,195,0.6)); transition: .3s;
+}
+.upload-zone:hover .upload-icon { transform: translateY(-5px); color: #fff; }
+.upload-zone h3 { margin: 0 0 8px; font-size: 16px; color: #fff; z-index: 1; }
+.upload-zone p { margin: 0; font-size: 12px; color: var(--text-muted); z-index: 1; }
 #file { display: none; }
 
-/* Danh sách kết quả */
-.result-section { display: none; margin-top: 30px; animation: fadeIn .4s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* Khu vực danh sách kết quả */
+.result-section { display: none; margin-top: 30px; animation: slideUp .4s ease; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 .status-banner {
-  background: linear-gradient(90deg, rgba(140, 82, 255, 0.2), rgba(255, 71, 195, 0.2));
-  border: 1px solid rgba(140, 82, 255, 0.4);
-  border-radius: 12px;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  background: linear-gradient(90deg, rgba(140, 82, 255, 0.15), rgba(255, 71, 195, 0.15));
+  border: 1px solid rgba(140, 82, 255, 0.3); border-radius: 12px;
+  padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px; backdrop-filter: blur(10px);
 }
-.status-banner span { font-size: 14px; font-weight: bold; }
+.status-banner span { font-size: 14px; font-weight: bold; color: #e0d5ff; }
 .btn-copy-all {
-  background: #fff; color: #12052b;
-  border: none; padding: 10px 16px;
-  border-radius: 8px; font-size: 13px; font-weight: bold;
-  cursor: pointer; transition: .2s;
+  background: #fff; color: #0d0420; border: none; padding: 10px 18px;
+  border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; transition: .2s;
+  box-shadow: 0 4px 15px rgba(255,255,255,0.2);
 }
-.btn-copy-all:hover { background: #e0d5ff; transform: scale(1.05); }
+.btn-copy-all:hover { background: #d1c4f5; transform: scale(1.05); }
 
-/* Item ảnh */
+/* Thẻ ảnh (Đã nâng cấp) */
 .file-item {
-  display: flex; gap: 15px; padding: 15px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  margin-bottom: 12px;
-  position: relative;
+  display: flex; gap: 15px; padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px; margin-bottom: 12px; position: relative;
+  transition: .3s; animation: fadeIn .3s ease;
 }
+.file-item:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(140, 82, 255, 0.3); }
 .file-item.error-item { border-color: rgba(255, 60, 90, 0.4); background: rgba(255, 60, 90, 0.05); }
 
 .thumb {
-  width: 60px; height: 60px; flex-shrink: 0;
-  border-radius: 10px; overflow: hidden;
+  width: 70px; height: 70px; flex-shrink: 0; border-radius: 12px; overflow: hidden;
   background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 .thumb img { width: 100%; height: 100%; object-fit: cover; }
 
 .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-.f-name { font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
-.f-status { font-size: 12px; color: var(--text-muted); }
-.f-status.ok { color: #69f0ae; }
-.f-status.err { color: #ff5252; }
+.f-name { font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; font-weight: bold; }
+.f-status { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.f-status.ok { color: #69f0ae; text-shadow: 0 0 8px rgba(105, 240, 174, 0.4); }
+.f-status.err { color: #ff5252; text-shadow: 0 0 8px rgba(255, 82, 82, 0.4); }
 
-.url-box { display: none; margin-top: 10px; display: flex; gap: 8px; }
+/* Thanh URL & Nút Copy (Gộp chung) */
+.url-box { display: none; margin-top: 10px; width: 100%; }
+.url-group {
+  display: flex; background: rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden;
+  border: 1px solid rgba(140, 82, 255, 0.3); transition: .3s;
+}
+.url-group:focus-within { border-color: var(--secondary); box-shadow: 0 0 12px rgba(255, 71, 195, 0.2); }
 .f-url {
-  flex: 1; padding: 8px 12px; border-radius: 8px;
-  border: 1px solid rgba(140, 82, 255, 0.3); background: rgba(0,0,0,0.4);
-  color: #d1c4f5; font-size: 12px; outline: none;
+  flex: 1; padding: 10px 12px; background: transparent; border: none;
+  color: #d1c4f5; font-size: 12px; outline: none; width: 100%;
 }
 .btn-copy {
-  background: rgba(140, 82, 255, 0.3); border: 1px solid rgba(140, 82, 255, 0.5);
-  color: #fff; padding: 0 15px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: .2s;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none; color: #fff; padding: 0 16px; cursor: pointer; font-size: 12px; font-weight: bold;
+  transition: .2s;
 }
-.btn-copy:hover { background: rgba(140, 82, 255, 0.6); }
+.btn-copy:hover { filter: brightness(1.2); }
 
 .remove-btn {
-  position: absolute; top: 10px; right: 10px;
-  background: none; border: none; color: #666; cursor: pointer; font-size: 16px;
+  position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  color: #888; cursor: pointer; font-size: 14px; transition: .2s;
 }
-.remove-btn:hover { color: #ff5252; }
+.remove-btn:hover { background: rgba(255, 60, 90, 0.2); color: #ff5252; border-color: transparent; transform: rotate(90deg); }
 
 /* Toast */
 .toast {
-  position: fixed; bottom: 20px; left: 50%;
-  transform: translate(-50%, 20px);
-  background: rgba(30, 20, 60, 0.95);
-  border: 1px solid var(--primary); color: #fff;
-  padding: 12px 24px; border-radius: 10px; font-size: 14px;
-  opacity: 0; pointer-events: none; transition: .3s; z-index: 100;
+  position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
+  background: rgba(20, 15, 35, 0.95); border: 1px solid var(--primary);
+  color: #fff; padding: 14px 24px; border-radius: 10px; font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6); opacity: 0; pointer-events: none;
+  transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 @media (max-width: 500px) {
   .card { padding: 25px 15px; }
-  h1 { font-size: 18px; }
-  .file-item { flex-direction: column; }
-  .thumb { width: 100%; height: 120px; }
+  .file-item { flex-direction: column; align-items: center; text-align: center; }
+  .thumb { width: 100%; height: 140px; margin-bottom: 10px; }
+  .info { width: 100%; }
+  .remove-btn { top: 10px; right: 10px; }
+  .status-banner { flex-direction: column; gap: 10px; text-align: center; }
+  .btn-copy-all { width: 100%; }
 }
 </style>
 </head>
@@ -231,7 +215,7 @@ h1 {
   <div class="header">
     <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Logo">
     <h1>AZERST IMAGE UPLOAD</h1>
-    <div class="desc">Tải ảnh lên nhanh chóng, nhận link trực tiếp</div>
+    <div class="desc">Tải ảnh nhanh, nhận link trực tiếp</div>
   </div>
 
   <div class="input-group">
@@ -240,6 +224,10 @@ h1 {
   </div>
 
   <label class="upload-zone" for="file" id="dropZone">
+    <!-- Icon SVG Upload -->
+    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+    </svg>
     <h3>Chọn hoặc kéo thả ảnh vào đây</h3>
     <p>Hỗ trợ PNG, JPG, WEBP, GIF (Tối đa 10GB/ảnh)</p>
   </label>
@@ -249,7 +237,7 @@ h1 {
   <div id="resultSection" class="result-section">
     <div class="status-banner">
       <span id="globalStatus">Hoàn tất!</span>
-      <button class="btn-copy-all" id="btnCopyAll">Copy Tất Cả</button>
+      <button class="btn-copy-all" id="btnCopyAll">Copy Tất Cả Link</button>
     </div>
     <div id="filesList"></div>
   </div>
@@ -299,10 +287,9 @@ const copyText = async (text) => {
   }
 };
 
-// Hàm delay (chờ giữa các lần upload để tránh nghẽn server)
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
-// Tạo thẻ HTML cho từng ảnh
+// Tạo thẻ HTML cho từng ảnh (Đã nâng cấp giao diện)
 function createItem(file, filename) {
   const id = ++idCounter;
   const thumbURL = URL.createObjectURL(file);
@@ -313,10 +300,12 @@ function createItem(file, filename) {
     <div class="thumb"><img src="${thumbURL}" alt=""></div>
     <div class="info">
       <div class="f-name" title="${filename}">${filename}</div>
-      <div class="f-status" id="st-${id}">Đang chờ...</div>
+      <div class="f-status" id="st-${id}">Đang chờ xử lý...</div>
       <div class="url-box" id="box-${id}">
-        <input class="f-url" id="url-${id}" readonly>
-        <button class="btn-copy" data-copy="${id}">Copy</button>
+        <div class="url-group">
+          <input class="f-url" id="url-${id}" readonly value="Đang tạo link...">
+          <button class="btn-copy" data-copy="${id}">SAO CHÉP</button>
+        </div>
       </div>
     </div>
     <button class="remove-btn" data-remove="${id}">×</button>
@@ -328,6 +317,10 @@ function createItem(file, filename) {
 function updateUI() {
   resultSection.style.display = "block";
   const success = uploads.filter(u => u.status === "success").length;
+  if (uploads.length === 0) {
+    resultSection.style.display = "none";
+    return;
+  }
   globalStatus.textContent = `Đã tải lên thành công ${success}/${uploads.length} ảnh`;
 }
 
@@ -337,7 +330,7 @@ async function uploadOne(file, filename, id, attempt = 1) {
   const boxEl = document.getElementById(`box-${id}`);
   const urlEl = document.getElementById(`url-${id}`);
   
-  stEl.textContent = `Đang tải lên (Lần ${attempt})...`;
+  stEl.textContent = `Đang tải lên... (Lần ${attempt})`;
 
   try {
     await upload(`images/${filename}`, file, {
@@ -350,7 +343,7 @@ async function uploadOne(file, filename, id, attempt = 1) {
     
     stEl.textContent = "Tải lên thành công";
     stEl.className = "f-status ok";
-    boxEl.style.display = "flex";
+    boxEl.style.display = "block";
     urlEl.value = finalURL;
 
     const entry = uploads.find(u => u.id === id);
@@ -392,7 +385,6 @@ async function handleFiles(files) {
     const f = validFiles[i];
     if (!ALLOWED.includes(f.type) || f.size > MAX_SIZE) continue;
 
-    // Tự động đặt tên: nếu chọn nhiều ảnh sẽ thêm _1, _2
     let name = baseName ? (validFiles.length > 1 ? `${baseName}_${i+1}` : baseName) : randomName();
     const filename = `${name}.${getExt(f.type)}`;
 
@@ -405,10 +397,10 @@ async function handleFiles(files) {
   resultSection.style.display = "block";
   updateUI();
 
-  // Tải tuần tự từng ảnh một, có thời gian nghỉ để tránh lỗi mạng
+  // Tải tuần tự từng ảnh một
   for (const task of queue) {
     await uploadOne(task.file, task.filename, task.id);
-    await delay(800); // Đợi 0.8s trước khi up ảnh tiếp theo
+    await delay(800); 
   }
 }
 
@@ -438,14 +430,16 @@ filesList.addEventListener("click", async (e) => {
     item.remove();
     uploads = uploads.filter(u => u.id !== id);
     updateUI();
-    if (uploads.length === 0) resultSection.style.display = "none";
   }
 });
 
 // Copy tất cả link
 btnCopyAll.addEventListener("click", async () => {
   const urls = uploads.filter(u => u.status === "success" && u.url).map(u => u.url);
-  if (urls.length === 0) return;
+  if (urls.length === 0) {
+    showToast("Chưa có ảnh nào được tải lên thành công!");
+    return;
+  }
   
   const ok = await copyText(urls.join("\n"));
   if (ok) showToast(`Đã sao chép ${urls.length} link!`);
