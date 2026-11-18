@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -169,7 +170,7 @@
     box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
   }
 
-  /* ============ VÙNG UPLOAD TRONG SUỐT ============ */
+  /* ============ VÙNG UPLOAD TRONG SUỐT NỔI BẬT ============ */
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 30px 15px; 
@@ -194,7 +195,7 @@
   .upload-zone p { color: #444; font-size: 12px; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
   #file { display: none; }
 
-  /* ============ THANH LOAD TỔNG ============ */
+  /* ============ THANH LOAD TỔNG (GLOBAL PROGRESS) ============ */
   .global-progress-container {
     width: 100%;
     height: 8px;
@@ -255,7 +256,7 @@
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
   .f-name { font-size: 14px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
   .f-status { font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .f-status.ok { color: #1a7f37; font-weight: bold; }
+  .f-status.ok { color: #1a7f37; }
   .f-status.err { color: var(--red); font-weight: bold; }
 
   /* Thanh Load từng ảnh */
@@ -338,7 +339,7 @@
       <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="VD: AZERST_IMG" autocomplete="off" />
     </div>
 
-    <!-- Vùng Upload trong suốt -->
+    <!-- Vùng Upload trong suốt nổi bật -->
     <label class="upload-zone" for="file" id="dropZone">
       <h3>Chọn hoặc kéo thả ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
@@ -368,9 +369,6 @@ const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/avif"];
 
-// Giới hạn tải cùng lúc (Tăng tốc độ mà không gây nghẽn server)
-const MAX_CONCURRENT_UPLOADS = 3;
-
 const fileInput = document.getElementById("file");
 const nameInput = document.getElementById("imageName");
 const dropZone = document.getElementById("dropZone");
@@ -383,7 +381,7 @@ const globalFill = document.getElementById("globalProgressFill");
 
 let uploads = [];
 let idCounter = 0;
-let activeUploads = 0;
+let isUploading = false;
 
 // Hàm tiện ích
 const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
@@ -479,7 +477,7 @@ function updateUI() {
   btnCopyAll.disabled = success === 0;
 }
 
-// Hàm Upload từng file (Bật multipart để lấy tiến trình)
+// FIX TRIỆT ĐỂ LỖI MẠNG: Upload từng file với Auto-Retry
 async function uploadSingle(file, filename, id, attempt = 1) {
   const stEl = document.getElementById(`st-${id}`);
   const boxEl = document.getElementById(`box-${id}`);
@@ -489,7 +487,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   const retryBtn = stEl.parentElement.querySelector('.btn-retry');
   
   stEl.className = "f-status";
-  stEl.querySelector('span').textContent = `Đang tải...`;
+  stEl.querySelector('span').textContent = `Đang tải... (Lần ${attempt})`;
   retryBtn.style.display = "none";
   
   trackEl.style.display = "block";
@@ -499,14 +497,15 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   if(entry) entry.status = "uploading";
 
   try {
+    // Tối ưu hóa: Chỉ dùng multipart cho file > 10MB để tránh lỗi fetch
+    const useMultipart = file.size > 10 * 1024 * 1024;
+
     await upload(`images/${filename}`, file, {
       access: "public",
       handleUploadUrl: IMAGE_SERVER + "/api/upload",
-      multipart: true, // Bắt buộc true để có progress
+      multipart: useMultipart, 
       onUploadProgress: (progress) => {
-        let pct = Math.round(progress.percentage || 0);
-        // Đảm bảo thanh load luôn chạy ít nhất 1% để biết nó đang hoạt động
-        if(pct === 0) pct = 1; 
+        const pct = Math.round(progress.percentage);
         fillEl.style.width = `${pct}%`;
         stEl.querySelector('span').textContent = `Đang tải... ${pct}%`;
       }
@@ -515,7 +514,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
     const finalURL = `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
     
     stEl.className = "f-status ok";
-    stEl.querySelector('span').textContent = "Tải lên thành công"; // Xoá icon ✅
+    stEl.querySelector('span').textContent = "✅ Thành công";
     fillEl.style.width = "100%";
     
     setTimeout(() => { trackEl.style.display = "none"; }, 500);
@@ -527,18 +526,23 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   } catch (err) {
     console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`, err);
     
-    // Nếu lỗi mạng -> Thử lại ngầm (Tối đa 3 lần)
-    if (attempt < 4) {
-      stEl.querySelector('span').textContent = `Lỗi, thử lại (${attempt}/3)...`;
-      fillEl.style.background = "#ffaa00";
-      await delay(1500);
+    // Bỏ qua lỗi Hủy (nếu có)
+    if (err.name === "AbortError") return;
+
+    let errorMsg = err.message || "Lỗi không xác định";
+    
+    // Tự động thử lại nếu mạng lỗi (tối đa 5 lần)
+    if (attempt < 5) {
+      stEl.querySelector('span').textContent = `Lỗi mạng, thử lại (${attempt}/5)...`;
+      fillEl.style.background = "#ffaa00"; // Đổi màu cam báo hiệu đang retry
+      await delay(2000);
       fillEl.style.background = "linear-gradient(90deg, var(--red), var(--orange))";
       return uploadSingle(file, filename, id, attempt + 1);
     }
 
     // Thất bại hoàn toàn
     stEl.className = "f-status err";
-    stEl.querySelector('span').textContent = `❌ Lỗi kết nối`;
+    stEl.querySelector('span').textContent = `❌ Lỗi mạng`;
     retryBtn.style.display = "inline-block";
     fillEl.style.background = "#ff0000";
     stEl.closest(".file-item").classList.add("error-item");
@@ -549,5 +553,121 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   updateUI();
 }
 
-// Hàng đợi xử lý ĐA LUỒNG (Giúp tải nhanh hơn)
-async 
+// Hàng đợi xử lý tuần tự
+async function processQueue() {
+  if (isUploading) return;
+  isUploading = true;
+
+  globalTrack.style.display = "block";
+  globalFill.style.width = "0%";
+
+  try {
+    const pendingItems = uploads.filter(u => u.status === "pending");
+
+    for (let i = 0; i < pendingItems.length; i++) {
+      const item = pendingItems[i];
+      if (!uploads.find(u => u.id === item.id)) continue;
+
+      try {
+        await uploadSingle(item.file, item.filename, item.id);
+      } catch (e) {
+        console.error("Lỗi nghiêm trọng ở item:", item.id, e);
+      }
+      
+      // Delay 1.5s giữa các ảnh để tránh Rate Limit
+      if (i < pendingItems.length - 1) {
+        await delay(1500); 
+      }
+    }
+  } finally {
+    isUploading = false;
+  }
+}
+
+function handleFiles(files) {
+  const validFiles = Array.from(files);
+  if (!validFiles.length) return;
+
+  const rawBaseName = nameInput.value;
+  const baseName = cleanName(rawBaseName);
+  
+  if (rawBaseName && rawBaseName !== baseName && baseName === "") {
+    showToast("Tên nhập vào toàn ký tự đặc biệt, đã chuyển sang tên ngẫu nhiên!");
+  }
+
+  fileInput.value = "";
+
+  for (let i = 0; i < validFiles.length; i++) {
+    const f = validFiles[i];
+    if (!ALLOWED.includes(f.type) || f.size > MAX_SIZE) {
+      showToast(`File ${f.name} không hợp lệ!`);
+      continue;
+    }
+
+    let name = baseName ? (validFiles.length > 1 ? `${baseName}_${i+1}` : baseName) : randomName();
+    const filename = `${name}.${getExt(f.type)}`;
+
+    const { div, id } = createItem(f, filename);
+    filesList.appendChild(div);
+    
+    uploads.push({ id, file: f, filename, url: null, status: "pending" });
+  }
+
+  resultSection.style.display = "flex";
+  updateUI();
+  processQueue();
+}
+
+// Events
+fileInput.addEventListener("change", () => handleFiles(fileInput.files));
+dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("dragover"); });
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+dropZone.addEventListener("drop", e => { e.preventDefault(); dropZone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
+
+// Tương tác thẻ
+filesList.addEventListener("click", async (e) => {
+  const copyBtn = e.target.closest("[data-copy]");
+  const removeBtn = e.target.closest("[data-remove]");
+  const retryBtn = e.target.closest("[data-retry]");
+
+  if (copyBtn) {
+    const id = copyBtn.dataset.copy;
+    const entry = uploads.find(u => u.id == id);
+    if (entry && entry.url) {
+      const ok = await copyText(entry.url);
+      if (ok) showToast("Sao chép thành công!");
+    }
+  }
+
+  if (removeBtn) {
+    const id = Number(removeBtn.dataset.remove);
+    removeBtn.closest(".file-item").remove();
+    uploads = uploads.filter(u => u.id !== id);
+    updateUI();
+    updateGlobalProgress();
+  }
+
+  if (retryBtn) {
+    const id = Number(retryBtn.dataset.retry);
+    const entry = uploads.find(u => u.id === id);
+    if (entry) {
+      entry.status = "pending";
+      const itemEl = retryBtn.closest(".file-item");
+      itemEl.classList.remove("error-item");
+      document.getElementById(`fill-${id}`).style.background = "linear-gradient(90deg, var(--red), var(--orange))";
+      processQueue();
+    }
+  }
+});
+
+// Copy tất cả
+btnCopyAll.addEventListener("click", async () => {
+  const urls = uploads.filter(u => u.status === "success" && u.url).map(u => u.url);
+  if (urls.length === 0) return;
+  const ok = await copyText(urls.join("\n"));
+  if (ok) showToast(`Sao chép thành công ${urls.length} link!`);
+});
+</script>
+
+</body>
+</html>
