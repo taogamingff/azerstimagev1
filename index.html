@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL</title>
-<!-- Đã sửa link icon -->
+<title>AZERST - CHÈN ẢNH TẠO LINK URL</title>
 <link rel="icon" href="https://azerstimagev1.vercel.app/images/svJpDNoeX.png">
 
 <style>
@@ -15,214 +14,249 @@
     url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
 }
 
+:root {
+  --glass-bg: rgba(22, 16, 48, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --neon-purple: #9d62ff;
+  --neon-pink: #ff47c3;
+  --text-main: #ffffff;
+  --text-muted: #b0a8c7;
+  --bevel-size: 20px;
+}
+
 *{box-sizing:border-box;font-family:"GFF-Latin-Bold",Arial,sans-serif}
 html,body{margin:0;min-height:100%}
 
 body{
   min-height:100vh;
-  padding:20px 15px;
+  padding:30px 15px;
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:center;
-  color:#fff;
+  color:var(--text-main);
   background:
-    radial-gradient(circle at 15% 10%,rgba(113,64,255,.35),transparent 35%),
-    radial-gradient(circle at 85% 90%,rgba(255,40,160,.25),transparent 35%),
-    linear-gradient(135deg,#05000b,#18052d,#05000b);
+    radial-gradient(circle at 10% 20%, rgba(113,64,255,.4), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255,40,160,.3), transparent 40%),
+    linear-gradient(135deg, #030008, #12052b, #030008);
   background-attachment:fixed;
 }
 
-.card{
+/* Hiệu ứng Kính lỏng + Vát góc chéo */
+.card, .file-item, .upload-box {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  /* Cắt góc chéo trên-phải và dưới-trái */
+  clip-path: polygon(
+    var(--bevel-size) 0, 
+    100% 0, 
+    100% calc(100% - var(--bevel-size)), 
+    calc(100% - var(--bevel-size)) 100%, 
+    0 100%, 
+    0 var(--bevel-size)
+  );
+  z-index: 1;
+}
+
+/* Lớp viền gradient cho hiệu ứng vát góc */
+.card::before, .file-item::before, .upload-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent 40%, rgba(157,98,255,0.3));
+  clip-path: inherit;
+  z-index: -1;
+  pointer-events: none;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1.5px; /* Độ dày viền */
+}
+
+.card {
   width:100%;
-  max-width:760px;
-  padding:32px 24px;
-  border-radius:28px;
-  border:1px solid rgba(255,255,255,.13);
-  background:rgba(12,8,28,.80);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  box-shadow:0 30px 80px rgba(0,0,0,.55);
+  max-width:800px;
+  padding:40px 30px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.7), inset 0 0 40px rgba(157,98,255,.1);
 }
 
 .logo{
   display:block;
-  width:88px;height:88px;
-  margin:0 auto 18px;
+  width:90px;height:90px;
+  margin:0 auto 20px;
   object-fit:cover;
-  border-radius:22px;
-  box-shadow:0 0 35px rgba(130,80,255,.55)
+  filter: drop-shadow(0 0 20px rgba(157,98,255,.8));
+  transition: transform .3s;
 }
+.logo:hover { transform: scale(1.05) rotate(3deg); }
 
 h1{
   margin:0;
   text-align:center;
-  font-size:22px;
+  font-size:24px;
   line-height:1.4;
-  background:linear-gradient(135deg,#fff,#c9b7ff);
+  letter-spacing: 1px;
+  background:linear-gradient(135deg, #fff, var(--neon-purple), var(--neon-pink));
   -webkit-background-clip:text;
   background-clip:text;
-  -webkit-text-fill-color:transparent
+  -webkit-text-fill-color:transparent;
+  text-shadow: 0 0 30px rgba(157,98,255,.3);
 }
 
 .description{
-  margin:12px auto 24px;
-  max-width:560px;
+  margin:15px auto 30px;
+  max-width:600px;
   text-align:center;
-  color:#cfc7dc;
+  color:var(--text-muted);
   font-size:14px;
-  line-height:1.6
+  line-height:1.6;
 }
 
-.name-field{margin:0 0 18px}
+.name-field{margin:0 0 24px}
 
 .name-label{
   display:block;
-  margin-bottom:9px;
-  font-size:14px
+  margin-bottom:10px;
+  font-size:14px;
+  color:#e0d5ff;
 }
 
 .name-input{
   width:100%;
-  padding:14px 16px;
+  padding:16px 20px;
   outline:none;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.15);
   color:#fff;
-  background:rgba(0,0,0,.30);
-  font-size:14px;
-  transition:border-color .2s,box-shadow .2s
+  background:rgba(0,0,0,.3);
+  font-size:15px;
+  transition:.3s;
 }
-
 .name-input:focus{
-  border-color:#936aff;
-  box-shadow:0 0 0 3px rgba(147,106,255,.13)
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 15px rgba(157,98,255,.3);
+  background: rgba(0,0,0,.5);
 }
 
 .name-hint{
-  margin-top:8px;
-  color:#aaa2b7;
+  margin-top:10px;
+  color:#8c83a3;
   font-size:12px;
-  line-height:1.6
+  line-height:1.5;
 }
 
 .upload-box{
+  --bevel-size: 25px;
   display:block;
-  padding:42px 20px;
+  padding:50px 20px;
   text-align:center;
-  border:2px dashed rgba(255,255,255,.22);
-  border-radius:20px;
   cursor:pointer;
-  transition:.25s;
-  background:rgba(120,70,255,.02)
+  transition:.3s;
+  background:rgba(157,98,255,.05);
 }
-
-.upload-box:hover,.upload-box.dragover{
-  background:rgba(120,70,255,.10);
-  border-color:#936aff;
-  transform:translateY(-2px)
+.upload-box:hover, .upload-box.dragover{
+  background:rgba(157,98,255,.15);
+  transform:translateY(-3px);
+  box-shadow: 0 10px 40px rgba(157,98,255,.2);
 }
 
 .upload-icon{
   display:block;
-  font-size:42px;
-  margin-bottom:12px;
-  filter:drop-shadow(0 0 15px rgba(147,106,255,.5))
+  font-size:50px;
+  margin-bottom:15px;
+  filter:drop-shadow(0 0 15px rgba(255,71,195,.6));
+  transition:.3s;
 }
+.upload-box:hover .upload-icon { transform: scale(1.1); }
 
-.upload-title{display:block;margin-bottom:8px;font-size:17px}
-
-.upload-sub{color:#aaa2b7;font-size:13px;line-height:1.6}
-.upload-sub b{color:#c9b7ff}
+.upload-title{display:block;margin-bottom:10px;font-size:18px;color:#fff}
+.upload-sub{color:#b0a8c7;font-size:13px;line-height:1.6}
+.upload-sub b{color:var(--neon-pink)}
 
 #file{display:none}
 
 .error{
   display:none;
-  margin-top:15px;
-  padding:14px;
-  border-radius:14px;
-  background:rgba(255,40,80,.1);
-  border:1px solid rgba(255,70,100,.25);
+  margin-top:20px;
+  padding:16px;
+  border-radius:12px;
+  background:rgba(255,40,80,.15);
+  border:1px solid rgba(255,70,100,.4);
   color:#ffb4c1;
   font-size:13px;
-  word-break:break-word
+  backdrop-filter: blur(10px);
 }
 
-/* Khu vực danh sách kết quả */
+/* Danh sách kết quả */
 .results-header{
   display:none;
-  margin-top:26px;
-  margin-bottom:16px;
+  margin-top:30px;
+  margin-bottom:20px;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:12px;
   flex-wrap:wrap;
+  padding-bottom:15px;
   border-bottom:1px solid rgba(255,255,255,.1);
-  padding-bottom:12px;
 }
 
-.results-title{font-size:15px;color:#d4cce5;display:flex;flex-direction:column;gap:4px}
-.results-title .count{color:#a98bff;font-size:13px;font-weight:normal}
-.results-actions{display:flex;gap:8px}
+.results-title{font-size:16px;color:#fff;display:flex;flex-direction:column;gap:5px}
+.results-title .count{color:var(--neon-purple);font-size:13px;font-weight:normal}
+.results-actions{display:flex;gap:10px}
 
 .btn{
-  padding:10px 18px;
+  padding:12px 22px;
   border:0;
-  border-radius:12px;
+  border-radius:10px;
   color:#fff;
   cursor:pointer;
   font-size:13px;
-  background:linear-gradient(135deg,#754cff,#d73cff);
+  background:linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
   transition:.2s;
   display:flex;
   align-items:center;
-  gap:6px;
+  gap:8px;
+  box-shadow: 0 5px 15px rgba(157,98,255,.3);
 }
-
-.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn:hover{filter:brightness(1.15);transform:translateY(-2px);box-shadow: 0 8px 25px rgba(255,71,195,.4)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 
 .btn-ghost{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.15)
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:none;
 }
+.btn-ghost:hover{background:rgba(255,255,255,.15)}
 
-.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.files-list{display:flex;flex-direction:column;gap:16px}
 
-.files-list{
-  display:flex;
-  flex-direction:column;
-  gap:14px
-}
-
+/* Thẻ ảnh vát góc */
 .file-item{
+  --bevel-size: 15px;
   display:flex;
-  gap:14px;
-  padding:14px;
-  border-radius:18px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  position:relative;
-  animation:slideIn .3s ease;
-  transition:.2s;
+  gap:16px;
+  padding:16px;
+  transition:.3s;
+  animation:slideIn .4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.file-item:hover{background:rgba(255,255,255,.07);border-color:rgba(147,106,255,.3)}
+.file-item:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
 
 @keyframes slideIn{
-  from{opacity:0;transform:translateY(10px)}
+  from{opacity:0;transform:translateY(15px)}
   to{opacity:1;transform:translateY(0)}
 }
 
 .file-thumb-wrap{
   flex-shrink:0;
-  width:76px;height:76px;
-  border-radius:14px;
+  width:80px;height:80px;
+  border-radius:12px;
   overflow:hidden;
-  background:rgba(0,0,0,.4);
-  border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.5);
+  border:1px solid rgba(255,255,255,.15);
   position:relative;
 }
-
 .file-thumb{width:100%;height:100%;object-fit:cover;display:block}
 
 .file-body{
@@ -232,34 +266,33 @@ h1{
   flex-direction:column;
   justify-content:center;
   gap:6px;
-  padding-right:20px;
-  padding-top:4px;
+  padding-right:25px;
 }
 
 .file-header{
   display:flex;
   gap:10px;
   align-items:center;
-  justify-content:space-between
+  justify-content:space-between;
 }
 
 .file-name{
-  font-size:14px;
+  font-size:15px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
   color:#fff;
-  font-weight:bold;
+  text-shadow: 0 0 10px rgba(255,255,255,.2);
 }
 
-.file-size{font-size:12px;color:#8a82a0;flex-shrink:0}
+.file-size{font-size:12px;color:var(--neon-pink);flex-shrink:0}
 
 .file-original{
   font-size:12px;
-  color:#8a82a0;
+  color:#8c83a3;
   white-space:nowrap;
   overflow:hidden;
-  text-overflow:ellipsis
+  text-overflow:ellipsis;
 }
 
 /* Thanh tiến trình */
@@ -268,123 +301,121 @@ h1{
   background:rgba(255,255,255,.1);
   border-radius:20px;
   overflow:hidden;
-  margin-top:4px;
+  margin-top:6px;
 }
-
 .file-progress-bar{
   width:0%;
   height:100%;
-  background:linear-gradient(90deg,#754cff,#e63cff);
+  background:linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
   border-radius:20px;
   transition:width .3s;
+  box-shadow: 0 0 10px var(--neon-pink);
 }
 
-.file-status{font-size:12px;color:#b7b0c8;display:flex;align-items:center;gap:4px;}
-.file-status.success{color:#7dffb4}
-.file-status.error{color:#ff8fa3}
+.file-status{font-size:13px;color:#b0a8c7;display:flex;align-items:center;gap:6px;margin-top:4px}
+.file-status.success{color:#7dffb4;text-shadow:0 0 10px rgba(125,255,180,.4)}
+.file-status.error{color:#ff8fa3;text-shadow:0 0 10px rgba(255,143,163,.4)}
 
 /* Link kết quả */
 .file-result{
   display:none;
-  margin-top:10px;
-  gap:10px;
+  margin-top:12px;
+  gap:12px;
   flex-direction:column;
-  background:rgba(0,0,0,.25);
-  padding:10px;
-  border-radius:12px;
-  border:1px solid rgba(147,106,255,.2);
 }
 
 .file-url{
   width:100%;
-  padding:10px 12px;
+  padding:12px 16px;
   outline:none;
   border-radius:8px;
-  border:1px solid rgba(255,255,255,.1);
-  color:#c9b7ff;
-  background:rgba(0,0,0,.4);
+  border:1px solid rgba(157,98,255,.3);
+  color:#e0d5ff;
+  background:rgba(0,0,0,.5);
   font-size:13px;
   cursor:pointer;
   transition:.2s;
 }
-.file-url:focus{border-color:#936aff;}
+.file-url:focus{border-color:var(--neon-pink);box-shadow:0 0 15px rgba(255,71,195,.2)}
 
 .file-actions{display:flex;gap:8px;flex-wrap:wrap}
 
 .mini-btn{
-  padding:8px 14px;
+  padding:8px 16px;
   border-radius:8px;
   color:#fff;
   cursor:pointer;
   font-size:12px;
-  background:rgba(117,76,255,.25);
-  border:1px solid rgba(147,106,255,.3);
+  background:rgba(157,98,255,.15);
+  border:1px solid rgba(157,98,255,.3);
   transition:.2s;
   display:flex;
   align-items:center;
-  gap:4px;
+  gap:6px;
 }
-.mini-btn:hover{background:rgba(117,76,255,.5);transform:translateY(-1px)}
+.mini-btn:hover{background:rgba(157,98,255,.4);transform:translateY(-1px)}
 .mini-btn:active{transform:scale(.95)}
 
 .file-remove{
   position:absolute;
   top:12px;right:12px;
-  width:28px;height:28px;
+  width:30px;height:30px;
   border-radius:50%;
   border:0;
-  background:rgba(255,255,255,.08);
-  color:#aaa2b7;
+  background:rgba(255,255,255,.05);
+  color:#b0a8c7;
   cursor:pointer;
   font-size:14px;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:.2s
+  transition:.2s;
+  border:1px solid rgba(255,255,255,.1);
 }
-.file-remove:hover{background:rgba(255,60,90,.3);color:#fff}
+.file-remove:hover{background:rgba(255,60,90,.4);color:#fff;border-color:transparent;transform:rotate(90deg)}
 .file-remove:disabled{opacity:.3;cursor:not-allowed}
 
 .footer{
-  margin-top:30px;
+  margin-top:35px;
   text-align:center;
-  color:#777083;
+  color:#5a526e;
   font-size:11px;
-  letter-spacing:1px
+  letter-spacing:2px;
 }
 
-/* Toast thông báo */
+/* Toast */
 .toast{
   position:fixed;
   bottom:30px;left:50%;
-  transform:translateX(-50%) translateY(20px);
-  padding:14px 24px;
-  border-radius:16px;
-  background:rgba(20,15,35,.95);
-  border:1px solid rgba(147,106,255,.5);
+  transform:translateX(-50%) translateY(30px);
+  padding:16px 28px;
+  border-radius:14px;
+  background:rgba(30,20,60,.9);
+  border:1px solid var(--neon-purple);
   color:#fff;
   font-size:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.6);
+  box-shadow:0 15px 40px rgba(0,0,0,.8), 0 0 20px rgba(157,98,255,.3);
   opacity:0;
   pointer-events:none;
-  transition:.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition:.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index:999;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
+  backdrop-filter: blur(10px);
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media(max-width:500px){
-  .card{padding:24px 16px}
-  h1{font-size:19px}
+  .card{padding:30px 16px;}
+  h1{font-size:20px;}
   .file-item{flex-direction:column;align-items:center;text-align:center;}
-  .file-thumb-wrap{width:100px;height:100px;}
+  .file-thumb-wrap{width:110px;height:110px;}
   .file-body{padding:0;width:100%;}
   .file-header{justify-content:center;}
   .file-actions{justify-content:center;}
-  .file-remove{top:8px;right:8px;}
-  .results-actions{width:100%;margin-top:8px;}
+  .file-remove{top:10px;right:10px;}
+  .results-actions{width:100%;margin-top:10px;}
   .results-actions .btn{flex:1;justify-content:center;}
 }
 </style>
@@ -393,10 +424,9 @@ h1{
 <body>
 <div class="card">
 
-<!-- Đã sửa link logo -->
 <img class="logo" src="https://azerstimagev1.vercel.app/images/svJpDNoeX.png" alt="Azerst">
 
-<h1>AZERST - CHÈN ẢNH TẠO LINK URL</h1>
+<h1>AZERST - CHÈN ẢNH TẠO LINK</h1>
 
 <div class="description">
 Tải lên một hoặc nhiều ảnh cùng lúc để nhận link nhanh chóng.<br>
@@ -436,7 +466,7 @@ Hỗ trợ tốt nhất trên Android, iPhone và Máy tính.
     <span class="count" id="globalStatus">Chưa có ảnh nào</span>
   </div>
   <div class="results-actions">
-    <button class="btn btn-ghost" id="copyAll" disabled>📋 Copy tất cả URL</button>
+    <button class="btn btn-ghost" id="copyAll" disabled>📋 Copy tất cả</button>
     <button class="btn btn-ghost" id="newSession">🔄 Làm mới</button>
   </div>
 </div>
@@ -452,7 +482,6 @@ Hỗ trợ tốt nhất trên Android, iPhone và Máy tính.
 <script type="module">
 import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
-// ĐÃ SỬA: Đổi domain máy chủ thành azerstimagev1.vercel.app
 const IMAGE_SERVER = "https://azerstimagev1.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 
@@ -621,12 +650,11 @@ async function uploadOne(file, filename, id) {
       }
     });
 
-    // Lấy URL chuẩn xác từ Vercel trả về
     const finalURL = blob.url || (IMAGE_SERVER + "/images/" + encodeURIComponent(filename));
     
     if (el) {
       el.querySelector(".file-progress-bar").style.width = "100%";
-      el.querySelector(".file-progress-wrap").style.display = "none"; // Ẩn thanh progress khi xong
+      el.querySelector(".file-progress-wrap").style.display = "none";
       el.querySelector(".file-status").innerHTML = "✅ Tải lên thành công";
       el.querySelector(".file-status").className = "file-status success";
       
@@ -661,7 +689,6 @@ async function handleFiles(fileList) {
   const files = Array.from(fileList);
   if (files.length === 0) return;
 
-  // Validate
   for (const f of files) {
     if (!ALLOWED.includes(f.type)) { showError(`File "${f.name}" không đúng định dạng.`); return; }
     if (f.size > MAX_SIZE) { showError(`File "${f.name}" vượt quá 10 GB.`); return; }
@@ -673,14 +700,12 @@ async function handleFiles(fileList) {
   }
 
   const queue = [];
-  fileInput.value = ""; // Reset input
+  fileInput.value = "";
 
-  // 1. Hiển thị giao diện NGAY LẬP TỨC
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const ext = getExtension(file.type);
     
-    // Tự động thêm số nếu chọn nhiều ảnh
     let name;
     if (files.length === 1) {
       name = baseName || randomName();
@@ -700,9 +725,8 @@ async function handleFiles(fileList) {
   resultsHeader.style.display = "flex";
   updateGlobalStatus();
 
-  // 2. Bắt đầu Upload TUẦN TỰ (Tránh nghẽn mạng, đảm bảo 100% ra link)
   for (const task of queue) {
-    if (!uploads.find(u => u.id === task.id)) continue; // Nếu người dùng xóa thì bỏ qua
+    if (!uploads.find(u => u.id === task.id)) continue;
     await uploadOne(task.file, task.filename, task.id);
   }
 }
@@ -720,7 +744,6 @@ uploadLabel.addEventListener("drop", e => {
 });
 
 filesContainer.addEventListener("click", async (e) => {
-  // Click vào ô URL để copy nhanh
   if (e.target.classList.contains("file-url")) {
     e.target.select();
     const ok = await copyText(e.target.value);
