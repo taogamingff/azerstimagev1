@@ -7,13 +7,36 @@
 <link rel="icon" href="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" />
 
 <style>
+  /* ================= FONT GFF ================= */
+  @font-face{
+    font-family:"GFF-Latin-Bold";
+    src:
+      url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),
+      url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
+    font-display:swap;
+  }
+
+  @font-face{
+    font-family:"GFF-Latin-Black";
+    src:
+      url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Black.woff2") format("woff2"),
+      url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Black.woff") format("woff");
+    font-display:swap;
+  }
+
   :root{
+    --font-heading:"GFF-Latin-Black", "GFF-Latin-Bold", system-ui, sans-serif;
+    --font-body:"GFF-Latin-Bold", system-ui, sans-serif;
+    
     --red:#d93828;
     --red-dark:#b52a1c;
-    --bg-main:#eef2f6;
-    --grid-color:rgba(0,0,0,0.07);
-    --text-main:#2d3748;
-    --text-muted:#718096;
+    --orange:#ff5e3a;
+    --bg-main:#f4f6fa;
+    --grid-color:rgba(0,0,0,0.04);
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --cut: 24px;
   }
 
   *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
@@ -24,7 +47,7 @@
   }
 
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+    font-family: var(--font-body);
     background-color:var(--bg-main);
     background-image:
       linear-gradient(var(--grid-color) 1px, transparent 1px),
@@ -38,212 +61,224 @@
     -webkit-font-smoothing:antialiased;
   }
 
-  /* ============ KHỐI KÍNH LỎNG ============ */
+  /* ============ QUẦNG SÁNG NỀN ============ */
+  .glow{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(255,94,58,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(217,56,40,0.15) 0%, transparent 50%);
+    filter:blur(60px); animation:pulseGlow 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow{
+    0%  { transform:scale(0.95); opacity:0.6; }
+    100%{ transform:scale(1.05); opacity:1; }
+  }
+
+  /* ============ KHUNG KÍNH LỎNG CHÍNH ============ */
   .glass-container{
-    --cut:28px;
-    width:min(600px, 100%);
+    width:min(650px, 100%);
     max-height:90vh;
     position:relative;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 30%, rgba(255,255,255,0.5) 100%),
-      linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.7) 100%);
-    backdrop-filter:blur(40px) saturate(180%);
-    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    background: var(--glass-bg);
+    backdrop-filter:blur(30px) saturate(150%);
+    -webkit-backdrop-filter:blur(30px) saturate(150%);
+    /* Cắt 2 góc: Trên-Trái và Dưới-Phải */
     clip-path:polygon(
       var(--cut) 0, 100% 0,
       100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
       0 100%, 0 var(--cut)
     );
     box-shadow:
-      0 1.5px 0 rgba(255,255,255,1) inset,
-      0 0 60px -20px rgba(255,255,255,0.6) inset,
-      0 -1px 0 rgba(255,255,255,0.4) inset,
-      0 20px 40px rgba(0,0,0,0.1);
+      0 1px 0 rgba(255,255,255,1) inset,
+      0 30px 60px rgba(217,56,40,0.1);
     display:flex;
     flex-direction:column;
     isolation:isolate;
-    animation:rise 1s cubic-bezier(.2,.8,.2,1) both;
+    animation:rise 0.8s cubic-bezier(.2,.8,.2,1) both;
   }
 
-  /* Viền sáng trên */
+  /* Viền gradient Đỏ/Cam cho khung chính */
   .glass-container::before{
-    content:""; position:absolute; top:0; left:8%; right:8%; height:1.5px;
-    background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.95) 80%, transparent 100%);
-    z-index:6; pointer-events:none; filter:blur(0.3px);
-  }
-
-  /* Sheen lỏng chảy */
-  .glass-container::after{
     content:""; position:absolute; inset:0;
-    background:linear-gradient(115deg, transparent 0%, transparent 25%, rgba(255,255,255,0.3) 42%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.3) 58%, transparent 75%, transparent 100%);
-    pointer-events:none; z-index:0; animation:sheen 9s ease-in-out infinite; opacity:0.6;
-  }
-
-  @keyframes sheen{
-    0%,100%{ transform:translateX(-30%) skewX(-8deg); opacity:0.3; }
-    50%    { transform:translateX(30%)  skewX(-8deg); opacity:0.7; }
+    background: linear-gradient(135deg, var(--red), var(--orange), var(--red));
+    clip-path: inherit; z-index:-1; pointer-events:none;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude; padding: 2px;
   }
 
   @keyframes rise{
-    from{ opacity:0; transform:translateY(30px) scale(.96); filter:blur(8px); }
-    to  { opacity:1; transform:translateY(0) scale(1);      filter:blur(0); }
+    from{ opacity:0; transform:translateY(30px); filter:blur(5px); }
+    to  { opacity:1; transform:translateY(0);    filter:blur(0); }
   }
 
-  /* ============ QUẦNG SÁNG ============ */
-  .glow{
-    position:fixed; inset:0; z-index:-1; pointer-events:none;
-    background:
-      radial-gradient(ellipse at 28% 32%, rgba(255,122,92,0.4) 0%, transparent 55%),
-      radial-gradient(ellipse at 72% 68%, rgba(217,56,40,0.4) 0%, transparent 55%);
-    filter:blur(60px); animation:pulseGlow 5s ease-in-out infinite alternate;
-  }
-
-  @keyframes pulseGlow{
-    0%  { transform:scale(0.96); opacity:0.5; }
-    100%{ transform:scale(1.04); opacity:0.9; }
-  }
-
-  /* ============ NỘI DUNG BÊN TRONG ============ */
   .content-scroll {
-    padding: 30px 25px;
+    padding: 35px 25px;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 22px;
   }
 
-  /* Scrollbar cho kính lỏng */
   .content-scroll::-webkit-scrollbar { width: 6px; }
   .content-scroll::-webkit-scrollbar-track { background: transparent; }
-  .content-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
-  .content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+  .content-scroll::-webkit-scrollbar-thumb { background: rgba(217,56,40,0.3); border-radius: 10px; }
+  .content-scroll::-webkit-scrollbar-thumb:hover { background: var(--red); }
 
+  /* ============ HEADER ============ */
   .header { text-align: center; }
   .logo {
-    width: 70px; height: 70px; margin: 0 auto 15px;
-    object-fit: cover; border-radius: 16px;
+    width: 75px; height: 75px; margin: 0 auto 15px;
+    object-fit: cover; border-radius: 18px;
     box-shadow: 0 8px 25px rgba(217,56,40,0.3);
     transition: transform 0.3s;
   }
   .logo:hover { transform: scale(1.05) rotate(3deg); }
 
-  h1 { color: var(--text-main); font-size: 22px; letter-spacing: 0.5px; margin-bottom: 5px; }
-  .desc { color: var(--text-muted); font-size: 13px; }
+  h1 { 
+    font-family: var(--font-heading);
+    color: var(--red); 
+    font-size: 26px; 
+    letter-spacing: 1px; 
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(217,56,40,0.2);
+  }
+  .desc { color: #666; font-size: 13px; font-weight: bold; }
 
-  /* Ô nhập tên */
+  /* ============ NHẬP TÊN ============ */
   .input-group { display: flex; flex-direction: column; gap: 8px; }
-  .input-label { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .input-label { font-size: 13px; color: var(--red-dark); }
   .name-input {
     width: 100%; padding: 14px 16px; border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.3);
-    color: var(--text-main); font-size: 14px; outline: none; transition: .3s;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    border: 1px solid rgba(217,56,40,0.2); background: rgba(255,255,255,0.6);
+    color: #333; font-family: var(--font-body); font-size: 14px; outline: none; transition: .3s;
   }
-  .name-input::placeholder { color: #a0aec0; }
-  .name-input:focus { border-color: var(--red); background: rgba(255,255,255,0.6); box-shadow: 0 0 0 3px rgba(217,56,40,0.15); }
+  .name-input::placeholder { color: #aaa; }
+  .name-input:focus { 
+    border-color: var(--orange); 
+    background: #fff; 
+    box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
+  }
 
-  /* Vùng Upload */
+  /* ============ VÙNG UPLOAD ============ */
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 35px 20px; border: 2px dashed rgba(217,56,40,0.4); border-radius: 16px;
-    background: rgba(255,255,255,0.4); cursor: pointer; transition: .3s;
+    padding: 40px 20px; 
+    border: 2px dashed var(--orange); 
+    border-radius: 16px;
+    background: rgba(255,255,255,0.5); 
+    cursor: pointer; transition: .3s;
   }
   .upload-zone:hover, .upload-zone.dragover {
-    background: rgba(255,255,255,0.7); border-color: var(--red);
-    box-shadow: 0 10px 30px rgba(217,56,40,0.15); transform: translateY(-2px);
+    background: rgba(255, 94, 58, 0.05); 
+    border-color: var(--red);
+    box-shadow: 0 10px 30px rgba(217,56,40,0.15); 
+    transform: translateY(-2px);
   }
   .upload-icon { width: 45px; height: 45px; color: var(--red); margin-bottom: 12px; transition: .3s; }
-  .upload-zone:hover .upload-icon { transform: translateY(-5px); }
-  .upload-zone h3 { color: var(--text-main); font-size: 16px; margin-bottom: 6px; }
-  .upload-zone p { color: var(--text-muted); font-size: 12px; }
+  .upload-zone:hover .upload-icon { transform: translateY(-5px); color: var(--orange); }
+  .upload-zone h3 { color: #333; font-size: 16px; margin-bottom: 6px; }
+  .upload-zone p { color: #777; font-size: 12px; }
   #file { display: none; }
 
-  /* Danh sách kết quả */
-  .result-section { display: none; flex-direction: column; gap: 12px; }
+  /* ============ DANH SÁCH KẾT QUẢ ============ */
+  .result-section { display: none; flex-direction: column; gap: 15px; }
   
   .status-banner {
-    background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between;
+    background: #fff; border: 1px solid rgba(217,56,40,0.3);
+    border-radius: 12px; padding: 12px 18px; display: flex; justify-content: space-between;
     align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   }
-  .status-banner span { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .status-banner span { font-size: 13px; color: var(--red-dark); }
   .btn-copy-all {
-    background: var(--text-main); color: #fff; border: none; padding: 8px 16px;
-    border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: .2s;
+    background: linear-gradient(135deg, var(--red), var(--orange)); 
+    color: #fff; border: none; padding: 8px 18px;
+    border-radius: 8px; font-family: var(--font-body); font-size: 12px; cursor: pointer; transition: .2s;
+    box-shadow: 0 4px 10px rgba(217,56,40,0.3);
   }
-  .btn-copy-all:hover { background: var(--red); transform: scale(1.05); }
+  .btn-copy-all:hover:not(:disabled) { transform: scale(1.05); filter: brightness(1.1); }
+  .btn-copy-all:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* Thẻ ảnh */
+  /* Thẻ ảnh (Cắt 2 góc đối xứng) */
   .file-item {
-    --cut: 12px;
-    display: flex; gap: 15px; padding: 15px;
-    background: rgba(255,255,255,0.6);
-    border: 1px solid rgba(255,255,255,0.9);
-    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+    --item-cut: 16px;
+    display: flex; gap: 15px; padding: 16px;
+    background: #fff;
+    /* Cắt góc Trên-Phải và Dưới-Trái */
+    clip-path: polygon(
+      0 0, calc(100% - var(--item-cut)) 0, 
+      100% var(--item-cut), 100% 100%, 
+      var(--item-cut) 100%, 0 calc(100% - var(--item-cut))
+    );
     position: relative; transition: .3s; animation: slideIn .3s ease;
+    border-left: 4px solid var(--orange);
   }
-  .file-item:hover { background: rgba(255,255,255,0.9); box-shadow: 0 8px 25px rgba(0,0,0,0.05); }
-  .file-item.error-item { border-color: rgba(217,56,40,0.5); background: rgba(255,240,240,0.8); }
+  .file-item:hover { box-shadow: 0 8px 25px rgba(217,56,40,0.08); }
+  .file-item.error-item { border-left-color: #ff3b30; background: #fff5f5; }
 
-  .thumb { width: 65px; height: 65px; flex-shrink: 0; border-radius: 10px; overflow: hidden; background: #e2e8f0; }
+  .thumb { width: 70px; height: 70px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: #eee; border: 1px solid #ddd; }
   .thumb img { width: 100%; height: 100%; object-fit: cover; }
 
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-  .f-name { font-size: 14px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
-  .f-status { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
-  .f-status.ok { color: #2f855a; font-weight: 600; }
-  .f-status.err { color: var(--red); font-weight: 600; }
+  .f-name { font-size: 14px; color: #222; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+  .f-status { font-size: 12px; color: #777; display: flex; align-items: center; gap: 8px; }
+  .f-status.ok { color: #2f855a; }
+  .f-status.err { color: var(--red); }
 
-  /* Nút thử lại */
+  /* Nút thử lại khi lỗi mạng */
   .btn-retry {
-    background: var(--red); color: #fff; border: none; padding: 4px 10px;
+    background: #ff3b30; color: #fff; border: none; padding: 4px 10px;
     border-radius: 6px; font-size: 11px; cursor: pointer; display: none;
+    font-family: var(--font-body);
   }
-  .btn-retry:hover { background: var(--red-dark); }
+  .btn-retry:hover { background: #d93025; }
 
-  /* Thanh URL */
-  .url-box { display: none; margin-top: 10px; width: 100%; }
+  /* Thanh URL & Nút Copy */
+  .url-box { display: none; margin-top: 12px; width: 100%; }
   .url-group {
-    display: flex; background: rgba(255,255,255,0.8); border-radius: 8px; overflow: hidden;
-    border: 1px solid rgba(217,56,40,0.2);
+    display: flex; background: #f8f9fa; border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(217,56,40,0.3);
   }
   .f-url {
     flex: 1; padding: 10px 12px; background: transparent; border: none;
-    color: var(--text-main); font-size: 12px; outline: none; width: 100%;
+    color: var(--red-dark); font-family: var(--font-body); font-size: 12px; outline: none; width: 100%;
   }
   .btn-copy {
-    background: var(--text-main); border: none; color: #fff; padding: 0 16px;
-    cursor: pointer; font-size: 12px; font-weight: 600; transition: .2s;
+    background: var(--red); border: none; color: #fff; padding: 0 18px;
+    cursor: pointer; font-family: var(--font-body); font-size: 12px; transition: .2s;
   }
-  .btn-copy:hover { background: var(--red); }
+  .btn-copy:hover { background: var(--orange); }
 
   .remove-btn {
-    position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.05);
+    position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.05);
     border: none; border-radius: 50%; width: 24px; height: 24px;
     display: flex; align-items: center; justify-content: center;
-    color: #a0aec0; cursor: pointer; transition: .2s;
+    color: #999; cursor: pointer; transition: .2s; font-size: 16px;
   }
-  .remove-btn:hover { background: rgba(217,56,40,0.1); color: var(--red); }
+  .remove-btn:hover { background: rgba(255,59,48,0.1); color: #ff3b30; }
 
-  /* Toast */
+  /* ============ TOAST ============ */
   .toast {
     position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
-    background: #2d3748; color: #fff; padding: 12px 24px; border-radius: 10px;
-    font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); opacity: 0;
+    background: #222; color: #fff; padding: 12px 24px; border-radius: 10px;
+    font-family: var(--font-body); font-size: 13px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); opacity: 0;
     pointer-events: none; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
   @media (max-width: 500px) {
-    .glass-container { --cut: 22px; }
-    .content-scroll { padding: 20px 15px; }
-    .file-item { flex-direction: column; align-items: center; text-align: center; }
-    .thumb { width: 100%; height: 140px; margin-bottom: 10px; }
-    .remove-btn { top: 10px; right: 10px; }
-    .status-banner { flex-direction: column; gap: 10px; }
+    :root { --cut: 18px; }
+    .content-scroll { padding: 25px 15px; }
+    .file-item { flex-direction: column; align-items: flex-start; }
+    .thumb { width: 100%; height: 160px; margin-bottom: 10px; }
+    .remove-btn { top: 10px; right: 10px; background: rgba(255,255,255,0.8); }
+    .status-banner { flex-direction: column; gap: 12px; text-align: center; }
     .btn-copy-all { width: 100%; }
   }
 </style>
@@ -268,19 +303,20 @@
 
     <label class="upload-zone" for="file" id="dropZone">
       <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
       </svg>
       <h3>Chọn hoặc kéo thả ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP, GIF (Tối đa 10GB)</p>
     </label>
     <input id="file" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif" />
 
+    <!-- KHU VỰC HIỂN THỊ LINK -->
     <div id="resultSection" class="result-section">
       <div class="status-banner">
-        <span id="globalStatus">Đang chờ...</span>
-        <button class="btn-copy-all" id="btnCopyAll">Copy Tất Cả</button>
+        <span id="globalStatus">Đang khởi tạo...</span>
+        <button class="btn-copy-all" id="btnCopyAll" disabled>COPY TẤT CẢ</button>
       </div>
-      <div id="filesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      <div id="filesList" style="display: flex; flex-direction: column; gap: 12px;"></div>
     </div>
 
   </div>
@@ -306,10 +342,9 @@ const toast = document.getElementById("toast");
 
 let uploads = [];
 let idCounter = 0;
-let isUploading = false; // Cờ chặn upload chồng chéo
+let isUploading = false;
 
 // Hàm tiện ích
-const formatSize = (b) => b < 1048576 ? (b/1024).toFixed(1)+" KB" : (b/1048576).toFixed(1)+" MB";
 const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
 const getExt = (t) => ({"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","image/avif":"avif"})[t];
 const cleanName = (v) => v.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/\s+/g,"_").replace(/[^A-Za-z0-9_-]/g, "");
@@ -345,7 +380,7 @@ function createItem(file, filename) {
       <div class="f-name" title="${filename}">${filename}</div>
       <div class="f-status" id="st-${id}">
         <span>Đang chờ...</span>
-        <button class="btn-retry" data-retry="${id}" style="display:none;">Thử lại</button>
+        <button class="btn-retry" data-retry="${id}">Thử lại</button>
       </div>
       <div class="url-box" id="box-${id}">
         <div class="url-group">
@@ -359,7 +394,6 @@ function createItem(file, filename) {
   return { div, id };
 }
 
-// Cập nhật trạng thái tổng
 function updateUI() {
   const total = uploads.length;
   if (total === 0) { resultSection.style.display = "none"; return; }
@@ -369,10 +403,9 @@ function updateUI() {
   const pending = uploads.filter(u => u.status === "pending" || u.status === "uploading").length;
 
   globalStatus.textContent = `Thành công: ${success} | Lỗi: ${error} | Đang chờ: ${pending}`;
-  if (success > 0) btnCopyAll.disabled = false; else btnCopyAll.disabled = true;
+  btnCopyAll.disabled = success === 0;
 }
 
-// Hàm tải 1 ảnh
 async function uploadSingle(file, filename, id) {
   const stEl = document.getElementById(`st-${id}`);
   const boxEl = document.getElementById(`box-${id}`);
@@ -407,7 +440,7 @@ async function uploadSingle(file, filename, id) {
   } catch (err) {
     console.error(`Lỗi up ảnh ${filename}:`, err);
     stEl.className = "f-status err";
-    stEl.querySelector('span').textContent = "Lỗi kết nối";
+    stEl.querySelector('span').textContent = "Lỗi kết nối mạng";
     retryBtn.style.display = "inline-block";
     stEl.closest(".file-item").classList.add("error-item");
     entry.status = "error";
@@ -416,22 +449,19 @@ async function uploadSingle(file, filename, id) {
   updateUI();
 }
 
-// Hàm xử lý hàng đợi (Queue)
 async function processQueue() {
   if (isUploading) return;
   isUploading = true;
 
-  // Lấy danh sách ảnh đang chờ
   const pendingItems = uploads.filter(u => u.status === "pending");
 
   for (let i = 0; i < pendingItems.length; i++) {
     const item = pendingItems[i];
-    // Kiểm tra nếu người dùng đã xóa ảnh này thì bỏ qua
     if (!uploads.find(u => u.id === item.id)) continue;
 
     await uploadSingle(item.file, item.filename, item.id);
     
-    // Đợi 1.5 giây trước khi up ảnh tiếp theo để tránh nghẽn mạng
+    // Nghỉ 1.5 giây trước khi tải ảnh tiếp theo để tránh nghẽn mạng
     if (i < pendingItems.length - 1) {
       await delay(1500);
     }
@@ -440,18 +470,17 @@ async function processQueue() {
   isUploading = false;
 }
 
-// Xử lý khi chọn file
 function handleFiles(files) {
   const validFiles = Array.from(files);
   if (!validFiles.length) return;
 
   const baseName = cleanName(nameInput.value);
-  fileInput.value = ""; // Reset
+  fileInput.value = "";
 
   for (let i = 0; i < validFiles.length; i++) {
     const f = validFiles[i];
     if (!ALLOWED.includes(f.type) || f.size > MAX_SIZE) {
-      showToast(`File ${f.name} không hợp lệ!`);
+      showToast(`File ${f.name} không hợp lệ hoặc quá dung lượng!`);
       continue;
     }
 
@@ -466,7 +495,7 @@ function handleFiles(files) {
 
   resultSection.style.display = "flex";
   updateUI();
-  processQueue(); // Kích hoạt hàng đợi
+  processQueue();
 }
 
 // Events
@@ -475,13 +504,12 @@ dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classL
 dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
 dropZone.addEventListener("drop", e => { e.preventDefault(); dropZone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
 
-// Xử lý Click (Copy, Remove, Retry)
+// Xử lý tương tác trong danh sách
 filesList.addEventListener("click", async (e) => {
   const copyBtn = e.target.closest("[data-copy]");
   const removeBtn = e.target.closest("[data-remove]");
   const retryBtn = e.target.closest("[data-retry]");
 
-  // Nút Copy
   if (copyBtn) {
     const id = copyBtn.dataset.copy;
     const entry = uploads.find(u => u.id == id);
@@ -491,7 +519,6 @@ filesList.addEventListener("click", async (e) => {
     }
   }
 
-  // Nút Xóa
   if (removeBtn) {
     const id = Number(removeBtn.dataset.remove);
     removeBtn.closest(".file-item").remove();
@@ -499,7 +526,6 @@ filesList.addEventListener("click", async (e) => {
     updateUI();
   }
 
-  // Nút Thử lại (Retry)
   if (retryBtn) {
     const id = Number(retryBtn.dataset.retry);
     const entry = uploads.find(u => u.id === id);
