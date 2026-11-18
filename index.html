@@ -1,245 +1,288 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AZERST - CHÈN ẢNH TẠO LINK</title>
-<link rel="icon" href="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AZERST — Image Upload</title>
+<link rel="icon" href="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" />
 
 <style>
-@font-face{
-  font-family:"GFF-Latin-Bold";
-  src:
-    url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),
-    url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
-}
+  :root{
+    --red:#d93828;
+    --red-dark:#b52a1c;
+    --bg-main:#eef2f6;
+    --grid-color:rgba(0,0,0,0.07);
+    --text-main:#2d3748;
+    --text-muted:#718096;
+  }
 
-:root {
-  --glass-bg: rgba(14, 9, 30, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --primary: #8c52ff;
-  --secondary: #ff47c3;
-  --text-main: #ffffff;
-  --text-muted: #a399c4;
-  --bevel: 20px;
-}
+  *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
 
-* { box-sizing: border-box; font-family: "GFF-Latin-Bold", Arial, sans-serif; }
-html, body { margin: 0; min-height: 100%; }
+  html, body{
+    min-height:100vh;
+    overflow-x:hidden;
+  }
 
-body {
-  min-height: 100vh;
-  padding: 30px 15px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  color: var(--text-main);
-  background:
-    radial-gradient(circle at 0% 0%, rgba(140, 82, 255, .3), transparent 40%),
-    radial-gradient(circle at 100% 100%, rgba(255, 71, 195, .2), transparent 40%),
-    linear-gradient(135deg, #020005, #0d0420, #020005);
-  background-attachment: fixed;
-}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+    background-color:var(--bg-main);
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size:32px 32px;
+    background-position:center top;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px 15px;
+    -webkit-font-smoothing:antialiased;
+  }
 
-/* Khung chính */
-.card {
-  width: 100%;
-  max-width: 700px;
-  padding: 35px 25px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  clip-path: polygon(
-    0 0, calc(100% - var(--bevel)) 0, 
-    100% var(--bevel), 100% 100%, 
-    var(--bevel) 100%, 0 calc(100% - var(--bevel))
-  );
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(140, 82, 255, 0.05);
-  position: relative;
-}
+  /* ============ KHỐI KÍNH LỎNG ============ */
+  .glass-container{
+    --cut:28px;
+    width:min(600px, 100%);
+    max-height:90vh;
+    position:relative;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 30%, rgba(255,255,255,0.5) 100%),
+      linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.7) 100%);
+    backdrop-filter:blur(40px) saturate(180%);
+    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    clip-path:polygon(
+      var(--cut) 0, 100% 0,
+      100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
+      0 100%, 0 var(--cut)
+    );
+    box-shadow:
+      0 1.5px 0 rgba(255,255,255,1) inset,
+      0 0 60px -20px rgba(255,255,255,0.6) inset,
+      0 -1px 0 rgba(255,255,255,0.4) inset,
+      0 20px 40px rgba(0,0,0,0.1);
+    display:flex;
+    flex-direction:column;
+    isolation:isolate;
+    animation:rise 1s cubic-bezier(.2,.8,.2,1) both;
+  }
 
-.card::before {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent 30%, rgba(140,82,255,0.3));
-  clip-path: inherit; z-index: -1; pointer-events: none;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1.5px;
-}
+  /* Viền sáng trên */
+  .glass-container::before{
+    content:""; position:absolute; top:0; left:8%; right:8%; height:1.5px;
+    background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.95) 80%, transparent 100%);
+    z-index:6; pointer-events:none; filter:blur(0.3px);
+  }
 
-/* Header */
-.header { text-align: center; margin-bottom: 25px; }
-.logo {
-  width: 75px; height: 75px; margin: 0 auto 15px;
-  object-fit: cover; border-radius: 18px;
-  filter: drop-shadow(0 0 15px rgba(140, 82, 255, .6));
-  transition: transform .3s;
-}
-.logo:hover { transform: scale(1.05) rotate(2deg); }
+  /* Sheen lỏng chảy */
+  .glass-container::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 0%, transparent 25%, rgba(255,255,255,0.3) 42%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.3) 58%, transparent 75%, transparent 100%);
+    pointer-events:none; z-index:0; animation:sheen 9s ease-in-out infinite; opacity:0.6;
+  }
 
-h1 {
-  margin: 0 0 8px; font-size: 22px; letter-spacing: 1px;
-  background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-}
-.desc { color: var(--text-muted); font-size: 13px; }
+  @keyframes sheen{
+    0%,100%{ transform:translateX(-30%) skewX(-8deg); opacity:0.3; }
+    50%    { transform:translateX(30%)  skewX(-8deg); opacity:0.7; }
+  }
 
-/* Nhập tên */
-.input-group { margin-bottom: 20px; }
-.input-label { display: block; font-size: 13px; margin-bottom: 8px; color: #d1c4f5; }
-.name-input {
-  width: 100%; padding: 14px 16px; border-radius: 12px;
-  border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.4);
-  color: #fff; font-size: 14px; outline: none; transition: .3s;
-}
-.name-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(140, 82, 255, 0.2); }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(30px) scale(.96); filter:blur(8px); }
+    to  { opacity:1; transform:translateY(0) scale(1);      filter:blur(0); }
+  }
 
-/* Khung Upload (Đã nâng cấp) */
-.upload-zone {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 35px 20px; border: 2px dashed rgba(140, 82, 255, 0.4); border-radius: 16px;
-  background: rgba(140, 82, 255, 0.03); cursor: pointer; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative; overflow: hidden;
-}
-.upload-zone::before {
-  content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(140,82,255,0.1) 0%, transparent 70%);
-  opacity: 0; transition: .3s;
-}
-.upload-zone:hover, .upload-zone.dragover {
-  background: rgba(140, 82, 255, 0.1); border-color: var(--secondary);
-  transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 71, 195, 0.15);
-}
-.upload-zone:hover::before, .upload-zone.dragover::before { opacity: 1; }
+  /* ============ QUẦNG SÁNG ============ */
+  .glow{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse at 28% 32%, rgba(255,122,92,0.4) 0%, transparent 55%),
+      radial-gradient(ellipse at 72% 68%, rgba(217,56,40,0.4) 0%, transparent 55%);
+    filter:blur(60px); animation:pulseGlow 5s ease-in-out infinite alternate;
+  }
 
-.upload-icon {
-  width: 45px; height: 45px; margin-bottom: 12px; color: var(--secondary);
-  filter: drop-shadow(0 0 10px rgba(255,71,195,0.6)); transition: .3s;
-}
-.upload-zone:hover .upload-icon { transform: translateY(-5px); color: #fff; }
-.upload-zone h3 { margin: 0 0 8px; font-size: 16px; color: #fff; z-index: 1; }
-.upload-zone p { margin: 0; font-size: 12px; color: var(--text-muted); z-index: 1; }
-#file { display: none; }
+  @keyframes pulseGlow{
+    0%  { transform:scale(0.96); opacity:0.5; }
+    100%{ transform:scale(1.04); opacity:0.9; }
+  }
 
-/* Khu vực danh sách kết quả */
-.result-section { display: none; margin-top: 30px; animation: slideUp .4s ease; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  /* ============ NỘI DUNG BÊN TRONG ============ */
+  .content-scroll {
+    padding: 30px 25px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-.status-banner {
-  background: linear-gradient(90deg, rgba(140, 82, 255, 0.15), rgba(255, 71, 195, 0.15));
-  border: 1px solid rgba(140, 82, 255, 0.3); border-radius: 12px;
-  padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 20px; backdrop-filter: blur(10px);
-}
-.status-banner span { font-size: 14px; font-weight: bold; color: #e0d5ff; }
-.btn-copy-all {
-  background: #fff; color: #0d0420; border: none; padding: 10px 18px;
-  border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; transition: .2s;
-  box-shadow: 0 4px 15px rgba(255,255,255,0.2);
-}
-.btn-copy-all:hover { background: #d1c4f5; transform: scale(1.05); }
+  /* Scrollbar cho kính lỏng */
+  .content-scroll::-webkit-scrollbar { width: 6px; }
+  .content-scroll::-webkit-scrollbar-track { background: transparent; }
+  .content-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+  .content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
 
-/* Thẻ ảnh (Đã nâng cấp) */
-.file-item {
-  display: flex; gap: 15px; padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px; margin-bottom: 12px; position: relative;
-  transition: .3s; animation: fadeIn .3s ease;
-}
-.file-item:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(140, 82, 255, 0.3); }
-.file-item.error-item { border-color: rgba(255, 60, 90, 0.4); background: rgba(255, 60, 90, 0.05); }
+  .header { text-align: center; }
+  .logo {
+    width: 70px; height: 70px; margin: 0 auto 15px;
+    object-fit: cover; border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(217,56,40,0.3);
+    transition: transform 0.3s;
+  }
+  .logo:hover { transform: scale(1.05) rotate(3deg); }
 
-.thumb {
-  width: 70px; height: 70px; flex-shrink: 0; border-radius: 12px; overflow: hidden;
-  background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-.thumb img { width: 100%; height: 100%; object-fit: cover; }
+  h1 { color: var(--text-main); font-size: 22px; letter-spacing: 0.5px; margin-bottom: 5px; }
+  .desc { color: var(--text-muted); font-size: 13px; }
 
-.info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-.f-name { font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; font-weight: bold; }
-.f-status { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-.f-status.ok { color: #69f0ae; text-shadow: 0 0 8px rgba(105, 240, 174, 0.4); }
-.f-status.err { color: #ff5252; text-shadow: 0 0 8px rgba(255, 82, 82, 0.4); }
+  /* Ô nhập tên */
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+  .input-label { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .name-input {
+    width: 100%; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.3);
+    color: var(--text-main); font-size: 14px; outline: none; transition: .3s;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .name-input::placeholder { color: #a0aec0; }
+  .name-input:focus { border-color: var(--red); background: rgba(255,255,255,0.6); box-shadow: 0 0 0 3px rgba(217,56,40,0.15); }
 
-/* Thanh URL & Nút Copy (Gộp chung) */
-.url-box { display: none; margin-top: 10px; width: 100%; }
-.url-group {
-  display: flex; background: rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden;
-  border: 1px solid rgba(140, 82, 255, 0.3); transition: .3s;
-}
-.url-group:focus-within { border-color: var(--secondary); box-shadow: 0 0 12px rgba(255, 71, 195, 0.2); }
-.f-url {
-  flex: 1; padding: 10px 12px; background: transparent; border: none;
-  color: #d1c4f5; font-size: 12px; outline: none; width: 100%;
-}
-.btn-copy {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border: none; color: #fff; padding: 0 16px; cursor: pointer; font-size: 12px; font-weight: bold;
-  transition: .2s;
-}
-.btn-copy:hover { filter: brightness(1.2); }
+  /* Vùng Upload */
+  .upload-zone {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 35px 20px; border: 2px dashed rgba(217,56,40,0.4); border-radius: 16px;
+    background: rgba(255,255,255,0.4); cursor: pointer; transition: .3s;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    background: rgba(255,255,255,0.7); border-color: var(--red);
+    box-shadow: 0 10px 30px rgba(217,56,40,0.15); transform: translateY(-2px);
+  }
+  .upload-icon { width: 45px; height: 45px; color: var(--red); margin-bottom: 12px; transition: .3s; }
+  .upload-zone:hover .upload-icon { transform: translateY(-5px); }
+  .upload-zone h3 { color: var(--text-main); font-size: 16px; margin-bottom: 6px; }
+  .upload-zone p { color: var(--text-muted); font-size: 12px; }
+  #file { display: none; }
 
-.remove-btn {
-  position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;
-  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-  color: #888; cursor: pointer; font-size: 14px; transition: .2s;
-}
-.remove-btn:hover { background: rgba(255, 60, 90, 0.2); color: #ff5252; border-color: transparent; transform: rotate(90deg); }
+  /* Danh sách kết quả */
+  .result-section { display: none; flex-direction: column; gap: 12px; }
+  
+  .status-banner {
+    background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between;
+    align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  }
+  .status-banner span { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .btn-copy-all {
+    background: var(--text-main); color: #fff; border: none; padding: 8px 16px;
+    border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: .2s;
+  }
+  .btn-copy-all:hover { background: var(--red); transform: scale(1.05); }
 
-/* Toast */
-.toast {
-  position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
-  background: rgba(20, 15, 35, 0.95); border: 1px solid var(--primary);
-  color: #fff; padding: 14px 24px; border-radius: 10px; font-size: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6); opacity: 0; pointer-events: none;
-  transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
-}
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
+  /* Thẻ ảnh */
+  .file-item {
+    --cut: 12px;
+    display: flex; gap: 15px; padding: 15px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.9);
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+    position: relative; transition: .3s; animation: slideIn .3s ease;
+  }
+  .file-item:hover { background: rgba(255,255,255,0.9); box-shadow: 0 8px 25px rgba(0,0,0,0.05); }
+  .file-item.error-item { border-color: rgba(217,56,40,0.5); background: rgba(255,240,240,0.8); }
 
-@media (max-width: 500px) {
-  .card { padding: 25px 15px; }
-  .file-item { flex-direction: column; align-items: center; text-align: center; }
-  .thumb { width: 100%; height: 140px; margin-bottom: 10px; }
-  .info { width: 100%; }
-  .remove-btn { top: 10px; right: 10px; }
-  .status-banner { flex-direction: column; gap: 10px; text-align: center; }
-  .btn-copy-all { width: 100%; }
-}
+  .thumb { width: 65px; height: 65px; flex-shrink: 0; border-radius: 10px; overflow: hidden; background: #e2e8f0; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+  .f-name { font-size: 14px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+  .f-status { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+  .f-status.ok { color: #2f855a; font-weight: 600; }
+  .f-status.err { color: var(--red); font-weight: 600; }
+
+  /* Nút thử lại */
+  .btn-retry {
+    background: var(--red); color: #fff; border: none; padding: 4px 10px;
+    border-radius: 6px; font-size: 11px; cursor: pointer; display: none;
+  }
+  .btn-retry:hover { background: var(--red-dark); }
+
+  /* Thanh URL */
+  .url-box { display: none; margin-top: 10px; width: 100%; }
+  .url-group {
+    display: flex; background: rgba(255,255,255,0.8); border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(217,56,40,0.2);
+  }
+  .f-url {
+    flex: 1; padding: 10px 12px; background: transparent; border: none;
+    color: var(--text-main); font-size: 12px; outline: none; width: 100%;
+  }
+  .btn-copy {
+    background: var(--text-main); border: none; color: #fff; padding: 0 16px;
+    cursor: pointer; font-size: 12px; font-weight: 600; transition: .2s;
+  }
+  .btn-copy:hover { background: var(--red); }
+
+  .remove-btn {
+    position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.05);
+    border: none; border-radius: 50%; width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: #a0aec0; cursor: pointer; transition: .2s;
+  }
+  .remove-btn:hover { background: rgba(217,56,40,0.1); color: var(--red); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
+    background: #2d3748; color: #fff; padding: 12px 24px; border-radius: 10px;
+    font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); opacity: 0;
+    pointer-events: none; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 500px) {
+    .glass-container { --cut: 22px; }
+    .content-scroll { padding: 20px 15px; }
+    .file-item { flex-direction: column; align-items: center; text-align: center; }
+    .thumb { width: 100%; height: 140px; margin-bottom: 10px; }
+    .remove-btn { top: 10px; right: 10px; }
+    .status-banner { flex-direction: column; gap: 10px; }
+    .btn-copy-all { width: 100%; }
+  }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="header">
-    <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Logo">
-    <h1>AZERST IMAGE UPLOAD</h1>
-    <div class="desc">Tải ảnh nhanh, nhận link trực tiếp</div>
-  </div>
+<div class="glow" aria-hidden="true"></div>
 
-  <div class="input-group">
-    <label class="input-label" for="imageName">Tên ảnh muốn lưu (Không bắt buộc)</label>
-    <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="Ví dụ: Anh_Dai_Dien" autocomplete="off">
-  </div>
-
-  <label class="upload-zone" for="file" id="dropZone">
-    <!-- Icon SVG Upload -->
-    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-    </svg>
-    <h3>Chọn hoặc kéo thả ảnh vào đây</h3>
-    <p>Hỗ trợ PNG, JPG, WEBP, GIF (Tối đa 10GB/ảnh)</p>
-  </label>
-  <input id="file" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
-
-  <!-- Khu vực hiển thị kết quả -->
-  <div id="resultSection" class="result-section">
-    <div class="status-banner">
-      <span id="globalStatus">Hoàn tất!</span>
-      <button class="btn-copy-all" id="btnCopyAll">Copy Tất Cả Link</button>
+<div class="glass-container">
+  <div class="content-scroll">
+    
+    <div class="header">
+      <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst" />
+      <h1>AZERST UPLOAD</h1>
+      <p class="desc">Tải ảnh nhanh, nhận link trực tiếp</p>
     </div>
-    <div id="filesList"></div>
+
+    <div class="input-group">
+      <label class="input-label" for="imageName">Tên ảnh muốn lưu (Không bắt buộc)</label>
+      <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="Ví dụ: Anh_Dai_Dien" autocomplete="off" />
+    </div>
+
+    <label class="upload-zone" for="file" id="dropZone">
+      <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg>
+      <h3>Chọn hoặc kéo thả ảnh</h3>
+      <p>Hỗ trợ PNG, JPG, WEBP, GIF (Tối đa 10GB)</p>
+    </label>
+    <input id="file" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif" />
+
+    <div id="resultSection" class="result-section">
+      <div class="status-banner">
+        <span id="globalStatus">Đang chờ...</span>
+        <button class="btn-copy-all" id="btnCopyAll">Copy Tất Cả</button>
+      </div>
+      <div id="filesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
+
   </div>
 </div>
 
@@ -263,12 +306,14 @@ const toast = document.getElementById("toast");
 
 let uploads = [];
 let idCounter = 0;
+let isUploading = false; // Cờ chặn upload chồng chéo
 
 // Hàm tiện ích
 const formatSize = (b) => b < 1048576 ? (b/1024).toFixed(1)+" KB" : (b/1048576).toFixed(1)+" MB";
 const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
 const getExt = (t) => ({"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","image/avif":"avif"})[t];
 const cleanName = (v) => v.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/\s+/g,"_").replace(/[^A-Za-z0-9_-]/g, "");
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
 const showToast = (msg) => {
   toast.textContent = msg;
@@ -287,9 +332,7 @@ const copyText = async (text) => {
   }
 };
 
-const delay = (ms) => new Promise(res => setTimeout(res, ms));
-
-// Tạo thẻ HTML cho từng ảnh (Đã nâng cấp giao diện)
+// Tạo giao diện thẻ ảnh
 function createItem(file, filename) {
   const id = ++idCounter;
   const thumbURL = URL.createObjectURL(file);
@@ -300,11 +343,14 @@ function createItem(file, filename) {
     <div class="thumb"><img src="${thumbURL}" alt=""></div>
     <div class="info">
       <div class="f-name" title="${filename}">${filename}</div>
-      <div class="f-status" id="st-${id}">Đang chờ xử lý...</div>
+      <div class="f-status" id="st-${id}">
+        <span>Đang chờ...</span>
+        <button class="btn-retry" data-retry="${id}" style="display:none;">Thử lại</button>
+      </div>
       <div class="url-box" id="box-${id}">
         <div class="url-group">
-          <input class="f-url" id="url-${id}" readonly value="Đang tạo link...">
-          <button class="btn-copy" data-copy="${id}">SAO CHÉP</button>
+          <input class="f-url" id="url-${id}" readonly>
+          <button class="btn-copy" data-copy="${id}">COPY</button>
         </div>
       </div>
     </div>
@@ -313,24 +359,33 @@ function createItem(file, filename) {
   return { div, id };
 }
 
-// Render UI kết quả
+// Cập nhật trạng thái tổng
 function updateUI() {
-  resultSection.style.display = "block";
+  const total = uploads.length;
+  if (total === 0) { resultSection.style.display = "none"; return; }
+  
   const success = uploads.filter(u => u.status === "success").length;
-  if (uploads.length === 0) {
-    resultSection.style.display = "none";
-    return;
-  }
-  globalStatus.textContent = `Đã tải lên thành công ${success}/${uploads.length} ảnh`;
+  const error = uploads.filter(u => u.status === "error").length;
+  const pending = uploads.filter(u => u.status === "pending" || u.status === "uploading").length;
+
+  globalStatus.textContent = `Thành công: ${success} | Lỗi: ${error} | Đang chờ: ${pending}`;
+  if (success > 0) btnCopyAll.disabled = false; else btnCopyAll.disabled = true;
 }
 
-// Xử lý upload 1 ảnh (Có cơ chế thử lại nếu lỗi mạng)
-async function uploadOne(file, filename, id, attempt = 1) {
+// Hàm tải 1 ảnh
+async function uploadSingle(file, filename, id) {
   const stEl = document.getElementById(`st-${id}`);
   const boxEl = document.getElementById(`box-${id}`);
   const urlEl = document.getElementById(`url-${id}`);
+  const retryBtn = stEl.querySelector('.btn-retry');
   
-  stEl.textContent = `Đang tải lên... (Lần ${attempt})`;
+  stEl.className = "f-status";
+  stEl.querySelector('span').textContent = "Đang tải lên...";
+  retryBtn.style.display = "none";
+  
+  const entry = uploads.find(u => u.id === id);
+  entry.status = "uploading";
+  updateUI();
 
   try {
     await upload(`images/${filename}`, file, {
@@ -341,67 +396,77 @@ async function uploadOne(file, filename, id, attempt = 1) {
 
     const finalURL = `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
     
-    stEl.textContent = "Tải lên thành công";
     stEl.className = "f-status ok";
+    stEl.querySelector('span').textContent = "Tải lên thành công";
     boxEl.style.display = "block";
     urlEl.value = finalURL;
 
-    const entry = uploads.find(u => u.id === id);
-    if (entry) { entry.url = finalURL; entry.status = "success"; }
-    
-    updateUI();
+    entry.url = finalURL; 
+    entry.status = "success";
 
   } catch (err) {
-    console.error(`Lỗi ảnh ${filename} (Lần ${attempt}):`, err);
-    
-    // Nếu lỗi do mạng và chưa quá 3 lần thử -> Thử lại
-    if (attempt < 3) {
-      stEl.textContent = `Lỗi mạng, đang thử lại (${attempt}/3)...`;
-      await delay(1500);
-      return uploadOne(file, filename, id, attempt + 1);
-    }
-
-    // Thất bại hoàn toàn
-    stEl.textContent = "Lỗi kết nối mạng";
+    console.error(`Lỗi up ảnh ${filename}:`, err);
     stEl.className = "f-status err";
+    stEl.querySelector('span').textContent = "Lỗi kết nối";
+    retryBtn.style.display = "inline-block";
     stEl.closest(".file-item").classList.add("error-item");
-    
-    const entry = uploads.find(u => u.id === id);
-    if (entry) entry.status = "error";
-    updateUI();
+    entry.status = "error";
   }
+  
+  updateUI();
+}
+
+// Hàm xử lý hàng đợi (Queue)
+async function processQueue() {
+  if (isUploading) return;
+  isUploading = true;
+
+  // Lấy danh sách ảnh đang chờ
+  const pendingItems = uploads.filter(u => u.status === "pending");
+
+  for (let i = 0; i < pendingItems.length; i++) {
+    const item = pendingItems[i];
+    // Kiểm tra nếu người dùng đã xóa ảnh này thì bỏ qua
+    if (!uploads.find(u => u.id === item.id)) continue;
+
+    await uploadSingle(item.file, item.filename, item.id);
+    
+    // Đợi 1.5 giây trước khi up ảnh tiếp theo để tránh nghẽn mạng
+    if (i < pendingItems.length - 1) {
+      await delay(1500);
+    }
+  }
+
+  isUploading = false;
 }
 
 // Xử lý khi chọn file
-async function handleFiles(files) {
+function handleFiles(files) {
   const validFiles = Array.from(files);
   if (!validFiles.length) return;
 
   const baseName = cleanName(nameInput.value);
-  const queue = [];
   fileInput.value = ""; // Reset
 
   for (let i = 0; i < validFiles.length; i++) {
     const f = validFiles[i];
-    if (!ALLOWED.includes(f.type) || f.size > MAX_SIZE) continue;
+    if (!ALLOWED.includes(f.type) || f.size > MAX_SIZE) {
+      showToast(`File ${f.name} không hợp lệ!`);
+      continue;
+    }
 
     let name = baseName ? (validFiles.length > 1 ? `${baseName}_${i+1}` : baseName) : randomName();
     const filename = `${name}.${getExt(f.type)}`;
 
     const { div, id } = createItem(f, filename);
     filesList.appendChild(div);
-    uploads.push({ id, filename, url: null, status: "pending" });
-    queue.push({ file: f, filename, id });
+    
+    uploads.push({ id, file: f, filename, url: null, status: "pending" });
   }
 
-  resultSection.style.display = "block";
+  resultSection.style.display = "flex";
   updateUI();
-
-  // Tải tuần tự từng ảnh một
-  for (const task of queue) {
-    await uploadOne(task.file, task.filename, task.id);
-    await delay(800); 
-  }
+  processQueue(); // Kích hoạt hàng đợi
 }
 
 // Events
@@ -410,37 +475,46 @@ dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classL
 dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
 dropZone.addEventListener("drop", e => { e.preventDefault(); dropZone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
 
-// Xử lý Copy & Remove
+// Xử lý Click (Copy, Remove, Retry)
 filesList.addEventListener("click", async (e) => {
   const copyBtn = e.target.closest("[data-copy]");
   const removeBtn = e.target.closest("[data-remove]");
+  const retryBtn = e.target.closest("[data-retry]");
 
+  // Nút Copy
   if (copyBtn) {
     const id = copyBtn.dataset.copy;
     const entry = uploads.find(u => u.id == id);
     if (entry && entry.url) {
       const ok = await copyText(entry.url);
-      if (ok) showToast("Đã sao chép link ảnh!");
+      if (ok) showToast("Đã sao chép link!");
     }
   }
 
+  // Nút Xóa
   if (removeBtn) {
     const id = Number(removeBtn.dataset.remove);
-    const item = removeBtn.closest(".file-item");
-    item.remove();
+    removeBtn.closest(".file-item").remove();
     uploads = uploads.filter(u => u.id !== id);
     updateUI();
   }
+
+  // Nút Thử lại (Retry)
+  if (retryBtn) {
+    const id = Number(retryBtn.dataset.retry);
+    const entry = uploads.find(u => u.id === id);
+    if (entry) {
+      entry.status = "pending";
+      retryBtn.closest(".file-item").classList.remove("error-item");
+      processQueue();
+    }
+  }
 });
 
-// Copy tất cả link
+// Copy tất cả
 btnCopyAll.addEventListener("click", async () => {
   const urls = uploads.filter(u => u.status === "success" && u.url).map(u => u.url);
-  if (urls.length === 0) {
-    showToast("Chưa có ảnh nào được tải lên thành công!");
-    return;
-  }
-  
+  if (urls.length === 0) return;
   const ok = await copyText(urls.join("\n"));
   if (ok) showToast(`Đã sao chép ${urls.length} link!`);
 });
