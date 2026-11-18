@@ -351,7 +351,6 @@ import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
 const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024; 
-const ALLOWED_EXTS = ["png", "jpg", "jpeg", "webp", "gif", "avif"];
 
 const fileInput = document.getElementById("file");
 const nameInput = document.getElementById("imageName");
@@ -365,11 +364,11 @@ const globalFill = document.getElementById("globalProgressFill");
 
 let uploads = [];
 let idCounter = 0;
-let isUploading = false; // Cờ chặn chạy trùng lặp
+let isUploading = false;
 
 const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
 
-// Lấy đuôi file an toàn (Fix lỗi điện thoại trả về rỗng hoặc MIME type sai)
+// Lấy đuôi file an toàn
 const getExt = (file) => {
   const typeMap = {
     "image/png": "png", "image/jpeg": "jpg", "image/jpg": "jpg", 
@@ -380,12 +379,14 @@ const getExt = (file) => {
   const parts = file.name.split('.');
   if (parts.length > 1) {
     const ext = parts.pop().toLowerCase();
-    return ext === "jpeg" ? "jpg" : ext;
+    // Nếu là đuôi ảnh lạ (VD: heic), chuyển thành png để up
+    if (["png", "jpg", "jpeg", "webp", "gif", "avif"].includes(ext)) {
+      return ext === "jpeg" ? "jpg" : ext;
+    }
   }
   return "png"; 
 };
 
-// Làm sạch tên file (bỏ dấu, ký tự lạ)
 const cleanName = (v) => {
   if (!v) return "";
   return v.trim().normalize("NFD")
@@ -416,10 +417,16 @@ const copyText = async (text) => {
 
 function createItem(file, filename) {
   const id = ++idCounter;
-  const thumbURL = URL.createObjectURL(file);
   const div = document.createElement("div");
   div.className = "file-item";
   div.dataset.id = id;
+  
+  let thumbURL = "https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png";
+  try {
+    thumbURL = URL.createObjectURL(file);
+  } catch(e) {
+    console.error("Không thể tạo thumbnail", e);
+  }
   
   div.innerHTML = `
     <div class="file-top">
@@ -494,7 +501,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   if(entry) entry.status = "uploading";
 
   try {
-    await upload(`images/${filename}`, file, {
+    const blob = await upload(`images/${filename}`, file, {
       access: "public",
       handleUploadUrl: IMAGE_SERVER + "/api/upload",
       multipart: true, 
@@ -507,7 +514,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
       }
     });
 
-    const finalURL = `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
+    const finalURL = blob.url || `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
     
     stEl.className = "f-status ok";
     stEl.querySelector('span').textContent = "Tải lên thành công"; 
@@ -525,11 +532,10 @@ async function uploadSingle(file, filename, id, attempt = 1) {
     let errorMsg = "Lỗi không xác định";
     if (typeof err === "string") errorMsg = err;
     else if (err?.message) errorMsg = err.message;
-
-    if (errorMsg.includes("Failed to retrieve the client token")) errorMsg = "Lỗi Token API (Server)";
-    else if (errorMsg.includes("fetch")) errorMsg = "Lỗi kết nối mạng";
     
-    // Nếu lỗi mạng thì thử lại 3 lần
+    if (errorMsg.includes("Failed to retrieve the client token")) errorMsg = "Lỗi Token API (Server)";
+    else if (errorMsg.includes("fetch") || errorMsg.includes("NetworkError")) errorMsg = "Lỗi kết nối mạng";
+    
     if (errorMsg.includes("mạng") && attempt <= 3) {
       if(stEl) stEl.querySelector('span').textContent = `Lỗi mạng, thử lại (${attempt}/3)...`;
       if(fillEl) fillEl.style.background = "#ffaa00";
@@ -539,10 +545,6 @@ async function uploadSingle(file, filename, id, attempt = 1) {
       return uploadSingle(file, filename, id, attempt + 1);
     }
 
-    // Thất bại hoàn toàn -> Báo lỗi đỏ
     if(stEl) {
       stEl.className = "f-status err";
-      stEl.querySelector('span').textContent = `❌ ${errorMsg}`;
-    }
-    if(retryBtn) retryBtn.style.display = "inline-block";
-    if(fillEl) fillEl
+      stEl.querySelector('span').textContent = `❌ ${e
