@@ -30,7 +30,6 @@
     --bg-main:#eef2f6;
     --grid-color:rgba(0,0,0,0.05);
     
-    /* Liquid Glass Variables */
     --glass-bg: rgba(255, 255, 255, 0.45);
     --glass-border: rgba(255, 255, 255, 0.8);
     --cut: 24px;
@@ -59,7 +58,6 @@
     -webkit-font-smoothing:antialiased;
   }
 
-  /* ============ QUẦNG SÁNG NỀN ============ */
   .glow{
     position:fixed; inset:0; z-index:-1; pointer-events:none;
     background:
@@ -72,7 +70,6 @@
     100%{ transform:scale(1.05); opacity:1; }
   }
 
-  /* ============ KHUNG KÍNH LỎNG CHÍNH ============ */
   .glass-wrapper {
     width:min(600px, 100%);
     position: relative;
@@ -87,7 +84,6 @@
     margin-bottom: 20px;
   }
 
-  /* Khung nền Liquid Glass */
   .glass-inner {
     position: absolute;
     inset: 0;
@@ -125,7 +121,6 @@
     gap: 20px;
   }
 
-  /* ============ HEADER ============ */
   .header { text-align: center; }
   .logo {
     width: 65px; height: 65px; margin: 0 auto 12px;
@@ -152,7 +147,6 @@
   }
   .desc { color: #555; font-size: 12px; }
 
-  /* ============ NHẬP TÊN ============ */
   .input-group { display: flex; flex-direction: column; gap: 6px; }
   .input-label { font-size: 13px; color: #333; }
   .name-input {
@@ -169,7 +163,6 @@
     box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
   }
 
-  /* ============ VÙNG UPLOAD TRONG SUỐT NỔI BẬT ============ */
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 30px 15px; 
@@ -194,7 +187,6 @@
   .upload-zone p { color: #444; font-size: 12px; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
   #file { display: none; }
 
-  /* ============ THANH LOAD TỔNG (GLOBAL PROGRESS) ============ */
   .global-progress-container {
     width: 100%;
     height: 8px;
@@ -214,7 +206,6 @@
     box-shadow: 0 0 10px rgba(255,94,58,0.5);
   }
 
-  /* ============ KHU VỰC KẾT QUẢ ============ */
   .result-section { display: none; flex-direction: column; gap: 15px; }
   
   .btn-copy-all {
@@ -229,7 +220,6 @@
   .btn-copy-all:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
   .btn-copy-all:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-  /* Thẻ ảnh kết quả */
   .file-item {
     --item-cut: 14px;
     display: flex; flex-direction: column; padding: 15px; gap: 12px;
@@ -258,7 +248,6 @@
   .f-status.ok { color: #1a7f37; }
   .f-status.err { color: var(--red); font-weight: bold; }
 
-  /* Thanh Load từng ảnh */
   .progress-track {
     width: 100%; height: 4px; background: rgba(0,0,0,0.08);
     border-radius: 2px; margin-top: 6px; overflow: hidden; display: none;
@@ -276,7 +265,6 @@
   }
   .btn-retry:hover { background: #b52a1c; }
 
-  /* Thanh URL & Nút Copy */
   .url-box { display: none; width: 100%; }
   .url-group {
     display: flex; background: rgba(255,255,255,0.7); 
@@ -301,7 +289,6 @@
   }
   .remove-btn:hover { color: var(--red); }
 
-  /* Toast */
   .toast {
     position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
     background: rgba(20, 20, 20, 0.9); color: #fff; padding: 12px 24px; border-radius: 8px;
@@ -338,19 +325,16 @@
       <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="VD: AZERST_IMG" autocomplete="off" />
     </div>
 
-    <!-- Vùng Upload trong suốt nổi bật -->
     <label class="upload-zone" for="file" id="dropZone">
       <h3>Chọn hoặc kéo thả ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
     </label>
     <input id="file" type="file" multiple accept="image/*" />
 
-    <!-- THANH LOAD TỔNG -->
     <div class="global-progress-container" id="globalProgressTrack">
       <div class="global-progress-fill" id="globalProgressFill"></div>
     </div>
 
-    <!-- KHU VỰC HIỂN THỊ KẾT QUẢ -->
     <div id="resultSection" class="result-section">
       <button class="btn-copy-all" id="btnCopyAll" style="display: none;">COPY TẤT CẢ LINK</button>
       <div id="filesList" style="display: flex; flex-direction: column; gap: 12px;"></div>
@@ -364,12 +348,11 @@
 <script type="module">
 import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
+/* ĐỊNH NGHĨA SERVER VÀ HÀM TẠO LINK */
 const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 const ALLOWED_EXTS = ["png", "jpg", "jpeg", "webp", "gif", "avif"];
-
-// Cho phép tải tối đa 5 ảnh cùng lúc để đảm bảo tốc độ mà không bị Vercel chặn (Rate limit)
-const MAX_CONCURRENT = 5; 
+const MAX_CONCURRENT = 5; // Tải cùng lúc 5 ảnh
 
 const fileInput = document.getElementById("file");
 const nameInput = document.getElementById("imageName");
@@ -385,9 +368,14 @@ let uploads = [];
 let idCounter = 0;
 let activeUploads = 0;
 
-// Hàm tiện ích
+// Hàm tạo link CHÍNH XÁC theo yêu cầu (Giữ nguyên format cũ)
+function imageURL(filename) {
+  return IMAGE_SERVER + "/images/" + encodeURIComponent(filename);
+}
+
 const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
 
+// Lấy đuôi file
 const getExt = (file) => {
   const typeMap = {
     "image/png": "png", "image/jpeg": "jpg", "image/jpg": "jpg", 
@@ -403,6 +391,7 @@ const getExt = (file) => {
   return "png"; 
 };
 
+// Chuẩn hoá tên file
 const cleanName = (v) => {
   if (!v) return "";
   return v.trim().normalize("NFD")
@@ -520,10 +509,10 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   if(entry) entry.status = "uploading";
 
   try {
-    const blob = await upload(`images/${filename}`, file, {
+    await upload(`images/${filename}`, file, {
       access: "public",
       handleUploadUrl: IMAGE_SERVER + "/api/upload",
-      multipart: true, // Bắt buộc để có thanh load
+      multipart: true, 
       onUploadProgress: (progress) => {
         if (!progress) return;
         let pct = Math.round(progress.percentage || 0);
@@ -533,10 +522,11 @@ async function uploadSingle(file, filename, id, attempt = 1) {
       }
     });
 
-    const finalURL = blob.url || `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
+    // === SỬ DỤNG HÀM imageURL ĐỂ TRẢ VỀ ĐÚNG FORMAT CŨ ===
+    const finalURL = imageURL(filename);
     
     stEl.className = "f-status ok";
-    stEl.querySelector('span').textContent = "Tải lên thành công"; // Đã xoá icon
+    stEl.querySelector('span').textContent = "Tải lên thành công"; // Đã xoá icon ✅
     fillEl.style.width = "100%";
     
     setTimeout(() => { if(trackEl) trackEl.style.display = "none"; }, 500);
@@ -554,7 +544,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
     
     if (errorMsg.includes("Failed to retrieve the client token")) errorMsg = "Server quá tải";
     
-    // Cơ chế tự động thử lại 5 lần, không cần người dùng can thiệp
+    // Tự động thử lại 5 lần
     if (attempt < 5) {
       if(stEl) stEl.querySelector('span').textContent = `Đang chờ máy chủ, thử lại (${attempt}/5)...`;
       if(fillEl) fillEl.style.background = "#ffaa00";
@@ -579,8 +569,7 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   updateUI();
 }
 
-// HÀNG ĐỢI THÔNG MINH (Smart Queue)
-// Tải nhiều ảnh cùng lúc nhất có thể, không delay, tự nhặt ảnh mới khi có slot trống
+// Hàng đợi đa luồng (Không cần chờ)
 function processQueue() {
   if (activeUploads >= MAX_CONCURRENT) return;
   
@@ -602,7 +591,7 @@ function processQueue() {
       .catch(err => console.error("Lỗi hàng đợi:", err))
       .finally(() => {
         activeUploads--;
-        processQueue(); // Ngay khi 1 ảnh xong, kích hoạt ảnh tiếp theo (không cần chờ)
+        processQueue();
       });
   }
 }
@@ -654,7 +643,7 @@ function handleFiles(inputFiles) {
     if (addedCount > 0) {
       resultSection.style.display = "flex";
       updateUI();
-      processQueue(); // Bắt đầu ngay
+      processQueue(); 
     }
   } catch (error) {
     console.error("Lỗi thêm file:", error);
@@ -675,7 +664,6 @@ dropZone.addEventListener("drop", e => {
   }
 });
 
-// Tương tác thẻ
 filesList.addEventListener("click", async (e) => {
   const copyBtn = e.target.closest("[data-copy]");
   const removeBtn = e.target.closest("[data-remove]");
@@ -711,7 +699,6 @@ filesList.addEventListener("click", async (e) => {
   }
 });
 
-// Copy tất cả
 btnCopyAll.addEventListener("click", async () => {
   const urls = uploads.filter(u => u.status === "success" && u.url).map(u => u.url);
   if (urls.length === 0) return;
