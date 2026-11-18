@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AZERST - CÔNG CỤ CHÈN ẢNH TẠO LINK URL</title>
-<link rel="icon" href="https://azerst-image-vn.vercel.app/images/svJpDNoeX.png">
+<!-- Đã sửa link icon -->
+<link rel="icon" href="https://azerstimagev1.vercel.app/images/svJpDNoeX.png">
 
 <style>
 @font-face{
@@ -392,7 +393,8 @@ h1{
 <body>
 <div class="card">
 
-<img class="logo" src="https://azerst-image-vn.vercel.app/images/svJpDNoeX.png" alt="Azerst">
+<!-- Đã sửa link logo -->
+<img class="logo" src="https://azerstimagev1.vercel.app/images/svJpDNoeX.png" alt="Azerst">
 
 <h1>AZERST - CHÈN ẢNH TẠO LINK URL</h1>
 
@@ -450,7 +452,8 @@ Hỗ trợ tốt nhất trên Android, iPhone và Máy tính.
 <script type="module">
 import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
-const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
+// ĐÃ SỬA: Đổi domain máy chủ thành azerstimagev1.vercel.app
+const IMAGE_SERVER = "https://azerstimagev1.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 
 const ALLOWED = [
@@ -618,7 +621,7 @@ async function uploadOne(file, filename, id) {
       }
     });
 
-    // Lấy URL chuẩn xác nhất từ Vercel trả về
+    // Lấy URL chuẩn xác từ Vercel trả về
     const finalURL = blob.url || (IMAGE_SERVER + "/images/" + encodeURIComponent(filename));
     
     if (el) {
@@ -672,12 +675,12 @@ async function handleFiles(fileList) {
   const queue = [];
   fileInput.value = ""; // Reset input
 
-  // 1. Hiển thị giao diện NGAY LẬP TỨC (Tăng tốc độ cảm nhận)
+  // 1. Hiển thị giao diện NGAY LẬP TỨC
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const ext = getExtension(file.type);
     
-    // Logic đặt tên: Tự động thêm số nếu có nhiều ảnh
+    // Tự động thêm số nếu chọn nhiều ảnh
     let name;
     if (files.length === 1) {
       name = baseName || randomName();
@@ -697,11 +700,9 @@ async function handleFiles(fileList) {
   resultsHeader.style.display = "flex";
   updateGlobalStatus();
 
-  // 2. Bắt đầu Upload TUẦN TỰ (Sửa lỗi nghẽn mạng khi up song song)
+  // 2. Bắt đầu Upload TUẦN TỰ (Tránh nghẽn mạng, đảm bảo 100% ra link)
   for (const task of queue) {
-    // Nếu trong lúc chờ, người dùng bấm xóa ảnh này thì bỏ qua
-    if (!uploads.find(u => u.id === task.id)) continue; 
-    
+    if (!uploads.find(u => u.id === task.id)) continue; // Nếu người dùng xóa thì bỏ qua
     await uploadOne(task.file, task.filename, task.id);
   }
 }
@@ -719,7 +720,7 @@ uploadLabel.addEventListener("drop", e => {
 });
 
 filesContainer.addEventListener("click", async (e) => {
-  // Xử lý sự kiện click vào ô URL để copy nhanh
+  // Click vào ô URL để copy nhanh
   if (e.target.classList.contains("file-url")) {
     e.target.select();
     const ok = await copyText(e.target.value);
