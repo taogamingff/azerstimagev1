@@ -285,7 +285,7 @@ Hỗ trợ Android, iPhone và máy tính.
   </div>
 </div>
 
-<label class="upload-box" for="file" id="uploadLabel">
+<label class="upload-box" for="file" id="uploadBox">
   <span class="upload-title">📸 CHỌN ẢNH ĐỂ TẢI LÊN</span>
   <span class="upload-sub">
     PNG • JPG • JPEG • WEBP • GIF • AVIF
@@ -342,7 +342,7 @@ const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 /* Giới hạn ứng dụng: 10 GB */
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 
-// Thêm image/jpg để fix lỗi trên một số thiết bị Android
+/* Thêm image/jpg để fix lỗi trên một số thiết bị Android */
 const ALLOWED = [
   "image/png",
   "image/jpeg",
@@ -362,7 +362,7 @@ const errorBox = document.getElementById("error");
 const result = document.getElementById("result");
 const urlInput = document.getElementById("url");
 const preview = document.getElementById("preview");
-const uploadLabel = document.getElementById("uploadLabel");
+const uploadBox = document.getElementById("uploadBox");
 
 /* Định dạng dung lượng */
 function formatSize(bytes) {
@@ -381,7 +381,7 @@ function randomName() {
   return Array.from(bytes, value => chars[value % chars.length]).join("");
 }
 
-/* Lấy đuôi file an toàn */
+/* Lấy đuôi file (Hỗ trợ cả MIME type và tên file) */
 function getExtension(file) {
   const map = {
     "image/png":"png",
@@ -391,9 +391,10 @@ function getExtension(file) {
     "image/gif":"gif",
     "image/avif":"avif"
   };
+
   if (map[file.type]) return map[file.type];
   
-  // Fallback: Lấy đuôi từ tên file gốc nếu MIME type bị lỗi
+  // Dự phòng: Lấy đuôi từ tên file gốc nếu MIME type bị lỗi
   const parts = file.name.split('.');
   if (parts.length > 1) {
     const ext = parts.pop().toLowerCase();
@@ -402,15 +403,15 @@ function getExtension(file) {
   return "png";
 }
 
-/* Chuẩn hóa tên ảnh (Tự động xoá dấu tiếng Việt và ký tự lạ) */
+/* Chuẩn hóa tên ảnh (Tự động xoá dấu tiếng Việt, khoảng trắng) */
 function cleanName(value) {
   if (!value) return "";
   return value.trim()
-    .normalize("NFD") // Tách dấu tiếng Việt
-    .replace(/[\u0300-\u036f]/g, "") // Xoá dấu
-    .replace(/đ/g, "d").replace(/Đ/g, "D") // Xử lý chữ đ
-    .replace(/\s+/g, "_") // Thay khoảng trắng
-    .replace(/[^A-Za-z0-9_-]/g, ""); // Xoá ký tự đặc biệt
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d").replace(/Đ/g, "D")
+    .replace(/\s+/g, "_")
+    .replace(/[^A-Za-z0-9_-]/g, "");
 }
 
 /* Tạo URL ảnh */
@@ -464,7 +465,7 @@ async function handleUpload(file) {
     return;
   }
 
-  // 3. Xử lý tên
+  // 3. Xử lý tên (Tự động bỏ dấu tiếng Việt)
   let baseName = cleanName(nameInput.value);
   if (!baseName) {
     baseName = randomName();
@@ -509,7 +510,11 @@ async function handleUpload(file) {
 
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
-    showError(error?.message || "Upload thất bại. Vui lòng thử lại.");
+    let errorMsg = "Upload thất bại.";
+    if (typeof error === "string") errorMsg = error;
+    else if (error?.message) errorMsg = error.message;
+    
+    showError(errorMsg);
     status.textContent = "❌ Upload thất bại.";
   }
 }
@@ -523,18 +528,18 @@ fileInput.addEventListener("change", () => {
 });
 
 /* Lắng nghe sự kiện KÉO THẢ */
-uploadLabel.addEventListener("dragover", event => {
+uploadBox.addEventListener("dragover", event => {
   event.preventDefault();
-  uploadLabel.style.borderColor = "#936aff";
+  uploadBox.style.borderColor = "#936aff";
 });
 
-uploadLabel.addEventListener("dragleave", () => {
-  uploadLabel.style.borderColor = "";
+uploadBox.addEventListener("dragleave", () => {
+  uploadBox.style.borderColor = "";
 });
 
-uploadLabel.addEventListener("drop", event => {
+uploadBox.addEventListener("drop", event => {
   event.preventDefault();
-  uploadLabel.style.borderColor = "";
+  uploadBox.style.borderColor = "";
   
   // Gọi thẳng hàm xử lý, không cần dùng DataTransfer nữa
   const droppedFile = event.dataTransfer?.files?.[0];
