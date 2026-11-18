@@ -53,9 +53,8 @@
     background-size:30px 30px;
     background-position:center top;
     display:flex;
-    justify-content:center;
-    /* Dịch web lên trên */
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     padding: 40px 15px;
     -webkit-font-smoothing:antialiased;
   }
@@ -73,10 +72,9 @@
     100%{ transform:scale(1.05); opacity:1; }
   }
 
-  /* ============ KHUNG KÍNH LỎNG CHÍNH ============ */
+  /* ============ KHUNG KÍNH LỎNG CHÍNH (Không giới hạn chiều cao) ============ */
   .glass-wrapper {
     width:min(600px, 100%);
-    max-height: 85vh;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -87,6 +85,7 @@
       0 100%, 0 var(--cut)
     );
     animation: rise 0.8s cubic-bezier(.2,.8,.2,1) both;
+    margin-bottom: 20px;
   }
 
   /* Khung nền Liquid Glass */
@@ -116,21 +115,15 @@
     to  { opacity:1; transform:translateY(0);    filter:blur(0); }
   }
 
-  /* Vùng cuộn nội dung */
-  .scroll-area {
+  /* Vùng nội dung (Bỏ thanh cuộn riêng) */
+  .content-area {
     position: relative;
     z-index: 1;
     padding: 30px 25px;
-    overflow-y: auto;
-    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
-  .scroll-area::-webkit-scrollbar { width: 6px; }
-  .scroll-area::-webkit-scrollbar-track { background: transparent; }
-  .scroll-area::-webkit-scrollbar-thumb { background: rgba(217,56,40,0.2); border-radius: 10px; }
-  .scroll-area::-webkit-scrollbar-thumb:hover { background: var(--red); }
 
   /* ============ HEADER ============ */
   .header { text-align: center; }
@@ -177,10 +170,10 @@
     box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
   }
 
-  /* ============ VÙNG UPLOAD (NHỎ GỌN) ============ */
+  /* ============ VÙNG UPLOAD (Đã xoá icon) ============ */
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 20px 15px; 
+    padding: 25px 15px; 
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
     border: 2px dashed var(--orange); 
     background: rgba(255,255,255,0.3); 
@@ -191,10 +184,8 @@
     border-color: var(--red);
     transform: translateY(-2px);
   }
-  .upload-icon { width: 28px; height: 28px; color: var(--red); margin-bottom: 8px; transition: .3s; }
-  .upload-zone:hover .upload-icon { transform: scale(1.1); color: var(--orange); }
-  .upload-zone h3 { color: #222; font-size: 14px; margin-bottom: 4px; }
-  .upload-zone p { color: #666; font-size: 11px; }
+  .upload-zone h3 { color: #222; font-size: 15px; margin-bottom: 6px; }
+  .upload-zone p { color: #666; font-size: 12px; }
   #file { display: none; }
 
   /* ============ KHU VỰC KẾT QUẢ ============ */
@@ -213,17 +204,16 @@
   .btn-copy-all:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
   .btn-copy-all:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-  /* Thẻ ảnh kết quả (Không viền đỏ, loang đỏ ở góc) */
+  /* Thẻ ảnh kết quả (Loang đỏ ở góc) */
   .file-item {
     --item-cut: 14px;
     display: flex; flex-direction: column; padding: 15px; gap: 12px;
-    /* Loang đỏ nhẹ ở góc trên bên phải */
     background: 
       radial-gradient(circle at 100% 0%, rgba(217,56,40,0.15) 0%, transparent 50%),
       rgba(255,255,255,0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(255,255,255,0.9); /* Viền kính trắng, không viền đỏ */
+    border: 1.5px solid rgba(255,255,255,0.9);
     clip-path: polygon(0 0, calc(100% - var(--item-cut)) 0, 100% var(--item-cut), 100% 100%, var(--item-cut) 100%, 0 calc(100% - var(--item-cut)));
     position: relative; transition: .3s; animation: slideIn .3s ease;
   }
@@ -276,16 +266,17 @@
 
   /* Toast */
   .toast {
-    position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 20px);
-    background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px; border-radius: 8px;
-    font-family: var(--font-body); font-size: 13px; 
+    position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
+    background: rgba(20, 20, 20, 0.9); color: #fff; padding: 12px 24px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     opacity: 0; pointer-events: none; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
   @media (max-width: 500px) {
     :root { --cut: 18px; }
-    .scroll-area { padding: 20px 15px; }
+    .content-area { padding: 20px 15px; }
     .btn-copy-all { padding: 12px; font-size: 14px; }
   }
 </style>
@@ -297,7 +288,7 @@
 <div class="glass-wrapper">
   <div class="glass-inner"></div>
   
-  <div class="scroll-area">
+  <div class="content-area">
     
     <div class="header">
       <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst" />
@@ -310,11 +301,8 @@
       <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="VD: AZERST_IMG" autocomplete="off" />
     </div>
 
-    <!-- Vùng Upload nhỏ gọn -->
+    <!-- Vùng Upload (Đã xoá icon) -->
     <label class="upload-zone" for="file" id="dropZone">
-      <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-      </svg>
       <h3>Chọn hoặc kéo thả ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
     </label>
@@ -539,7 +527,7 @@ filesList.addEventListener("click", async (e) => {
     const entry = uploads.find(u => u.id == id);
     if (entry && entry.url) {
       const ok = await copyText(entry.url);
-      if (ok) showToast("Đã sao chép link!");
+      if (ok) showToast("Sao chép thành công!");
     }
   }
 
@@ -566,7 +554,7 @@ btnCopyAll.addEventListener("click", async () => {
   const urls = uploads.filter(u => u.status === "success" && u.url).map(u => u.url);
   if (urls.length === 0) return;
   const ok = await copyText(urls.join("\n"));
-  if (ok) showToast(`Đã sao chép ${urls.length} link!`);
+  if (ok) showToast(`Sao chép thành công ${urls.length} link!`);
 });
 </script>
 
