@@ -78,7 +78,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    /* Cắt góc Trên-Trái và Dưới-Phải */
     clip-path: polygon(
       var(--cut) 0, 100% 0,
       100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
@@ -88,7 +87,7 @@
     margin-bottom: 20px;
   }
 
-  /* Khung nền Liquid Glass (Loang đỏ ở góc) */
+  /* Khung nền Liquid Glass */
   .glass-inner {
     position: absolute;
     inset: 0;
@@ -103,7 +102,6 @@
     pointer-events: none;
   }
   
-  /* Lớp Sheen (ánh sáng lướt) */
   .glass-inner::after {
     content:""; position:absolute; inset:0;
     background:linear-gradient(115deg, transparent 0%, transparent 25%, rgba(255,255,255,0.4) 42%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.4) 58%, transparent 75%, transparent 100%);
@@ -118,7 +116,6 @@
     to  { opacity:1; transform:translateY(0);    filter:blur(0); }
   }
 
-  /* Vùng nội dung */
   .content-area {
     position: relative;
     z-index: 1;
@@ -138,7 +135,6 @@
   }
   .logo:hover { transform: scale(1.05) rotate(3deg); }
   
-  /* Chữ AZERST UPLOAD loang màu */
   h1 { 
     font-family: var(--font-heading);
     font-size: 24px; 
@@ -173,30 +169,68 @@
     box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
   }
 
-  /* ============ VÙNG UPLOAD (Viền nổi bật) ============ */
+  /* ============ VÙNG UPLOAD MỚI (VIỀN ĐẸP HƠN) ============ */
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 28px 15px; 
+    padding: 30px 15px; 
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-    border: 2px dashed rgba(255, 94, 58, 0.6); 
-    background: rgba(255,255,255,0.3); 
+    background: rgba(255,255,255,0.2); 
     cursor: pointer; transition: .3s;
-    box-shadow: inset 0 0 20px rgba(255,94,58,0.05);
+    position: relative;
   }
-  .upload-zone:hover, .upload-zone.dragover {
-    background: rgba(255, 94, 58, 0.1); 
+  
+  /* Tạo viền phát sáng bao quanh */
+  .upload-zone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    border: 2px dashed rgba(255, 94, 58, 0.6);
+    transition: .3s;
+    pointer-events: none;
+  }
+  
+  .upload-zone:hover::before, .upload-zone.dragover::before {
     border-color: var(--red);
-    box-shadow: inset 0 0 30px rgba(217,56,40,0.15), 0 8px 25px rgba(217,56,40,0.15);
+    border-width: 2.5px;
+    box-shadow: inset 0 0 25px rgba(217,56,40,0.2);
+    animation: dashAnim 10s linear infinite;
+  }
+  
+  .upload-zone:hover, .upload-zone.dragover {
+    background: rgba(255, 94, 58, 0.08); 
     transform: translateY(-2px);
   }
+
+  @keyframes dashAnim {
+    to { stroke-dashoffset: 100; }
+  }
+
   .upload-zone h3 { color: #222; font-size: 15px; margin-bottom: 6px; }
   .upload-zone p { color: #666; font-size: 12px; }
   #file { display: none; }
 
+  /* ============ THANH LOAD TỔNG (GLOBAL PROGRESS) ============ */
+  .global-progress-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    display: none; /* Ẩn mặc định, chỉ hiện khi up */
+    margin-top: 10px;
+  }
+  .global-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--red), var(--orange));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
   /* ============ KHU VỰC KẾT QUẢ ============ */
   .result-section { display: none; flex-direction: column; gap: 15px; }
   
-  /* Nút Copy Tất Cả */
   .btn-copy-all {
     width: 100%;
     background: linear-gradient(135deg, var(--red), var(--orange)); 
@@ -234,13 +268,32 @@
   
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
   .f-name { font-size: 14px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
-  .f-status { font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px; }
+  .f-status { font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .f-status.ok { color: #1a7f37; }
-  .f-status.err { color: var(--red); }
+  .f-status.err { color: var(--red); font-weight: bold; }
+
+  /* Thanh Load từng ảnh */
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+    display: none;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--red), var(--orange));
+    border-radius: 2px;
+    transition: width 0.2s ease;
+  }
 
   .btn-retry {
-    background: var(--red); color: #fff; border: none; padding: 3px 8px;
+    background: var(--red); color: #fff; border: none; padding: 4px 10px;
     border-radius: 4px; font-size: 11px; cursor: pointer; display: none;
+    font-family: var(--font-body); margin-top: 4px;
   }
   .btn-retry:hover { background: #b52a1c; }
 
@@ -313,6 +366,11 @@
     </label>
     <input id="file" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif" />
 
+    <!-- THANH LOAD TỔNG -->
+    <div class="global-progress-container" id="globalProgressTrack">
+      <div class="global-progress-fill" id="globalProgressFill"></div>
+    </div>
+
     <!-- KHU VỰC HIỂN THỊ KẾT QUẢ -->
     <div id="resultSection" class="result-section">
       <button class="btn-copy-all" id="btnCopyAll" style="display: none;">COPY TẤT CẢ LINK</button>
@@ -338,6 +396,8 @@ const resultSection = document.getElementById("resultSection");
 const filesList = document.getElementById("filesList");
 const btnCopyAll = document.getElementById("btnCopyAll");
 const toast = document.getElementById("toast");
+const globalTrack = document.getElementById("globalProgressTrack");
+const globalFill = document.getElementById("globalProgressFill");
 
 let uploads = [];
 let idCounter = 0;
@@ -346,7 +406,14 @@ let isUploading = false;
 // Hàm tiện ích
 const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
 const getExt = (t) => ({"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","image/avif":"avif"})[t];
-const cleanName = (v) => v.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/\s+/g,"_").replace(/[^A-Za-z0-9_-]/g, "");
+
+// Làm sạch tên file triệt để
+const cleanName = (v) => v.trim().normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "") // Xoá dấu tiếng Việt
+  .replace(/đ/g, "d").replace(/Đ/g, "D")
+  .replace(/\s+/g, "_") // Thay khoảng trắng bằng gạch dưới
+  .replace(/[^A-Za-z0-9_-]/g, ""); // Xoá các ký tự đặc biệt
+
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
 const showToast = (msg) => {
@@ -380,8 +447,12 @@ function createItem(file, filename) {
         <div class="f-name" title="${filename}">${filename}</div>
         <div class="f-status" id="st-${id}">
           <span>Đang chờ...</span>
-          <button class="btn-retry" data-retry="${id}">Thử lại</button>
         </div>
+        <!-- Thanh Load từng ảnh -->
+        <div class="progress-track" id="track-${id}">
+          <div class="progress-fill" id="fill-${id}"></div>
+        </div>
+        <button class="btn-retry" data-retry="${id}">Thử lại</button>
       </div>
     </div>
     <div class="url-box" id="box-${id}">
@@ -395,7 +466,26 @@ function createItem(file, filename) {
   return { div, id };
 }
 
-// Cập nhật trạng thái nút Copy All
+// Cập nhật thanh Load Tổng
+function updateGlobalProgress() {
+  const total = uploads.length;
+  if (total === 0) return;
+
+  // Đếm số ảnh đã xong (thành công hoặc lỗi)
+  const done = uploads.filter(u => u.status === "success" || u.status === "error").length;
+  const percent = Math.round((done / total) * 100);
+  
+  globalFill.style.width = `${percent}%`;
+  
+  if (done === total) {
+    setTimeout(() => {
+      globalTrack.style.display = "none";
+      globalFill.style.width = "0%";
+    }, 1000);
+  }
+}
+
+// Cập nhật nút Copy All
 function updateUI() {
   const total = uploads.length;
   if (total === 0) { 
@@ -413,16 +503,22 @@ function updateUI() {
   btnCopyAll.disabled = success === 0;
 }
 
-// Hàm Upload với cơ chế Auto-Retry (Thử lại tự động)
+// Hàm Upload với Phân loại Lỗi
 async function uploadSingle(file, filename, id, attempt = 1) {
   const stEl = document.getElementById(`st-${id}`);
   const boxEl = document.getElementById(`box-${id}`);
   const urlEl = document.getElementById(`url-${id}`);
-  const retryBtn = stEl.querySelector('.btn-retry');
+  const trackEl = document.getElementById(`track-${id}`);
+  const fillEl = document.getElementById(`fill-${id}`);
+  const retryBtn = stEl.parentElement.querySelector('.btn-retry');
   
   stEl.className = "f-status";
-  stEl.querySelector('span').textContent = `Đang tải lên... (Lần ${attempt})`;
+  stEl.querySelector('span').textContent = `Đang tải... (Lần ${attempt})`;
   retryBtn.style.display = "none";
+  
+  // Hiển thị thanh load
+  trackEl.style.display = "block";
+  fillEl.style.width = "0%";
   
   const entry = uploads.find(u => u.id === id);
   if(entry) entry.status = "uploading";
@@ -432,12 +528,21 @@ async function uploadSingle(file, filename, id, attempt = 1) {
       access: "public",
       handleUploadUrl: IMAGE_SERVER + "/api/upload",
       multipart: true,
+      onUploadProgress: (progress) => {
+        const pct = Math.round(progress.percentage);
+        fillEl.style.width = `${pct}%`;
+        stEl.querySelector('span').textContent = `Đang tải... ${pct}%`;
+      }
     });
 
     const finalURL = `${IMAGE_SERVER}/images/${encodeURIComponent(filename)}`;
     
     stEl.className = "f-status ok";
-    stEl.querySelector('span').textContent = "Tải lên thành công";
+    stEl.querySelector('span').textContent = "✅ Tải lên thành công";
+    fillEl.style.width = "100%";
+    
+    setTimeout(() => { trackEl.style.display = "none"; }, 500);
+    
     boxEl.style.display = "block";
     urlEl.value = finalURL;
 
@@ -446,52 +551,81 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   } catch (err) {
     console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`, err);
     
-    // Thử lại tối đa 2 lần
-    if (attempt < 3) {
-      stEl.querySelector('span').textContent = `Lỗi mạng, thử lại (${attempt}/2)...`;
-      await delay(2000);
+    // PHÂN LOẠI LỖI
+    let errorMsg = err.message || "Lỗi không xác định";
+    let isNetworkError = false;
+
+    if (errorMsg.includes("fetch") || errorMsg.includes("network") || errorMsg.includes("Failed to fetch")) {
+      isNetworkError = true;
+    } else if (errorMsg.includes("Bad Request") || errorMsg.includes("400")) {
+      errorMsg = "Lỗi tên file/ảnh không hợp lệ";
+    } else if (errorMsg.includes("Unauthorized") || errorMsg.includes("401")) {
+      errorMsg = "Lỗi xác thực Server (Token)";
+    }
+
+    // Tự động thử lại nếu là lỗi mạng
+    if (isNetworkError && attempt < 5) {
+      stEl.querySelector('span').textContent = `Lỗi mạng, thử lại sau ${attempt * 2}s...`;
+      await delay(attempt * 2000);
       return uploadSingle(file, filename, id, attempt + 1);
     }
 
-    // Nếu thất bại hoàn toàn
+    // Nếu thất bại hoàn toàn hoặc lỗi không phải do mạng
     stEl.className = "f-status err";
-    stEl.querySelector('span').textContent = "Lỗi kết nối";
+    stEl.querySelector('span').textContent = `❌ Lỗi: ${errorMsg}`;
     retryBtn.style.display = "inline-block";
+    fillEl.style.background = "#ff0000";
     stEl.closest(".file-item").classList.add("error-item");
     if(entry) entry.status = "error";
   }
   
+  updateGlobalProgress();
   updateUI();
 }
 
-// Hàng đợi (Queue) xử lý tuần tự tránh quá tải server
+// Hàng đợi (Queue) chạy tuần tự
 async function processQueue() {
   if (isUploading) return;
   isUploading = true;
 
-  const pendingItems = uploads.filter(u => u.status === "pending");
+  globalTrack.style.display = "block";
+  globalFill.style.width = "0%";
 
-  for (let i = 0; i < pendingItems.length; i++) {
-    const item = pendingItems[i];
-    if (!uploads.find(u => u.id === item.id)) continue;
+  try {
+    const pendingItems = uploads.filter(u => u.status === "pending");
 
-    await uploadSingle(item.file, item.filename, item.id);
-    
-    // Nghỉ 1.5s trước khi tải ảnh tiếp theo
-    if (i < pendingItems.length - 1) {
-      await delay(1500);
+    for (let i = 0; i < pendingItems.length; i++) {
+      const item = pendingItems[i];
+      if (!uploads.find(u => u.id === item.id)) continue;
+
+      try {
+        await uploadSingle(item.file, item.filename, item.id);
+      } catch (e) {
+        console.error("Lỗi nghiêm trọng ở item:", item.id, e);
+      }
+      
+      if (i < pendingItems.length - 1) {
+        await delay(1000); // Nghỉ 1s giữa các ảnh
+      }
     }
+  } finally {
+    isUploading = false;
   }
-
-  isUploading = false;
 }
 
-// Xử lý khi chọn file
+// Xử lý chọn file
 function handleFiles(files) {
   const validFiles = Array.from(files);
   if (!validFiles.length) return;
 
-  const baseName = cleanName(nameInput.value);
+  const rawBaseName = nameInput.value;
+  const baseName = cleanName(rawBaseName);
+  
+  // Cảnh báo nếu tên nhập vào chứa ký tự bị xoá
+  if (rawBaseName && rawBaseName !== baseName && baseName === "") {
+    showToast("Tên nhập vào chứa toàn ký tự không hợp lệ, dùng tên ngẫu nhiên!");
+  }
+
   fileInput.value = "";
 
   for (let i = 0; i < validFiles.length; i++) {
@@ -541,6 +675,7 @@ filesList.addEventListener("click", async (e) => {
     removeBtn.closest(".file-item").remove();
     uploads = uploads.filter(u => u.id !== id);
     updateUI();
+    updateGlobalProgress();
   }
 
   if (retryBtn) {
@@ -548,7 +683,9 @@ filesList.addEventListener("click", async (e) => {
     const entry = uploads.find(u => u.id === id);
     if (entry) {
       entry.status = "pending";
-      retryBtn.closest(".file-item").classList.remove("error-item");
+      const itemEl = retryBtn.closest(".file-item");
+      itemEl.classList.remove("error-item");
+      document.getElementById(`fill-${id}`).style.background = "linear-gradient(90deg, var(--red), var(--orange))";
       processQueue();
     }
   }
