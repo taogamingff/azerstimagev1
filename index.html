@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -24,12 +25,10 @@
   :root{
     --font-heading:"GFF-Latin-Black", "GFF-Latin-Bold", system-ui, sans-serif;
     --font-body:"GFF-Latin-Bold", system-ui, sans-serif;
-    
     --red:#d93828;
     --orange:#ff5e3a;
     --bg-main:#eef2f6;
     --grid-color:rgba(0,0,0,0.05);
-    
     --glass-bg: rgba(255, 255, 255, 0.45);
     --glass-border: rgba(255, 255, 255, 0.8);
     --cut: 24px;
@@ -87,7 +86,7 @@
   .glass-inner {
     position: absolute;
     inset: 0;
-    background: 
+    background:
       radial-gradient(circle at 100% 0%, rgba(217,56,40,0.2) 0%, transparent 40%),
       radial-gradient(circle at 0% 100%, rgba(255,94,58,0.15) 0%, transparent 40%),
       var(--glass-bg);
@@ -97,7 +96,7 @@
     border: 2px solid var(--glass-border);
     pointer-events: none;
   }
-  
+
   .glass-inner::after {
     content:""; position:absolute; inset:0;
     background:linear-gradient(115deg, transparent 0%, transparent 25%, rgba(255,255,255,0.4) 42%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.4) 58%, transparent 75%, transparent 100%);
@@ -105,11 +104,11 @@
   }
   @keyframes sheen{
     0%,100%{ transform:translateX(-40%) skewX(-10deg); opacity:0.3; }
-    50%    { transform:translateX(40%)  skewX(-10deg); opacity:0.7; }
+    50%    { transform:translateX(40%) skewX(-10deg); opacity:0.7; }
   }
   @keyframes rise{
     from{ opacity:0; transform:translateY(20px); filter:blur(5px); }
-    to  { opacity:1; transform:translateY(0);    filter:blur(0); }
+    to  { opacity:1; transform:translateY(0); filter:blur(0); }
   }
 
   .content-area {
@@ -129,11 +128,11 @@
     transition: transform 0.3s;
   }
   .logo:hover { transform: scale(1.05) rotate(3deg); }
-  
-  h1 { 
+
+  h1 {
     font-family: var(--font-heading);
-    font-size: 24px; 
-    letter-spacing: 1px; 
+    font-size: 24px;
+    letter-spacing: 1px;
     margin-bottom: 4px;
     text-transform: uppercase;
     background: linear-gradient(90deg, var(--red), var(--orange), var(--red));
@@ -147,37 +146,21 @@
   }
   .desc { color: #555; font-size: 12px; }
 
-  .input-group { display: flex; flex-direction: column; gap: 6px; }
-  .input-label { font-size: 13px; color: #333; }
-  .name-input {
-    width: 100%; padding: 12px 15px; 
-    clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-    border: 1.5px solid var(--glass-border); 
-    background: rgba(255,255,255,0.5);
-    color: #222; font-family: var(--font-body); font-size: 14px; outline: none; transition: .3s;
-  }
-  .name-input::placeholder { color: #888; }
-  .name-input:focus { 
-    border-color: var(--orange); 
-    background: #fff; 
-    box-shadow: 0 0 0 3px rgba(255,94,58,0.15); 
-  }
-
   .upload-zone {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 30px 15px; 
+    padding: 30px 15px;
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-    background: rgba(255, 255, 255, 0.15); 
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 94, 58, 0.4); 
+    border: 2px solid rgba(255, 94, 58, 0.4);
     box-shadow: inset 0 0 25px rgba(255, 94, 58, 0.1), 0 8px 32px rgba(217, 56, 40, 0.1);
     cursor: pointer; transition: all 0.4s ease;
     position: relative;
   }
-  
+
   .upload-zone:hover, .upload-zone.dragover {
-    background: rgba(255, 255, 255, 0.3); 
+    background: rgba(255, 255, 255, 0.3);
     border-color: var(--orange);
     box-shadow: inset 0 0 35px rgba(255, 94, 58, 0.25), 0 12px 40px rgba(217, 56, 40, 0.2);
     transform: translateY(-3px) scale(1.01);
@@ -187,16 +170,123 @@
   .upload-zone p { color: #444; font-size: 12px; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
   #file { display: none; }
 
+  /* ================= DANH SÁCH ẢNH CHỜ ================= */
+
+  .staging-section {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .staging-header h3 {
+    font-size: 15px;
+    color: var(--red);
+    margin-bottom: 5px;
+  }
+
+  .staging-header p {
+    font-size: 12px;
+    color: #555;
+  }
+
+  #stagingList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stage-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(217,56,40,0.2);
+    clip-path: polygon(
+      0 0, calc(100% - 14px) 0,
+      100% 14px, 100% 100%,
+      14px 100%, 0 calc(100% - 14px)
+    );
+    animation: slideIn .3s ease;
+  }
+
+  .stage-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stage-thumb {
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 7px;
+    background: #eee;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .stage-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stage-original {
+    font-size: 12px;
+    color: #555;
+    overflow-wrap: anywhere;
+    margin-bottom: 7px;
+  }
+
+  .stage-name-input {
+    width: 100%;
+    padding: 11px;
+    background: rgba(255,255,255,0.8);
+    border: 1.5px solid rgba(217,56,40,0.3);
+    color: #222;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    clip-path: polygon(
+      8px 0, 100% 0, 100% calc(100% - 8px),
+      calc(100% - 8px) 100%, 0 100%, 0 8px
+    );
+  }
+
+  .stage-name-input:focus {
+    border-color: var(--orange);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(255,94,58,0.1);
+  }
+
+  .stage-remove {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .stage-remove:hover { color: var(--red); }
+
+  .stage-ext {
+    font-size: 11px;
+    color: #777;
+    margin-top: 5px;
+  }
+
   .global-progress-container {
     width: 100%;
     height: 8px;
     background: rgba(0,0,0,0.08);
     border-radius: 4px;
     overflow: hidden;
-    display: none; 
+    display: none;
     margin-top: 5px;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
   }
+
   .global-progress-fill {
     height: 100%;
     width: 0%;
@@ -207,10 +297,10 @@
   }
 
   .result-section { display: none; flex-direction: column; gap: 15px; }
-  
+
   .btn-copy-all {
     width: 100%;
-    background: linear-gradient(135deg, var(--red), var(--orange)); 
+    background: linear-gradient(135deg, var(--red), var(--orange));
     color: #fff; border: none; padding: 14px;
     clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
     font-family: var(--font-body); font-size: 15px; letter-spacing: 1px;
@@ -223,7 +313,7 @@
   .file-item {
     --item-cut: 14px;
     display: flex; flex-direction: column; padding: 15px; gap: 12px;
-    background: 
+    background:
       radial-gradient(circle at 100% 0%, rgba(217,56,40,0.15) 0%, transparent 50%),
       rgba(255,255,255,0.4);
     backdrop-filter: blur(10px);
@@ -232,8 +322,15 @@
     clip-path: polygon(0 0, calc(100% - var(--item-cut)) 0, 100% var(--item-cut), 100% 100%, var(--item-cut) 100%, 0 calc(100% - var(--item-cut)));
     position: relative; transition: .3s; animation: slideIn .3s ease;
   }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .file-item:hover { background: radial-gradient(circle at 100% 0%, rgba(217,56,40,0.25) 0%, transparent 50%), rgba(255,255,255,0.6); }
-  .file-item.error-item { 
+
+  .file-item.error-item {
     background: radial-gradient(circle at 100% 0%, rgba(255,0,0,0.15) 0%, transparent 50%), rgba(255,245,245,0.6);
     border-color: rgba(255,150,150,0.8);
   }
@@ -241,7 +338,7 @@
   .file-top { display: flex; gap: 12px; align-items: center; }
   .thumb { width: 50px; height: 50px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: #eee; border: 1px solid rgba(0,0,0,0.1); }
   .thumb img { width: 100%; height: 100%; object-fit: cover; }
-  
+
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
   .f-name { font-size: 14px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
   .f-status { font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -252,6 +349,7 @@
     width: 100%; height: 4px; background: rgba(0,0,0,0.08);
     border-radius: 2px; margin-top: 6px; overflow: hidden; display: none;
   }
+
   .progress-fill {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, var(--red), var(--orange));
@@ -266,16 +364,19 @@
   .btn-retry:hover { background: #b52a1c; }
 
   .url-box { display: none; width: 100%; }
+
   .url-group {
-    display: flex; background: rgba(255,255,255,0.7); 
+    display: flex; background: rgba(255,255,255,0.7);
     border: 1.5px solid rgba(217,56,40,0.3);
     clip-path: polygon(var(--item-cut) 0, 100% 0, 100% calc(100% - var(--item-cut)), calc(100% - var(--item-cut)) 100%, 0 100%, 0 var(--item-cut));
     overflow: hidden;
   }
+
   .f-url {
     flex: 1; padding: 10px 12px; background: transparent; border: none;
     color: var(--red); font-family: var(--font-body); font-size: 12px; outline: none; width: 100%;
   }
+
   .btn-copy {
     background: var(--red); border: none; color: #fff; padding: 0 16px;
     cursor: pointer; font-family: var(--font-body); font-size: 13px; transition: .2s;
@@ -292,7 +393,7 @@
   .toast {
     position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 20px);
     background: rgba(20, 20, 20, 0.9); color: #fff; padding: 12px 24px; border-radius: 8px;
-    font-family: var(--font-body); font-size: 14px; 
+    font-family: var(--font-body); font-size: 14px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     opacity: 0; pointer-events: none; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
   }
@@ -305,39 +406,57 @@
   }
 </style>
 </head>
+
 <body>
 
 <div class="glow" aria-hidden="true"></div>
 
 <div class="glass-wrapper">
   <div class="glass-inner"></div>
-  
+
   <div class="content-area">
-    
+
     <div class="header">
       <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst" />
       <h1>AZERST UPLOAD</h1>
       <p class="desc">Tải ảnh nhanh, nhận link trực tiếp</p>
     </div>
 
-    <div class="input-group">
-      <label class="input-label" for="imageName">Tên ảnh muốn lưu (Không bắt buộc)</label>
-      <input id="imageName" class="name-input" type="text" maxlength="50" placeholder="VD: AZERST_IMG" autocomplete="off" />
-    </div>
-
+    <!-- CHỌN NHIỀU ẢNH -->
     <label class="upload-zone" for="file" id="dropZone">
-      <h3>Chọn hoặc kéo thả ảnh</h3>
+      <h3>Chọn hoặc kéo thả nhiều ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
     </label>
+
     <input id="file" type="file" multiple accept="image/*" />
 
+    <!-- DANH SÁCH ẢNH CHỜ -->
+    <div class="staging-section" id="stagingSection">
+
+      <div class="staging-header">
+        <h3>DANH SÁCH ẢNH ĐÃ CHỌN</h3>
+        <p>Đặt tên riêng cho từng ảnh trước khi xử lý.</p>
+      </div>
+
+      <div id="stagingList"></div>
+
+      <button class="btn-copy-all" id="btnProcess" type="button">
+        XỬ LÝ ẢNH
+      </button>
+
+    </div>
+
+    <!-- TIẾN TRÌNH TỔNG -->
     <div class="global-progress-container" id="globalProgressTrack">
       <div class="global-progress-fill" id="globalProgressFill"></div>
     </div>
 
+    <!-- KẾT QUẢ -->
     <div id="resultSection" class="result-section">
-      <button class="btn-copy-all" id="btnCopyAll" style="display: none;">COPY TẤT CẢ LINK</button>
-      <div id="filesList" style="display: flex; flex-direction: column; gap: 12px;"></div>
+      <button class="btn-copy-all" id="btnCopyAll" style="display:none;">
+        COPY TẤT CẢ LINK
+      </button>
+      <div id="filesList" style="display:flex;flex-direction:column;gap:12px;"></div>
     </div>
 
   </div>
@@ -348,144 +467,476 @@
 <script type="module">
 import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
-/* ĐỊNH NGHĨA SERVER VÀ HÀM TẠO LINK */
+/* ================= CẤU HÌNH SERVER ================= */
+
 const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
 const ALLOWED_EXTS = ["png", "jpg", "jpeg", "webp", "gif", "avif"];
-const MAX_CONCURRENT = 5; // Tải cùng lúc 5 ảnh
+const MAX_CONCURRENT = 5;
 
 const fileInput = document.getElementById("file");
-const nameInput = document.getElementById("imageName");
 const dropZone = document.getElementById("dropZone");
+
+const stagingSection = document.getElementById("stagingSection");
+const stagingList = document.getElementById("stagingList");
+const btnProcess = document.getElementById("btnProcess");
+
 const resultSection = document.getElementById("resultSection");
 const filesList = document.getElementById("filesList");
 const btnCopyAll = document.getElementById("btnCopyAll");
+
 const toast = document.getElementById("toast");
 const globalTrack = document.getElementById("globalProgressTrack");
 const globalFill = document.getElementById("globalProgressFill");
 
 let uploads = [];
+let stagedFiles = [];
 let idCounter = 0;
 let activeUploads = 0;
+let toastTimer = null;
 
-// Hàm tạo link CHÍNH XÁC theo yêu cầu (Giữ nguyên format cũ)
+/* ================= TẠO URL ================= */
+
 function imageURL(filename) {
   return IMAGE_SERVER + "/images/" + encodeURIComponent(filename);
 }
 
-const randomName = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]).join("");
+const randomName = () =>
+  Array.from(
+    crypto.getRandomValues(new Uint8Array(8)),
+    v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]
+  ).join("");
 
-// Lấy đuôi file
 const getExt = (file) => {
   const typeMap = {
-    "image/png": "png", "image/jpeg": "jpg", "image/jpg": "jpg", 
-    "image/webp": "webp", "image/gif": "gif", "image/avif": "avif"
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg",
+    "image/webp": "webp",
+    "image/gif": "gif",
+    "image/avif": "avif"
   };
+
   if (typeMap[file.type]) return typeMap[file.type];
-  
-  const parts = file.name.split('.');
+
+  const parts = file.name.split(".");
   if (parts.length > 1) {
     const ext = parts.pop().toLowerCase();
     return ext === "jpeg" ? "jpg" : ext;
   }
-  return "png"; 
+
+  return "png";
 };
 
-// Chuẩn hoá tên file
+/* ================= CHUẨN HÓA TÊN ================= */
+
 const cleanName = (v) => {
   if (!v) return "";
-  return v.trim().normalize("NFD")
+
+  return v.trim()
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d").replace(/Đ/g, "D")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
     .replace(/\s+/g, "_")
-    .replace(/[^A-Za-z0-9_-]/g, ""); 
+    .replace(/[^A-Za-z0-9_-]/g, "");
 };
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
+/* ================= THÔNG BÁO ================= */
+
 const showToast = (msg) => {
   toast.textContent = msg;
   toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
 };
 
+/* ================= COPY ================= */
+
 const copyText = async (text) => {
-  try { await navigator.clipboard.writeText(text); return true; } 
-  catch { 
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
     try {
       const ta = document.createElement("textarea");
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      document.execCommand("copy"); document.body.removeChild(ta); return true;
-    } catch { return false; }
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+
+      const success = document.execCommand("copy");
+      document.body.removeChild(ta);
+
+      return success;
+    } catch {
+      return false;
+    }
   }
 };
 
+/* ================= TẠO ITEM KẾT QUẢ ================= */
+
 function createItem(file, filename) {
   const id = ++idCounter;
+
   let thumbURL = "https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png";
-  try { thumbURL = URL.createObjectURL(file); } catch(e) {}
-  
+
+  try {
+    thumbURL = URL.createObjectURL(file);
+  } catch(e) {}
+
   const div = document.createElement("div");
   div.className = "file-item";
   div.dataset.id = id;
-  div.innerHTML = `
-    <div class="file-top">
-      <div class="thumb"><img src="${thumbURL}" alt="" onerror="this.src='https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png'"></div>
-      <div class="info">
-        <div class="f-name" title="${filename}">${filename}</div>
-        <div class="f-status" id="st-${id}">
-          <span>Đang chờ...</span>
-        </div>
-        <div class="progress-track" id="track-${id}">
-          <div class="progress-fill" id="fill-${id}"></div>
-        </div>
-        <button class="btn-retry" data-retry="${id}">Thử lại</button>
-      </div>
-    </div>
-    <div class="url-box" id="box-${id}">
-      <div class="url-group">
-        <input class="f-url" id="url-${id}" readonly>
-        <button class="btn-copy" data-copy="${id}">COPY</button>
-      </div>
-    </div>
-    <button class="remove-btn" data-remove="${id}">×</button>
-  `;
+
+  const top = document.createElement("div");
+  top.className = "file-top";
+
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
+
+  const img = document.createElement("img");
+  img.src = thumbURL;
+  img.alt = "";
+
+  img.onerror = () => {
+    img.src = "https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png";
+  };
+
+  thumb.appendChild(img);
+
+  const info = document.createElement("div");
+  info.className = "info";
+
+  const name = document.createElement("div");
+  name.className = "f-name";
+  name.title = filename;
+  name.textContent = filename;
+
+  const status = document.createElement("div");
+  status.className = "f-status";
+  status.id = `st-${id}`;
+
+  const statusText = document.createElement("span");
+  statusText.textContent = "Đang chờ...";
+
+  status.appendChild(statusText);
+
+  const track = document.createElement("div");
+  track.className = "progress-track";
+  track.id = `track-${id}`;
+
+  const fill = document.createElement("div");
+  fill.className = "progress-fill";
+  fill.id = `fill-${id}`;
+
+  track.appendChild(fill);
+
+  const retry = document.createElement("button");
+  retry.className = "btn-retry";
+  retry.dataset.retry = id;
+  retry.type = "button";
+  retry.textContent = "Thử lại";
+
+  info.append(name, status, track, retry);
+  top.append(thumb, info);
+
+  const urlBox = document.createElement("div");
+  urlBox.className = "url-box";
+  urlBox.id = `box-${id}`;
+
+  const urlGroup = document.createElement("div");
+  urlGroup.className = "url-group";
+
+  const urlInput = document.createElement("input");
+  urlInput.className = "f-url";
+  urlInput.id = `url-${id}`;
+  urlInput.readOnly = true;
+
+  const copyButton = document.createElement("button");
+  copyButton.className = "btn-copy";
+  copyButton.dataset.copy = id;
+  copyButton.type = "button";
+  copyButton.textContent = "COPY";
+
+  urlGroup.append(urlInput, copyButton);
+  urlBox.appendChild(urlGroup);
+
+  const removeButton = document.createElement("button");
+  removeButton.className = "remove-btn";
+  removeButton.dataset.remove = id;
+  removeButton.type = "button";
+  removeButton.textContent = "×";
+
+  div.append(top, urlBox, removeButton);
+
   return { div, id };
 }
 
+/* ================= DANH SÁCH ẢNH CHỜ ================= */
+
+function renderStagedFiles() {
+  stagingList.innerHTML = "";
+
+  if (stagedFiles.length === 0) {
+    stagingSection.style.display = "none";
+    return;
+  }
+
+  stagingSection.style.display = "flex";
+
+  stagedFiles.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "stage-item";
+
+    const top = document.createElement("div");
+    top.className = "stage-top";
+
+    const img = document.createElement("img");
+    img.className = "stage-thumb";
+    img.src = item.preview;
+    img.alt = "Ảnh xem trước";
+
+    const info = document.createElement("div");
+    info.className = "stage-info";
+
+    const original = document.createElement("div");
+    original.className = "stage-original";
+    original.textContent = item.file.name;
+
+    const input = document.createElement("input");
+    input.className = "stage-name-input";
+    input.type = "text";
+    input.maxLength = 50;
+    input.placeholder = "Nhập tên ảnh muốn lưu...";
+    input.value = item.name;
+
+    input.addEventListener("input", () => {
+      item.name = input.value;
+    });
+
+    const ext = document.createElement("div");
+    ext.className = "stage-ext";
+    ext.textContent = "Định dạng: ." + getExt(item.file);
+
+    info.append(original, input, ext);
+
+    const remove = document.createElement("button");
+    remove.className = "stage-remove";
+    remove.type = "button";
+    remove.textContent = "×";
+    remove.title = "Xóa ảnh này";
+
+    remove.addEventListener("click", () => {
+      URL.revokeObjectURL(item.preview);
+      stagedFiles.splice(index, 1);
+      renderStagedFiles();
+      showToast("Đã xóa ảnh khỏi danh sách!");
+    });
+
+    top.append(img, info, remove);
+    div.appendChild(top);
+
+    stagingList.appendChild(div);
+  });
+
+  btnProcess.textContent = `XỬ LÝ ${stagedFiles.length} ẢNH`;
+}
+
+/* ================= CHỌN NHIỀU ẢNH ================= */
+
+function handleFiles(inputFiles) {
+  try {
+    const validFiles = Array.from(inputFiles);
+
+    if (!validFiles.length) return;
+
+    let addedCount = 0;
+
+    for (const f of validFiles) {
+      const parts = f.name.split(".");
+      const ext = parts.length > 1
+        ? parts.pop().toLowerCase()
+        : "";
+
+      const isImage =
+        f.type.startsWith("image/") ||
+        ALLOWED_EXTS.includes(ext);
+
+      if (!isImage) {
+        showToast(`File "${f.name}" không phải ảnh!`);
+        continue;
+      }
+
+      if (f.size > MAX_SIZE) {
+        showToast(`File "${f.name}" quá 10GB!`);
+        continue;
+      }
+
+      const originalName = f.name.replace(/\.[^.]+$/, "");
+      const preview = URL.createObjectURL(f);
+
+      stagedFiles.push({
+        file: f,
+        name: cleanName(originalName),
+        preview
+      });
+
+      addedCount++;
+    }
+
+    fileInput.value = "";
+
+    if (addedCount > 0) {
+      renderStagedFiles();
+      showToast(`Đã thêm ${addedCount} ảnh vào danh sách!`);
+    }
+
+  } catch (error) {
+    console.error("Lỗi thêm ảnh:", error);
+    showToast("Lỗi khi thêm ảnh!");
+  }
+}
+
+/* ================= XỬ LÝ DANH SÁCH ẢNH ================= */
+
+btnProcess.addEventListener("click", () => {
+  if (stagedFiles.length === 0) {
+    showToast("Vui lòng chọn ảnh trước!");
+    return;
+  }
+
+  if (btnProcess.disabled) return;
+
+  btnProcess.disabled = true;
+  btnProcess.textContent = "ĐANG XỬ LÝ...";
+
+  let addedCount = 0;
+  const existingNames = new Set(
+    uploads.map(u => u.filename.toLowerCase())
+  );
+
+  try {
+    for (const item of stagedFiles) {
+      let name = cleanName(item.name);
+
+      if (!name) {
+        name = randomName();
+      }
+
+      const ext = getExt(item.file);
+      let filename = `${name}.${ext}`;
+
+      // Tránh trùng tên trong danh sách hiện tại
+      if (existingNames.has(filename.toLowerCase())) {
+        let suffix = 2;
+
+        while (existingNames.has(`${name}_${suffix}.${ext}`.toLowerCase())) {
+          suffix++;
+        }
+
+        filename = `${name}_${suffix}.${ext}`;
+      }
+
+      existingNames.add(filename.toLowerCase());
+
+      const { div, id } = createItem(item.file, filename);
+
+      filesList.appendChild(div);
+
+      uploads.push({
+        id,
+        file: item.file,
+        filename,
+        url: null,
+        status: "pending"
+      });
+
+      URL.revokeObjectURL(item.preview);
+      addedCount++;
+    }
+
+    stagedFiles = [];
+    renderStagedFiles();
+
+    if (addedCount > 0) {
+      resultSection.style.display = "flex";
+      updateUI();
+
+      processQueue();
+
+      showToast(`Bắt đầu xử lý ${addedCount} ảnh!`);
+    }
+
+  } catch (error) {
+    console.error("Lỗi xử lý ảnh:", error);
+    showToast("Có lỗi khi xử lý ảnh!");
+  } finally {
+    btnProcess.disabled = false;
+    btnProcess.textContent = "XỬ LÝ ẢNH";
+  }
+});
+
+/* ================= TIẾN TRÌNH TỔNG ================= */
+
 function updateGlobalProgress() {
   const total = uploads.length;
-  if (total === 0) return;
 
-  const done = uploads.filter(u => u.status === "success" || u.status === "error").length;
+  if (total === 0) {
+    globalTrack.style.display = "none";
+    globalFill.style.width = "0%";
+    return;
+  }
+
+  const done = uploads.filter(
+    u => u.status === "success" || u.status === "error"
+  ).length;
+
   const percent = Math.round((done / total) * 100);
-  
+
   globalFill.style.width = `${percent}%`;
-  
+
   if (done === total) {
     setTimeout(() => {
-      globalTrack.style.display = "none";
-      globalFill.style.width = "0%";
+      if (uploads.every(u => u.status === "success" || u.status === "error")) {
+        globalTrack.style.display = "none";
+        globalFill.style.width = "0%";
+      }
     }, 1000);
   }
 }
 
+/* ================= CẬP NHẬT GIAO DIỆN ================= */
+
 function updateUI() {
   const total = uploads.length;
-  if (total === 0) { 
-    resultSection.style.display = "none"; 
-    return; 
-  }
-  
-  if (total >= 2) {
-    btnCopyAll.style.display = "block";
-  } else {
+
+  if (total === 0) {
+    resultSection.style.display = "none";
     btnCopyAll.style.display = "none";
+    return;
   }
 
-  const success = uploads.filter(u => u.status === "success").length;
+  resultSection.style.display = "flex";
+
+  btnCopyAll.style.display = total >= 2 ? "block" : "none";
+
+  const success = uploads.filter(
+    u => u.status === "success"
+  ).length;
+
   btnCopyAll.disabled = success === 0;
 }
+
+/* ================= UPLOAD ẢNH ================= */
 
 async function uploadSingle(file, filename, id, attempt = 1) {
   const stEl = document.getElementById(`st-${id}`);
@@ -493,89 +944,123 @@ async function uploadSingle(file, filename, id, attempt = 1) {
   const urlEl = document.getElementById(`url-${id}`);
   const trackEl = document.getElementById(`track-${id}`);
   const fillEl = document.getElementById(`fill-${id}`);
-  
+
   if (!stEl || !boxEl || !urlEl || !trackEl || !fillEl) return;
-  
-  const retryBtn = stEl.parentElement.querySelector('.btn-retry');
-  
+
+  const retryBtn = stEl.parentElement.querySelector(".btn-retry");
+
   stEl.className = "f-status";
-  stEl.querySelector('span').textContent = `Đang tải... (Lần ${attempt})`;
-  if(retryBtn) retryBtn.style.display = "none";
-  
+  stEl.querySelector("span").textContent = `Đang tải... (Lần ${attempt})`;
+
+  if (retryBtn) retryBtn.style.display = "none";
+
   trackEl.style.display = "block";
   fillEl.style.width = "0%";
-  
+
   const entry = uploads.find(u => u.id === id);
-  if(entry) entry.status = "uploading";
+
+  if (entry) entry.status = "uploading";
+
+  updateUI();
 
   try {
     await upload(`images/${filename}`, file, {
       access: "public",
       handleUploadUrl: IMAGE_SERVER + "/api/upload",
-      multipart: true, 
+      multipart: true,
+
       onUploadProgress: (progress) => {
         if (!progress) return;
+
         let pct = Math.round(progress.percentage || 0);
-        if (pct === 0) pct = 1; 
+
+        if (pct === 0) pct = 1;
+
         fillEl.style.width = `${pct}%`;
-        stEl.querySelector('span').textContent = `Đang tải... ${pct}%`;
+        stEl.querySelector("span").textContent = `Đang tải... ${pct}%`;
       }
     });
 
-    // === SỬ DỤNG HÀM imageURL ĐỂ TRẢ VỀ ĐÚNG FORMAT CŨ ===
     const finalURL = imageURL(filename);
-    
+
     stEl.className = "f-status ok";
-    stEl.querySelector('span').textContent = "Tải lên thành công"; // Đã xoá icon ✅
+    stEl.querySelector("span").textContent = "Tải lên thành công";
+
     fillEl.style.width = "100%";
-    
-    setTimeout(() => { if(trackEl) trackEl.style.display = "none"; }, 500);
+
+    setTimeout(() => {
+      if (trackEl) trackEl.style.display = "none";
+    }, 500);
+
     boxEl.style.display = "block";
     urlEl.value = finalURL;
 
-    if(entry) { entry.url = finalURL; entry.status = "success"; }
+    if (entry) {
+      entry.url = finalURL;
+      entry.status = "success";
+    }
 
   } catch (err) {
     console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`, err);
-    
+
     let errorMsg = "Lỗi kết nối";
-    if (typeof err === "string") errorMsg = err;
-    else if (err?.message) errorMsg = err.message;
-    
-    if (errorMsg.includes("Failed to retrieve the client token")) errorMsg = "Server quá tải";
-    
-    // Tự động thử lại 5 lần
+
+    if (typeof err === "string") {
+      errorMsg = err;
+    } else if (err?.message) {
+      errorMsg = err.message;
+    }
+
+    if (errorMsg.includes("Failed to retrieve the client token")) {
+      errorMsg = "Server quá tải";
+    }
+
+    // Tự động thử lại tối đa 5 lần
     if (attempt < 5) {
-      if(stEl) stEl.querySelector('span').textContent = `Đang chờ máy chủ, thử lại (${attempt}/5)...`;
-      if(fillEl) fillEl.style.background = "#ffaa00";
-      await delay(1500); 
-      if (!document.getElementById(`st-${id}`)) return; 
-      if(fillEl) fillEl.style.background = "linear-gradient(90deg, var(--red), var(--orange))";
+      stEl.querySelector("span").textContent =
+        `Đang chờ máy chủ, thử lại (${attempt}/5)...`;
+
+      fillEl.style.background = "#ffaa00";
+
+      await delay(1500);
+
+      if (!document.getElementById(`st-${id}`)) return;
+
+      fillEl.style.background =
+        "linear-gradient(90deg, var(--red), var(--orange))";
+
       return uploadSingle(file, filename, id, attempt + 1);
     }
 
-    if(stEl) {
-      stEl.className = "f-status err";
-      stEl.querySelector('span').textContent = `❌ ${errorMsg}`;
-    }
-    if(retryBtn) retryBtn.style.display = "inline-block";
-    if(fillEl) fillEl.style.background = "#ff0000";
-    if(stEl) stEl.closest(".file-item").classList.add("error-item");
-    
-    if(entry) entry.status = "error";
+    stEl.className = "f-status err";
+    stEl.querySelector("span").textContent = `Lỗi: ${errorMsg}`;
+
+    if (retryBtn) retryBtn.style.display = "inline-block";
+
+    fillEl.style.background = "#ff0000";
+
+    stEl.closest(".file-item").classList.add("error-item");
+
+    if (entry) entry.status = "error";
   }
-  
+
   updateGlobalProgress();
   updateUI();
 }
 
-// Hàng đợi đa luồng (Không cần chờ)
+/* ================= HÀNG ĐỢI 5 LUỒNG ================= */
+
 function processQueue() {
   if (activeUploads >= MAX_CONCURRENT) return;
-  
-  const pendingItems = uploads.filter(u => u.status === "pending");
+
+  const pendingItems = uploads.filter(
+    u => u.status === "pending"
+  );
+
   if (pendingItems.length === 0) {
-    if (activeUploads === 0) globalTrack.style.display = "none";
+    if (activeUploads === 0) {
+      globalTrack.style.display = "none";
+    }
     return;
   }
 
@@ -583,8 +1068,8 @@ function processQueue() {
 
   for (const item of pendingItems) {
     if (activeUploads >= MAX_CONCURRENT) break;
-    
-    item.status = "uploading"; 
+
+    item.status = "uploading";
     activeUploads++;
 
     uploadSingle(item.file, item.filename, item.id)
@@ -596,73 +1081,33 @@ function processQueue() {
   }
 }
 
-function handleFiles(inputFiles) {
-  try {
-    const validFiles = Array.from(inputFiles);
-    if (!validFiles.length) return;
+/* ================= SỰ KIỆN CHỌN ẢNH ================= */
 
-    const rawBaseName = nameInput.value;
-    const baseName = cleanName(rawBaseName);
-    
-    if (rawBaseName && rawBaseName !== baseName && baseName === "") {
-      showToast("Tên nhập vào toàn ký tự đặc biệt, đã chuyển sang tên ngẫu nhiên!");
-    }
+fileInput.addEventListener("change", (e) => {
+  handleFiles(e.target.files);
+});
 
-    fileInput.value = "";
-    let addedCount = 0;
+/* ================= KÉO THẢ ẢNH ================= */
 
-    for (let i = 0; i < validFiles.length; i++) {
-      const f = validFiles[i];
-      
-      const parts = f.name.split('.');
-      const ext = parts.length > 1 ? parts.pop().toLowerCase() : "";
-      const isImage = f.type.startsWith('image/') || ALLOWED_EXTS.includes(ext);
+dropZone.addEventListener("dragover", e => {
+  e.preventDefault();
+  dropZone.classList.add("dragover");
+});
 
-      if (!isImage) {
-        showToast(`File "${f.name}" không phải là ảnh!`);
-        continue;
-      }
+dropZone.addEventListener("dragleave", () => {
+  dropZone.classList.remove("dragover");
+});
 
-      if (f.size > MAX_SIZE) {
-        showToast(`File "${f.name}" quá 10GB!`);
-        continue;
-      }
+dropZone.addEventListener("drop", e => {
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
 
-      let name = baseName ? (validFiles.length > 1 ? `${baseName}_${i+1}` : baseName) : randomName();
-      if (!name) name = randomName();
-
-      const filename = `${name}.${getExt(f)}`;
-
-      const { div, id } = createItem(f, filename);
-      filesList.appendChild(div);
-      
-      uploads.push({ id, file: f, filename, url: null, status: "pending" });
-      addedCount++;
-    }
-
-    if (addedCount > 0) {
-      resultSection.style.display = "flex";
-      updateUI();
-      processQueue(); 
-    }
-  } catch (error) {
-    console.error("Lỗi thêm file:", error);
-    showToast("Lỗi khi thêm ảnh: " + error.message);
-  }
-}
-
-// Events
-fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
-
-dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("dragover"); });
-dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
-dropZone.addEventListener("drop", e => { 
-  e.preventDefault(); 
-  dropZone.classList.remove("dragover"); 
-  if(e.dataTransfer && e.dataTransfer.files) {
-    handleFiles(e.dataTransfer.files); 
+  if (e.dataTransfer && e.dataTransfer.files) {
+    handleFiles(e.dataTransfer.files);
   }
 });
+
+/* ================= COPY / XÓA / THỬ LẠI ================= */
 
 filesList.addEventListener("click", async (e) => {
   const copyBtn = e.target.closest("[data-copy]");
@@ -670,18 +1115,40 @@ filesList.addEventListener("click", async (e) => {
   const retryBtn = e.target.closest("[data-retry]");
 
   if (copyBtn) {
-    const id = copyBtn.dataset.copy;
-    const entry = uploads.find(u => u.id == id);
+    const id = Number(copyBtn.dataset.copy);
+    const entry = uploads.find(u => u.id === id);
+
     if (entry && entry.url) {
       const ok = await copyText(entry.url);
-      if (ok) showToast("Sao chép thành công!");
+
+      if (ok) {
+        showToast("Sao chép thành công!");
+      } else {
+        showToast("Không thể sao chép link!");
+      }
     }
   }
 
   if (removeBtn) {
     const id = Number(removeBtn.dataset.remove);
-    removeBtn.closest(".file-item").remove();
+    const entry = uploads.find(u => u.id === id);
+
+    if (entry && entry.status === "uploading") {
+      showToast("Ảnh đang tải lên, vui lòng chờ!");
+      return;
+    }
+
+    const itemEl = removeBtn.closest(".file-item");
+    const img = itemEl?.querySelector(".thumb img");
+
+    if (img && img.src.startsWith("blob:")) {
+      URL.revokeObjectURL(img.src);
+    }
+
+    itemEl.remove();
+
     uploads = uploads.filter(u => u.id !== id);
+
     updateUI();
     updateGlobalProgress();
   }
@@ -689,22 +1156,40 @@ filesList.addEventListener("click", async (e) => {
   if (retryBtn) {
     const id = Number(retryBtn.dataset.retry);
     const entry = uploads.find(u => u.id === id);
-    if (entry) {
+
+    if (entry && entry.status === "error") {
       entry.status = "pending";
+
       const itemEl = retryBtn.closest(".file-item");
+
       itemEl.classList.remove("error-item");
-      document.getElementById(`fill-${id}`).style.background = "linear-gradient(90deg, var(--red), var(--orange))";
+
+      document.getElementById(`fill-${id}`).style.background =
+        "linear-gradient(90deg, var(--red), var(--orange))";
+
       processQueue();
     }
   }
 });
 
+/* ================= COPY TẤT CẢ LINK ================= */
+
 btnCopyAll.addEventListener("click", async () => {
-  const urls = uploads.filter(u => u.status === "success" && u.url).map(u => u.url);
+  const urls = uploads
+    .filter(u => u.status === "success" && u.url)
+    .map(u => u.url);
+
   if (urls.length === 0) return;
+
   const ok = await copyText(urls.join("\n"));
-  if (ok) showToast(`Sao chép thành công ${urls.length} link!`);
+
+  if (ok) {
+    showToast(`Sao chép thành công ${urls.length} link!`);
+  } else {
+    showToast("Không thể sao chép link!");
+  }
 });
+
 </script>
 
 </body>
