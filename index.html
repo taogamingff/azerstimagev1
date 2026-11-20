@@ -2,562 +2,564 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AZERST — Image Upload</title>
-<link rel="icon" href="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" />
+<link rel="icon" href="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png">
 
 <style>
-  /* ================= FONT GFF ================= */
-  @font-face{
-    font-family:"GFF-Latin-Bold";
-    src:url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),
-        url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
-    font-display:swap;
-  }
-
-  @font-face{
-    font-family:"GFF-Latin-Black";
-    src:url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Black.woff2") format("woff2"),
-        url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Black.woff") format("woff");
-    font-display:swap;
-  }
-
-  :root{
-    --font-heading:"GFF-Latin-Black","GFF-Latin-Bold",system-ui,sans-serif;
-    --font-body:"GFF-Latin-Bold",system-ui,sans-serif;
-    --red:#d93828;
-    --orange:#ff5e3a;
-    --bg-main:#eef2f6;
-    --grid-color:rgba(0,0,0,0.05);
-    --glass-bg:rgba(255,255,255,0.45);
-    --glass-border:rgba(255,255,255,0.8);
-    --cut:24px;
-    --cut-sm:10px;
-  }
-
-  *,*::before,*::after{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-  }
-
-  html,body{
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-
-  body{
-    font-family:var(--font-body);
-    background-color:var(--bg-main);
-    background-image:
-      linear-gradient(var(--grid-color) 1px,transparent 1px),
-      linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
-    background-size:30px 30px;
-    background-position:center top;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:40px 15px;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  .glow{
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    background:
-      radial-gradient(ellipse at 20% 30%,rgba(255,94,58,0.15) 0%,transparent 50%),
-      radial-gradient(ellipse at 80% 70%,rgba(217,56,40,0.15) 0%,transparent 50%);
-    filter:blur(50px);
-    animation:pulseGlow 6s ease-in-out infinite alternate;
-  }
-
-  @keyframes pulseGlow{
-    0%{transform:scale(0.95);opacity:0.6;}
-    100%{transform:scale(1.05);opacity:1;}
-  }
-
-  .glass-wrapper{
-    width:min(600px,100%);
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    clip-path:polygon(
-      var(--cut) 0,100% 0,
-      100% calc(100% - var(--cut)),
-      calc(100% - var(--cut)) 100%,
-      0 100%,0 var(--cut)
-    );
-    animation:rise 0.8s cubic-bezier(.2,.8,.2,1) both;
-    margin-bottom:20px;
-  }
-
-  .glass-inner{
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(circle at 100% 0%,rgba(217,56,40,0.2) 0%,transparent 40%),
-      radial-gradient(circle at 0% 100%,rgba(255,94,58,0.15) 0%,transparent 40%),
-      var(--glass-bg);
-    backdrop-filter:blur(30px) saturate(180%);
-    -webkit-backdrop-filter:blur(30px) saturate(180%);
-    z-index:0;
-    border:2px solid var(--glass-border);
-    pointer-events:none;
-  }
-
-  .glass-inner::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(115deg,transparent 0%,transparent 25%,rgba(255,255,255,0.4) 42%,rgba(255,255,255,0.7) 50%,rgba(255,255,255,0.4) 58%,transparent 75%,transparent 100%);
-    animation:sheen 8s ease-in-out infinite;
-    opacity:0.6;
-  }
-
-  @keyframes sheen{
-    0%,100%{transform:translateX(-40%) skewX(-10deg);opacity:0.3;}
-    50%{transform:translateX(40%) skewX(-10deg);opacity:0.7;}
-  }
-
-  @keyframes rise{
-    from{opacity:0;transform:translateY(20px);filter:blur(5px);}
-    to{opacity:1;transform:translateY(0);filter:blur(0);}
-  }
-
-  .content-area{
-    position:relative;
-    z-index:1;
-    padding:30px 25px;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-  }
-
-  .header{text-align:center;}
-
-  .logo{
-    width:65px;
-    height:65px;
-    margin:0 auto 12px;
-    object-fit:cover;
-    border-radius:16px;
-    box-shadow:0 6px 20px rgba(217,56,40,0.25);
-    transition:transform 0.3s;
-  }
-
-  .logo:hover{transform:scale(1.05) rotate(3deg);}
-
-  h1{
-    font-family:var(--font-heading);
-    font-size:24px;
-    letter-spacing:1px;
-    margin-bottom:4px;
-    text-transform:uppercase;
-    background:linear-gradient(90deg,var(--red),var(--orange),var(--red));
-    background-size:200% auto;
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    animation:textShine 3s linear infinite;
-  }
-
-  @keyframes textShine{
-    to{background-position:200% center;}
-  }
-
-  .desc{color:#555;font-size:12px;}
-
-  /* ================= UPLOAD ================= */
-
-  .upload-zone{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:30px 15px;
-    clip-path:polygon(var(--cut-sm) 0,100% 0,100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,0 100%,0 var(--cut-sm));
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border:2px solid rgba(255,94,58,0.4);
-    box-shadow:inset 0 0 25px rgba(255,94,58,0.1),0 8px 32px rgba(217,56,40,0.1);
-    cursor:pointer;
-    transition:all 0.4s ease;
-    position:relative;
-  }
-
-  .upload-zone:hover,.upload-zone.dragover{
-    background:rgba(255,255,255,0.3);
-    border-color:var(--orange);
-    box-shadow:inset 0 0 35px rgba(255,94,58,0.25),0 12px 40px rgba(217,56,40,0.2);
-    transform:translateY(-3px) scale(1.01);
-  }
-
-  .upload-zone h3{
-    color:#222;
-    font-size:15px;
-    margin-bottom:6px;
-    text-shadow:0 1px 2px rgba(255,255,255,0.8);
-  }
-
-  .upload-zone p{
-    color:#444;
-    font-size:12px;
-    text-shadow:0 1px 2px rgba(255,255,255,0.8);
-  }
-
-  #file{display:none;}
-
-  /* ================= DANH SÁCH ẢNH CHỜ ================= */
-
-  .staging-section{
-    display:none;
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .staging-header h3{
-    font-size:15px;
-    color:var(--red);
-    margin-bottom:5px;
-  }
-
-  .staging-header p{
-    font-size:12px;
-    color:#555;
-  }
-
-  #stagingList{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .stage-item{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    padding:12px;
-    background:rgba(255,255,255,0.5);
-    border:1.5px solid rgba(217,56,40,0.2);
-    clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
-    animation:slideIn .3s ease;
-  }
-
-  .stage-top{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-
-  .stage-thumb{
-    width:55px;
-    height:55px;
-    flex-shrink:0;
-    object-fit:cover;
-    border-radius:7px;
-    background:#eee;
-    border:1px solid rgba(0,0,0,0.1);
-  }
-
-  .stage-info{
-    flex:1;
-    min-width:0;
-  }
-
-  .stage-original{
-    font-size:12px;
-    color:#555;
-    overflow-wrap:anywhere;
-    margin-bottom:7px;
-  }
-
-  .stage-name-input{
-    width:100%;
-    padding:11px;
-    background:rgba(255,255,255,0.8);
-    border:1.5px solid rgba(217,56,40,0.3);
-    color:#222;
-    outline:none;
-    font-family:var(--font-body);
-    font-size:13px;
-    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
-  }
-
-  .stage-name-input:focus{
-    border-color:var(--orange);
-    background:#fff;
-    box-shadow:0 0 0 3px rgba(255,94,58,0.1);
-  }
-
-  .stage-remove{
-    background:transparent;
-    border:none;
-    color:#888;
-    font-size:20px;
-    cursor:pointer;
-    padding:5px;
-  }
-
-  .stage-remove:hover{color:var(--red);}
-
-  .stage-ext{
-    font-size:11px;
-    color:#777;
-    margin-top:5px;
-  }
-
-  /* ================= TIẾN TRÌNH ================= */
-
-  .global-progress-container{
-    width:100%;
-    height:8px;
-    background:rgba(0,0,0,0.08);
-    border-radius:4px;
-    overflow:hidden;
-    display:none;
-    margin-top:5px;
-    box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);
-  }
-
-  .global-progress-fill{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,var(--red),var(--orange));
-    border-radius:4px;
-    transition:width 0.3s ease;
-    box-shadow:0 0 10px rgba(255,94,58,0.5);
-  }
-
-  .result-section{
-    display:none;
-    flex-direction:column;
-    gap:15px;
-  }
-
-  .btn-copy-all{
-    width:100%;
-    background:linear-gradient(135deg,var(--red),var(--orange));
-    color:#fff;
-    border:none;
-    padding:14px;
-    clip-path:polygon(var(--cut-sm) 0,100% 0,100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,0 100%,0 var(--cut-sm));
-    font-family:var(--font-body);
-    font-size:15px;
-    letter-spacing:1px;
-    cursor:pointer;
-    transition:.3s;
-    box-shadow:0 6px 15px rgba(217,56,40,0.3);
-  }
-
-  .btn-copy-all:hover:not(:disabled){
-    transform:translateY(-2px);
-    filter:brightness(1.1);
-  }
-
-  .btn-copy-all:disabled{
-    opacity:0.5;
-    cursor:not-allowed;
-    box-shadow:none;
-  }
-
-  /* ================= KẾT QUẢ ================= */
-
-  .file-item{
-    --item-cut:14px;
-    display:flex;
-    flex-direction:column;
-    padding:15px;
-    gap:12px;
-    background:
-      radial-gradient(circle at 100% 0%,rgba(217,56,40,0.15) 0%,transparent 50%),
-      rgba(255,255,255,0.4);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border:1.5px solid rgba(255,255,255,0.9);
-    clip-path:polygon(0 0,calc(100% - var(--item-cut)) 0,100% var(--item-cut),100% 100%,var(--item-cut) 100%,0 calc(100% - var(--item-cut)));
-    position:relative;
-    transition:.3s;
-    animation:slideIn .3s ease;
-  }
-
-  @keyframes slideIn{
-    from{opacity:0;transform:translateY(10px);}
-    to{opacity:1;transform:translateY(0);}
-  }
-
-  .file-item:hover{
-    background:radial-gradient(circle at 100% 0%,rgba(217,56,40,0.25) 0%,transparent 50%),rgba(255,255,255,0.6);
-  }
-
-  .file-item.error-item{
-    background:radial-gradient(circle at 100% 0%,rgba(255,0,0,0.15) 0%,transparent 50%),rgba(255,245,245,0.6);
-    border-color:rgba(255,150,150,0.8);
-  }
-
-  .file-top{
-    display:flex;
-    gap:12px;
-    align-items:center;
-  }
-
-  .thumb{
-    width:50px;
-    height:50px;
-    flex-shrink:0;
-    border-radius:8px;
-    overflow:hidden;
-    background:#eee;
-    border:1px solid rgba(0,0,0,0.1);
-  }
-
-  .thumb img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  }
-
-  .info{
-    flex:1;
-    min-width:0;
-    display:flex;
-    flex-direction:column;
-  }
-
-  .f-name{
-    font-size:14px;
-    color:#111;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    margin-bottom:4px;
-  }
-
-  .f-status{
-    font-size:12px;
-    color:#666;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    flex-wrap:wrap;
-  }
-
-  .f-status.ok{color:#1a7f37;}
-  .f-status.err{color:var(--red);font-weight:bold;}
-
-  .progress-track{
-    width:100%;
-    height:4px;
-    background:rgba(0,0,0,0.08);
-    border-radius:2px;
-    margin-top:6px;
-    overflow:hidden;
-    display:none;
-  }
-
-  .progress-fill{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,var(--red),var(--orange));
-    border-radius:2px;
-    transition:width 0.2s ease;
-  }
-
-  .btn-retry{
-    background:var(--red);
-    color:#fff;
-    border:none;
-    padding:4px 10px;
-    border-radius:4px;
-    font-size:11px;
-    cursor:pointer;
-    display:none;
-    font-family:var(--font-body);
-    margin-top:4px;
-  }
-
-  .btn-retry:hover{background:#b52a1c;}
-
-  .url-box{display:none;width:100%;}
-
-  .url-group{
-    display:flex;
-    background:rgba(255,255,255,0.7);
-    border:1.5px solid rgba(217,56,40,0.3);
-    clip-path:polygon(var(--item-cut) 0,100% 0,100% calc(100% - var(--item-cut)),calc(100% - var(--item-cut)) 100%,0 100%,0 var(--item-cut));
-    overflow:hidden;
-  }
-
-  .f-url{
-    flex:1;
-    padding:10px 12px;
-    background:transparent;
-    border:none;
-    color:var(--red);
-    font-family:var(--font-body);
-    font-size:12px;
-    outline:none;
-    width:100%;
-  }
-
-  .btn-copy{
-    background:var(--red);
-    border:none;
-    color:#fff;
-    padding:0 16px;
-    cursor:pointer;
-    font-family:var(--font-body);
-    font-size:13px;
-    transition:.2s;
-  }
-
-  .btn-copy:hover{background:var(--orange);}
-
-  .remove-btn{
-    position:absolute;
-    top:10px;
-    right:12px;
-    background:transparent;
-    border:none;
-    color:#888;
-    cursor:pointer;
-    transition:.2s;
-    font-size:18px;
-    line-height:1;
-  }
-
-  .remove-btn:hover{color:var(--red);}
-
-  .toast{
-    position:fixed;
-    bottom:30px;
-    left:50%;
-    transform:translate(-50%,20px);
-    background:rgba(20,20,20,0.9);
-    color:#fff;
-    padding:12px 24px;
-    border-radius:8px;
-    font-family:var(--font-body);
-    font-size:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    opacity:0;
-    pointer-events:none;
-    transition:.3s cubic-bezier(0.175,0.885,0.32,1.275);
-    z-index:100;
-  }
-
-  .toast.show{
-    opacity:1;
-    transform:translate(-50%,0);
-  }
-
-  @media(max-width:500px){
-    :root{--cut:18px;}
-    .content-area{padding:20px 15px;}
-    .btn-copy-all{padding:12px;font-size:14px;}
-  }
+@font-face{
+  font-family:"GFF-Latin-Bold";
+  src:url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),
+      url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
+  font-display:swap;
+}
+@font-face{
+  font-family:"GFF-Latin-Black";
+  src:url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Black.woff2") format("woff2"),
+      url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Black.woff") format("woff");
+  font-display:swap;
+}
+
+:root{
+  --font-heading:"GFF-Latin-Black","GFF-Latin-Bold",system-ui,sans-serif;
+  --font-body:"GFF-Latin-Bold",system-ui,sans-serif;
+  --red:#d93828;
+  --orange:#ff5e3a;
+  --bg-main:#eef2f6;
+  --grid-color:rgba(0,0,0,.05);
+  --glass-bg:rgba(255,255,255,.45);
+  --glass-border:rgba(255,255,255,.8);
+  --cut:24px;
+  --cut-sm:10px;
+}
+
+*,*::before,*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:var(--font-body);
+  background-color:var(--bg-main);
+  background-image:
+    linear-gradient(var(--grid-color) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+  background-size:30px 30px;
+  background-position:center top;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:40px 15px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.glow{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(255,94,58,.15) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 70%,rgba(217,56,40,.15) 0%,transparent 50%);
+  filter:blur(50px);
+  animation:pulseGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow{
+  0%{transform:scale(.95);opacity:.6}
+  100%{transform:scale(1.05);opacity:1}
+}
+
+.glass-wrapper{
+  width:min(600px,100%);
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  clip-path:polygon(
+    var(--cut) 0,100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%,0 var(--cut)
+  );
+  animation:rise .8s cubic-bezier(.2,.8,.2,1) both;
+  margin-bottom:20px;
+}
+
+.glass-inner{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(217,56,40,.2) 0%,transparent 40%),
+    radial-gradient(circle at 0% 100%,rgba(255,94,58,.15) 0%,transparent 40%),
+    var(--glass-bg);
+  backdrop-filter:blur(30px) saturate(180%);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  z-index:0;
+  border:2px solid var(--glass-border);
+  pointer-events:none;
+}
+
+.glass-inner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg,transparent 0%,transparent 25%,rgba(255,255,255,.4) 42%,rgba(255,255,255,.7) 50%,rgba(255,255,255,.4) 58%,transparent 75%,transparent 100%);
+  animation:sheen 8s ease-in-out infinite;
+  opacity:.6;
+}
+
+@keyframes sheen{
+  0%,100%{transform:translateX(-40%) skewX(-10deg);opacity:.3}
+  50%{transform:translateX(40%) skewX(-10deg);opacity:.7}
+}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(20px);filter:blur(5px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+
+.content-area{
+  position:relative;
+  z-index:1;
+  padding:30px 25px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.header{text-align:center}
+
+.logo{
+  width:65px;
+  height:65px;
+  margin:0 auto 12px;
+  object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(217,56,40,.25);
+  transition:transform .3s;
+}
+.logo:hover{transform:scale(1.05) rotate(3deg)}
+
+h1{
+  font-family:var(--font-heading);
+  font-size:24px;
+  letter-spacing:1px;
+  margin-bottom:4px;
+  text-transform:uppercase;
+  background:linear-gradient(90deg,var(--red),var(--orange),var(--red));
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:textShine 3s linear infinite;
+}
+
+@keyframes textShine{
+  to{background-position:200% center}
+}
+
+.desc{color:#555;font-size:12px}
+
+/* UPLOAD */
+
+.upload-zone{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:30px 15px;
+  clip-path:polygon(var(--cut-sm) 0,100% 0,100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,0 100%,0 var(--cut-sm));
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:2px solid rgba(255,94,58,.4);
+  box-shadow:inset 0 0 25px rgba(255,94,58,.1),0 8px 32px rgba(217,56,40,.1);
+  cursor:pointer;
+  transition:all .4s ease;
+  position:relative;
+}
+
+.upload-zone:hover,.upload-zone.dragover{
+  background:rgba(255,255,255,.3);
+  border-color:var(--orange);
+  box-shadow:inset 0 0 35px rgba(255,94,58,.25),0 12px 40px rgba(217,56,40,.2);
+  transform:translateY(-3px) scale(1.01);
+}
+
+.upload-zone h3{
+  color:#222;
+  font-size:15px;
+  margin-bottom:6px;
+  text-shadow:0 1px 2px rgba(255,255,255,.8);
+}
+
+.upload-zone p{
+  color:#444;
+  font-size:12px;
+  text-shadow:0 1px 2px rgba(255,255,255,.8);
+}
+
+#file{display:none}
+
+/* ẢNH CHỜ */
+
+.staging-section{
+  display:none;
+  flex-direction:column;
+  gap:12px;
+}
+
+.staging-header h3{
+  font-size:15px;
+  color:var(--red);
+  margin-bottom:5px;
+}
+
+.staging-header p{
+  font-size:12px;
+  color:#555;
+}
+
+#stagingList{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.stage-item{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:12px;
+  background:rgba(255,255,255,.5);
+  border:1.5px solid rgba(217,56,40,.2);
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+  animation:slideIn .3s ease;
+}
+
+.stage-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.stage-thumb{
+  width:55px;
+  height:55px;
+  flex-shrink:0;
+  object-fit:cover;
+  border-radius:7px;
+  background:#eee;
+  border:1px solid rgba(0,0,0,.1);
+}
+
+.stage-info{
+  flex:1;
+  min-width:0;
+}
+
+.stage-original{
+  font-size:12px;
+  color:#555;
+  overflow-wrap:anywhere;
+  margin-bottom:7px;
+}
+
+.stage-name-input{
+  width:100%;
+  padding:11px;
+  background:rgba(255,255,255,.8);
+  border:1.5px solid rgba(217,56,40,.3);
+  color:#222;
+  outline:none;
+  font-family:var(--font-body);
+  font-size:13px;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+}
+
+.stage-name-input:focus{
+  border-color:var(--orange);
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(255,94,58,.1);
+}
+
+.stage-remove{
+  background:transparent;
+  border:none;
+  color:#888;
+  font-size:20px;
+  cursor:pointer;
+  padding:5px;
+}
+
+.stage-remove:hover{color:var(--red)}
+
+.stage-ext{
+  font-size:11px;
+  color:#777;
+  margin-top:5px;
+}
+
+/* TIẾN TRÌNH */
+
+.global-progress-container{
+  width:100%;
+  height:8px;
+  background:rgba(0,0,0,.08);
+  border-radius:4px;
+  overflow:hidden;
+  display:none;
+  margin-top:5px;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.1);
+}
+
+.global-progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--red),var(--orange));
+  border-radius:4px;
+  transition:width .3s ease;
+  box-shadow:0 0 10px rgba(255,94,58,.5);
+}
+
+.result-section{
+  display:none;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* BUTTON */
+
+.btn-copy-all{
+  width:100%;
+  background:linear-gradient(135deg,var(--red),var(--orange));
+  color:#fff;
+  border:none;
+  padding:14px;
+  clip-path:polygon(var(--cut-sm) 0,100% 0,100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,0 100%,0 var(--cut-sm));
+  font-family:var(--font-body);
+  font-size:15px;
+  letter-spacing:1px;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 6px 15px rgba(217,56,40,.3);
+}
+
+.btn-copy-all:hover:not(:disabled){
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+}
+
+.btn-copy-all:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+/* KẾT QUẢ */
+
+.file-item{
+  --item-cut:14px;
+  display:flex;
+  flex-direction:column;
+  padding:15px;
+  gap:12px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(217,56,40,.15) 0%,transparent 50%),
+    rgba(255,255,255,.4);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,255,255,.9);
+  clip-path:polygon(0 0,calc(100% - var(--item-cut)) 0,100% var(--item-cut),100% 100%,var(--item-cut) 100%,0 calc(100% - var(--item-cut)));
+  position:relative;
+  transition:.3s;
+  animation:slideIn .3s ease;
+}
+
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.file-item:hover{
+  background:radial-gradient(circle at 100% 0%,rgba(217,56,40,.25) 0%,transparent 50%),rgba(255,255,255,.6);
+}
+
+.file-item.error-item{
+  background:radial-gradient(circle at 100% 0%,rgba(255,0,0,.15) 0%,transparent 50%),rgba(255,245,245,.6);
+  border-color:rgba(255,150,150,.8);
+}
+
+.file-top{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.thumb{
+  width:50px;
+  height:50px;
+  flex-shrink:0;
+  border-radius:8px;
+  overflow:hidden;
+  background:#eee;
+  border:1px solid rgba(0,0,0,.1);
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.info{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.f-name{
+  font-size:14px;
+  color:#111;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-bottom:4px;
+}
+
+.f-status{
+  font-size:12px;
+  color:#666;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.f-status.ok{color:#1a7f37}
+.f-status.err{color:var(--red);font-weight:bold}
+
+.progress-track{
+  width:100%;
+  height:4px;
+  background:rgba(0,0,0,.08);
+  border-radius:2px;
+  margin-top:6px;
+  overflow:hidden;
+  display:none;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--red),var(--orange));
+  border-radius:2px;
+  transition:width .2s ease;
+}
+
+.btn-retry{
+  background:var(--red);
+  color:#fff;
+  border:none;
+  padding:4px 10px;
+  border-radius:4px;
+  font-size:11px;
+  cursor:pointer;
+  display:none;
+  font-family:var(--font-body);
+  margin-top:4px;
+}
+
+.btn-retry:hover{background:#b52a1c}
+
+.url-box{display:none;width:100%}
+
+.url-group{
+  display:flex;
+  background:rgba(255,255,255,.7);
+  border:1.5px solid rgba(217,56,40,.3);
+  clip-path:polygon(var(--item-cut) 0,100% 0,100% calc(100% - var(--item-cut)),calc(100% - var(--item-cut)) 100%,0 100%,0 var(--item-cut));
+  overflow:hidden;
+}
+
+.f-url{
+  flex:1;
+  padding:10px 12px;
+  background:transparent;
+  border:none;
+  color:var(--red);
+  font-family:var(--font-body);
+  font-size:12px;
+  outline:none;
+  width:100%;
+}
+
+.btn-copy{
+  background:var(--red);
+  border:none;
+  color:#fff;
+  padding:0 16px;
+  cursor:pointer;
+  font-family:var(--font-body);
+  font-size:13px;
+  transition:.2s;
+}
+
+.btn-copy:hover{background:var(--orange)}
+
+.remove-btn{
+  position:absolute;
+  top:10px;
+  right:12px;
+  background:transparent;
+  border:none;
+  color:#888;
+  cursor:pointer;
+  transition:.2s;
+  font-size:18px;
+  line-height:1;
+}
+
+.remove-btn:hover{color:var(--red)}
+
+.toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translate(-50%,20px);
+  background:rgba(20,20,20,.9);
+  color:#fff;
+  padding:12px 24px;
+  border-radius:8px;
+  font-family:var(--font-body);
+  font-size:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s cubic-bezier(.175,.885,.32,1.275);
+  z-index:100;
+  width:max-content;
+  max-width:90%;
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+@media(max-width:500px){
+  :root{--cut:18px}
+  .content-area{padding:20px 15px}
+  .btn-copy-all{padding:12px;font-size:14px}
+}
 </style>
 </head>
 
@@ -571,20 +573,18 @@
   <div class="content-area">
 
     <div class="header">
-      <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst" />
+      <img class="logo" src="https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png" alt="Azerst">
       <h1>AZERST UPLOAD</h1>
       <p class="desc">Tải ảnh nhanh, nhận link trực tiếp</p>
     </div>
 
-    <!-- CHỌN NHIỀU ẢNH -->
     <label class="upload-zone" for="file" id="dropZone">
       <h3>Chọn hoặc kéo thả nhiều ảnh</h3>
       <p>Hỗ trợ PNG, JPG, WEBP (Tối đa 10GB)</p>
     </label>
 
-    <input id="file" type="file" multiple accept="image/*" />
+    <input id="file" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif">
 
-    <!-- DANH SÁCH ẢNH CHỜ -->
     <div class="staging-section" id="stagingSection">
       <div class="staging-header">
         <h3>DANH SÁCH ẢNH ĐÃ CHỌN</h3>
@@ -598,20 +598,16 @@
       </button>
     </div>
 
-    <!-- TIẾN TRÌNH TỔNG -->
     <div class="global-progress-container" id="globalProgressTrack">
       <div class="global-progress-fill" id="globalProgressFill"></div>
     </div>
 
-    <!-- KẾT QUẢ -->
     <div id="resultSection" class="result-section">
-
-      <!-- NÚT SAO CHÉP TẤT CẢ THEO TÊN + LINK -->
-      <button class="btn-copy-all" id="btnCopyAll" style="display:none;" type="button">
+      <button class="btn-copy-all" id="btnCopyAll" style="display:none" type="button">
         SAO CHÉP TẤT CẢ ẢNH
       </button>
 
-      <div id="filesList" style="display:flex;flex-direction:column;gap:12px;"></div>
+      <div id="filesList" style="display:flex;flex-direction:column;gap:12px"></div>
     </div>
 
   </div>
@@ -620,49 +616,161 @@
 <div id="toast" class="toast"></div>
 
 <script type="module">
-import { upload } from "https://esm.sh/@vercel/blob@2.8.0/client";
 
-/* ================= CẤU HÌNH SERVER ================= */
+/* =====================================================
+   AZERST UPLOAD
+   ===================================================== */
+
+/* CẤU HÌNH */
 
 const IMAGE_SERVER = "https://azerst-image-vn.vercel.app";
+
 const MAX_SIZE = 10 * 1024 * 1024 * 1024;
-const ALLOWED_EXTS = ["png","jpg","jpeg","webp","gif","avif"];
+
+const ALLOWED_EXTS = [
+  "png","jpg","jpeg","webp","gif","avif"
+];
+
 const MAX_CONCURRENT = 5;
+const MAX_RETRIES = 5;
 
-const fileInput = document.getElementById("file");
-const dropZone = document.getElementById("dropZone");
+/* ELEMENT */
 
-const stagingSection = document.getElementById("stagingSection");
-const stagingList = document.getElementById("stagingList");
-const btnProcess = document.getElementById("btnProcess");
+const $ = id => document.getElementById(id);
 
-const resultSection = document.getElementById("resultSection");
-const filesList = document.getElementById("filesList");
-const btnCopyAll = document.getElementById("btnCopyAll");
+const fileInput = $("file");
+const dropZone = $("dropZone");
 
-const toast = document.getElementById("toast");
-const globalTrack = document.getElementById("globalProgressTrack");
-const globalFill = document.getElementById("globalProgressFill");
+const stagingSection = $("stagingSection");
+const stagingList = $("stagingList");
+const btnProcess = $("btnProcess");
+
+const resultSection = $("resultSection");
+const filesList = $("filesList");
+const btnCopyAll = $("btnCopyAll");
+
+const toast = $("toast");
+
+const globalTrack = $("globalProgressTrack");
+const globalFill = $("globalProgressFill");
+
+/* STATE */
 
 let uploads = [];
 let stagedFiles = [];
+
 let idCounter = 0;
 let activeUploads = 0;
+let processing = false;
+
+let uploadFunction = null;
+let sdkLoading = null;
 let toastTimer = null;
 
-/* ================= TẠO URL ================= */
+/* =====================================================
+   TẢI THƯ VIỆN VERCEL BLOB
+   ===================================================== */
 
-function imageURL(filename){
-  return IMAGE_SERVER + "/images/" + encodeURIComponent(filename);
+async function loadUploadSDK(){
+
+  if(uploadFunction){
+    return uploadFunction;
+  }
+
+  if(sdkLoading){
+    return sdkLoading;
+  }
+
+  sdkLoading = (async() => {
+
+    try{
+
+      const module = await import(
+        "https://esm.sh/@vercel/blob@2.8.0/client"
+      );
+
+      if(typeof module.upload !== "function"){
+        throw new Error(
+          "Không tìm thấy hàm upload của Vercel Blob."
+        );
+      }
+
+      uploadFunction = module.upload;
+
+      return uploadFunction;
+
+    }catch(error){
+
+      console.error("SDK ERROR:",error);
+
+      sdkLoading = null;
+
+      throw new Error(
+        "Không tải được thư viện upload. Hãy kiểm tra kết nối mạng."
+      );
+
+    }
+
+  })();
+
+  return sdkLoading;
 }
 
-const randomName = () =>
-  Array.from(
-    crypto.getRandomValues(new Uint8Array(8)),
-    v => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[v % 62]
+/* =====================================================
+   TÊN ẢNH VÀ TIỆN ÍCH
+   ===================================================== */
+
+function imageURL(filename){
+
+  return IMAGE_SERVER +
+    "/images/" +
+    encodeURIComponent(filename);
+
+}
+
+function randomName(){
+
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  const bytes =
+    crypto.getRandomValues(new Uint8Array(12));
+
+  return Array.from(
+    bytes,
+    byte => chars[byte % chars.length]
   ).join("");
 
-const getExt = (file) => {
+}
+
+/*
+  Cho phép:
+  A-Z
+  a-z
+  0-9
+  _
+  -
+*/
+
+function cleanName(value){
+
+  if(!value) return "";
+
+  return value.trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/đ/g,"d")
+    .replace(/Đ/g,"D")
+    .replace(/\s+/g,"_")
+    .replace(/[^A-Za-z0-9_-]/g,"")
+    .replace(/_+/g,"_")
+    .replace(/-+/g,"-")
+    .replace(/^[-_]+|[-_]+$/g,"");
+
+}
+
+function getExt(file){
+
   const typeMap = {
     "image/png":"png",
     "image/jpeg":"jpg",
@@ -672,84 +780,181 @@ const getExt = (file) => {
     "image/avif":"avif"
   };
 
-  if(typeMap[file.type]) return typeMap[file.type];
+  if(typeMap[file.type]){
+    return typeMap[file.type];
+  }
 
   const parts = file.name.split(".");
 
   if(parts.length > 1){
+
     const ext = parts.pop().toLowerCase();
+
     return ext === "jpeg" ? "jpg" : ext;
+
   }
 
   return "png";
-};
+}
 
-/* ================= CHUẨN HÓA TÊN ================= */
+function delay(ms){
 
-const cleanName = (v) => {
-  if(!v) return "";
+  return new Promise(resolve => {
+    setTimeout(resolve,ms);
+  });
 
-  return v.trim()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .replace(/đ/g,"d")
-    .replace(/Đ/g,"D")
-    .replace(/\s+/g,"_")
-    .replace(/[^A-Za-z0-9_-]/g,"");
-};
+}
 
-const delay = (ms) => new Promise(res => setTimeout(res,ms));
+/* =====================================================
+   THÔNG BÁO
+   ===================================================== */
 
-/* ================= THÔNG BÁO ================= */
+function showToast(message){
 
-const showToast = (msg) => {
-  toast.textContent = msg;
+  toast.textContent = message;
+
   toast.classList.add("show");
 
   clearTimeout(toastTimer);
 
   toastTimer = setTimeout(() => {
+
     toast.classList.remove("show");
-  },2500);
-};
 
-/* ================= COPY ================= */
+  },3000);
 
-const copyText = async (text) => {
-  try{
-    await navigator.clipboard.writeText(text);
-    return true;
-  }catch{
-    try{
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
+}
 
-      const success = document.execCommand("copy");
+/* =====================================================
+   PHÂN TÍCH LỖI
+   ===================================================== */
 
-      document.body.removeChild(ta);
-      return success;
-    }catch{
-      return false;
-    }
+function getErrorMessage(error){
+
+  const raw = String(
+    error?.message || error || ""
+  );
+
+  const msg = raw.toLowerCase();
+
+  if(
+    msg.includes("failed to retrieve the client token") ||
+    msg.includes("client token")
+  ){
+    return "API không cấp được token upload. Kiểm tra backend Vercel.";
   }
-};
 
-/* ================= TẠO ITEM KẾT QUẢ ================= */
+  if(
+    msg.includes("failed to fetch") ||
+    msg.includes("networkerror") ||
+    msg.includes("network error") ||
+    msg.includes("load failed")
+  ){
+    return "Không kết nối được máy chủ. Kiểm tra mạng, CORS và API.";
+  }
+
+  if(msg.includes("timeout")){
+    return "Máy chủ phản hồi quá chậm.";
+  }
+
+  if(msg.includes("unauthorized") || msg.includes("401")){
+    return "API từ chối xác thực. Kiểm tra token.";
+  }
+
+  if(msg.includes("forbidden") || msg.includes("403")){
+    return "Không có quyền upload lên Blob.";
+  }
+
+  if(msg.includes("not found") || msg.includes("404")){
+    return "Không tìm thấy API upload /api/upload.";
+  }
+
+  if(msg.includes("413") || msg.includes("too large")){
+    return "Ảnh vượt quá giới hạn máy chủ.";
+  }
+
+  if(msg.includes("429")){
+    return "Máy chủ đang giới hạn yêu cầu. Hãy thử lại sau.";
+  }
+
+  if(
+    msg.includes("500") ||
+    msg.includes("502") ||
+    msg.includes("503") ||
+    msg.includes("504")
+  ){
+    return "Máy chủ Vercel đang gặp sự cố.";
+  }
+
+  return raw.length > 150
+    ? raw.slice(0,150)
+    : raw || "Lỗi không xác định.";
+
+}
+
+/* =====================================================
+   SAO CHÉP
+   ===================================================== */
+
+async function copyText(text){
+
+  try{
+
+    if(navigator.clipboard && window.isSecureContext){
+
+      await navigator.clipboard.writeText(text);
+
+      return true;
+
+    }
+
+  }catch(error){
+
+    console.warn("Clipboard API:",error);
+
+  }
+
+  try{
+
+    const textarea = document.createElement("textarea");
+
+    textarea.value = text;
+
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+
+    document.body.appendChild(textarea);
+
+    textarea.focus();
+    textarea.select();
+
+    const success =
+      document.execCommand("copy");
+
+    textarea.remove();
+
+    return success;
+
+  }catch(error){
+
+    console.error("COPY ERROR:",error);
+
+    return false;
+
+  }
+
+}
+
+/* =====================================================
+   TẠO ITEM KẾT QUẢ
+   ===================================================== */
 
 function createItem(file,filename){
+
   const id = ++idCounter;
 
-  let thumbURL = "https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png";
-
-  try{
-    thumbURL = URL.createObjectURL(file);
-  }catch(e){}
-
   const div = document.createElement("div");
+
   div.className = "file-item";
   div.dataset.id = id;
 
@@ -760,11 +965,15 @@ function createItem(file,filename){
   thumb.className = "thumb";
 
   const img = document.createElement("img");
-  img.src = thumbURL;
+
+  img.src = URL.createObjectURL(file);
   img.alt = "";
 
   img.onerror = () => {
-    img.src = "https://azerst-image-vn.vercel.app/images/AVATA_AZERST.png";
+
+    img.src =
+      IMAGE_SERVER + "/images/AVATA_AZERST.png";
+
   };
 
   thumb.appendChild(img);
@@ -773,60 +982,73 @@ function createItem(file,filename){
   info.className = "info";
 
   const name = document.createElement("div");
+
   name.className = "f-name";
   name.title = filename;
   name.textContent = filename;
 
   const status = document.createElement("div");
+
   status.className = "f-status";
   status.id = `st-${id}`;
 
   const statusText = document.createElement("span");
+
   statusText.textContent = "Đang chờ...";
 
   status.appendChild(statusText);
 
   const track = document.createElement("div");
+
   track.className = "progress-track";
   track.id = `track-${id}`;
 
   const fill = document.createElement("div");
+
   fill.className = "progress-fill";
   fill.id = `fill-${id}`;
 
   track.appendChild(fill);
 
   const retry = document.createElement("button");
+
   retry.className = "btn-retry";
   retry.dataset.retry = id;
   retry.type = "button";
   retry.textContent = "Thử lại";
 
   info.append(name,status,track,retry);
+
   top.append(thumb,info);
 
   const urlBox = document.createElement("div");
+
   urlBox.className = "url-box";
   urlBox.id = `box-${id}`;
 
   const urlGroup = document.createElement("div");
+
   urlGroup.className = "url-group";
 
   const urlInput = document.createElement("input");
+
   urlInput.className = "f-url";
   urlInput.id = `url-${id}`;
   urlInput.readOnly = true;
 
   const copyButton = document.createElement("button");
+
   copyButton.className = "btn-copy";
   copyButton.dataset.copy = id;
   copyButton.type = "button";
   copyButton.textContent = "COPY";
 
   urlGroup.append(urlInput,copyButton);
+
   urlBox.appendChild(urlGroup);
 
   const removeButton = document.createElement("button");
+
   removeButton.className = "remove-btn";
   removeButton.dataset.remove = id;
   removeButton.type = "button";
@@ -835,40 +1057,54 @@ function createItem(file,filename){
   div.append(top,urlBox,removeButton);
 
   return {div,id};
+
 }
 
-/* ================= DANH SÁCH ẢNH CHỜ ================= */
+/* =====================================================
+   DANH SÁCH ẢNH CHỜ
+   ===================================================== */
 
 function renderStagedFiles(){
+
   stagingList.innerHTML = "";
 
   if(stagedFiles.length === 0){
+
     stagingSection.style.display = "none";
+
     return;
+
   }
 
   stagingSection.style.display = "flex";
 
   stagedFiles.forEach((item,index) => {
+
     const div = document.createElement("div");
+
     div.className = "stage-item";
 
     const top = document.createElement("div");
+
     top.className = "stage-top";
 
     const img = document.createElement("img");
+
     img.className = "stage-thumb";
     img.src = item.preview;
     img.alt = "Ảnh xem trước";
 
     const info = document.createElement("div");
+
     info.className = "stage-info";
 
     const original = document.createElement("div");
+
     original.className = "stage-original";
     original.textContent = item.file.name;
 
     const input = document.createElement("input");
+
     input.className = "stage-name-input";
     input.type = "text";
     input.maxLength = 50;
@@ -876,495 +1112,877 @@ function renderStagedFiles(){
     input.value = item.name;
 
     input.addEventListener("input",() => {
+
       item.name = input.value;
+
     });
 
     const ext = document.createElement("div");
+
     ext.className = "stage-ext";
-    ext.textContent = "Định dạng: ." + getExt(item.file);
+
+    ext.textContent =
+      "Định dạng: ." + getExt(item.file);
 
     info.append(original,input,ext);
 
     const remove = document.createElement("button");
+
     remove.className = "stage-remove";
     remove.type = "button";
     remove.textContent = "×";
     remove.title = "Xóa ảnh này";
 
     remove.addEventListener("click",() => {
+
       URL.revokeObjectURL(item.preview);
+
       stagedFiles.splice(index,1);
+
       renderStagedFiles();
+
       showToast("Đã xóa ảnh khỏi danh sách!");
+
     });
 
     top.append(img,info,remove);
+
     div.appendChild(top);
+
     stagingList.appendChild(div);
+
   });
 
-  btnProcess.textContent = `XỬ LÝ ${stagedFiles.length} ẢNH`;
+  btnProcess.textContent =
+    `XỬ LÝ ${stagedFiles.length} ẢNH`;
+
 }
 
-/* ================= CHỌN NHIỀU ẢNH ================= */
+/* =====================================================
+   CHỌN NHIỀU ẢNH
+   ===================================================== */
 
 function handleFiles(inputFiles){
+
   try{
-    const validFiles = Array.from(inputFiles);
+
+    const validFiles = Array.from(inputFiles || []);
 
     if(!validFiles.length) return;
 
     let addedCount = 0;
 
-    for(const f of validFiles){
-      const parts = f.name.split(".");
-      const ext = parts.length > 1 ? parts.pop().toLowerCase() : "";
+    for(const file of validFiles){
+
+      const ext = getExt(file);
 
       const isImage =
-        f.type.startsWith("image/") ||
+        file.type.startsWith("image/") ||
         ALLOWED_EXTS.includes(ext);
 
-      if(!isImage){
-        showToast(`File "${f.name}" không phải ảnh!`);
+      if(!isImage || !ALLOWED_EXTS.includes(ext)){
+
+        showToast(`File "${file.name}" không phải ảnh được hỗ trợ!`);
+
         continue;
+
       }
 
-      if(f.size > MAX_SIZE){
-        showToast(`File "${f.name}" quá 10GB!`);
+      if(file.size === 0){
+
+        showToast(`File "${file.name}" bị trống!`);
+
         continue;
+
       }
 
-      const originalName = f.name.replace(/\.[^.]+$/,"");
-      const preview = URL.createObjectURL(f);
+      if(file.size > MAX_SIZE){
+
+        showToast(`File "${file.name}" quá 10GB!`);
+
+        continue;
+
+      }
+
+      const originalName =
+        file.name.replace(/\.[^.]+$/,"");
+
+      const preview = URL.createObjectURL(file);
 
       stagedFiles.push({
-        file:f,
+
+        file,
         name:cleanName(originalName),
         preview
+
       });
 
       addedCount++;
+
     }
 
     fileInput.value = "";
 
     if(addedCount > 0){
+
       renderStagedFiles();
-      showToast(`Đã thêm ${addedCount} ảnh vào danh sách!`);
+
+      showToast(
+        `Đã thêm ${addedCount} ảnh vào danh sách!`
+      );
+
     }
 
   }catch(error){
-    console.error("Lỗi thêm ảnh:",error);
+
+    console.error("HANDLE FILE ERROR:",error);
+
     showToast("Lỗi khi thêm ảnh!");
+
   }
+
 }
 
-/* ================= XỬ LÝ ẢNH ================= */
+/* =====================================================
+   TIẾN TRÌNH TỔNG
+   ===================================================== */
 
-btnProcess.addEventListener("click",() => {
-  if(stagedFiles.length === 0){
-    showToast("Vui lòng chọn ảnh trước!");
+function updateGlobalProgress(){
+
+  const total = uploads.length;
+
+  if(total === 0){
+
+    globalTrack.style.display = "none";
+    globalFill.style.width = "0%";
+
     return;
+
   }
 
-  if(btnProcess.disabled) return;
+  const done = uploads.filter(item =>
 
-  btnProcess.disabled = true;
-  btnProcess.textContent = "ĐANG XỬ LÝ...";
+    item.status === "success" ||
+    item.status === "error"
 
-  let addedCount = 0;
+  ).length;
 
-  const existingNames = new Set(
-    uploads.map(u => u.filename.toLowerCase())
+  const percent = Math.round(
+    done / total * 100
   );
 
-  try{
-    for(const item of stagedFiles){
-      let name = cleanName(item.name);
+  globalFill.style.width = percent + "%";
 
-      if(!name) name = randomName();
+  globalTrack.style.display =
+    done === total ? "none" : "block";
 
-      const ext = getExt(item.file);
-      let filename = `${name}.${ext}`;
+}
 
-      if(existingNames.has(filename.toLowerCase())){
-        let suffix = 2;
+/* =====================================================
+   CẬP NHẬT GIAO DIỆN
+   ===================================================== */
 
-        while(existingNames.has(`${name}_${suffix}.${ext}`.toLowerCase())){
-          suffix++;
+function updateUI(){
+
+  const total = uploads.length;
+
+  if(total === 0){
+
+    resultSection.style.display = "none";
+    btnCopyAll.style.display = "none";
+
+    return;
+
+  }
+
+  resultSection.style.display = "flex";
+  btnCopyAll.style.display = "block";
+
+  const success = uploads.filter(
+
+    item => item.status === "success"
+
+  ).length;
+
+  btnCopyAll.disabled = success === 0;
+
+  btnCopyAll.textContent =
+    `SAO CHÉP TẤT CẢ ẢNH (${success}/${total})`;
+
+}
+
+/* =====================================================
+   CẬP NHẬT TRẠNG THÁI
+   ===================================================== */
+
+function setStatus(id,message,type=""){
+
+  const element = $(`st-${id}`);
+
+  if(!element) return;
+
+  element.className =
+    "f-status" + (type ? " " + type : "");
+
+  let span = element.querySelector("span");
+
+  if(!span){
+
+    span = document.createElement("span");
+
+    element.appendChild(span);
+
+  }
+
+  span.textContent = message;
+
+}
+
+/* =====================================================
+   UPLOAD MỘT ẢNH
+   ===================================================== */
+
+async function uploadSingle(entry){
+
+  const {
+    id,
+    file,
+    filename
+  } = entry;
+
+  const itemEl = filesList.querySelector(
+    `.file-item[data-id="${id}"]`
+  );
+
+  if(!itemEl){
+
+    entry.status = "error";
+
+    updateUI();
+    updateGlobalProgress();
+
+    return;
+
+  }
+
+  const boxEl = $(`box-${id}`);
+  const urlEl = $(`url-${id}`);
+  const trackEl = $(`track-${id}`);
+  const fillEl = $(`fill-${id}`);
+
+  const retryBtn =
+    itemEl.querySelector(".btn-retry");
+
+  entry.status = "uploading";
+
+  setStatus(id,"Đang kết nối máy chủ...");
+
+  if(retryBtn){
+    retryBtn.style.display = "none";
+  }
+
+  trackEl.style.display = "block";
+
+  fillEl.style.width = "0%";
+
+  fillEl.style.background =
+    "linear-gradient(90deg,var(--red),var(--orange))";
+
+  updateUI();
+  updateGlobalProgress();
+
+  for(let attempt = 1; attempt <= MAX_RETRIES; attempt++){
+
+    if(!document.body.contains(itemEl)){
+
+      entry.status = "removed";
+
+      return;
+
+    }
+
+    try{
+
+      setStatus(
+        id,
+        `Đang tải máy chủ (${attempt}/${MAX_RETRIES})...`
+      );
+
+      const upload = await loadUploadSDK();
+
+      const result = await upload(
+        `images/${filename}`,
+        file,
+        {
+          access:"public",
+
+          handleUploadUrl:
+            IMAGE_SERVER + "/api/upload",
+
+          multipart:true,
+
+          onUploadProgress(progress){
+
+            if(
+              !progress ||
+              !document.body.contains(itemEl)
+            ){
+              return;
+            }
+
+            const percent = Math.max(
+              0,
+              Math.min(
+                100,
+                Math.round(progress.percentage || 0)
+              )
+            );
+
+            fillEl.style.width = percent + "%";
+
+            setStatus(
+              id,
+              `Đang tải lên... ${percent}%`
+            );
+
+          }
+
         }
+      );
 
-        filename = `${name}_${suffix}.${ext}`;
+      if(!result || !result.url){
+
+        throw new Error(
+          "Máy chủ không trả về kết quả upload hợp lệ."
+        );
+
       }
 
-      existingNames.add(filename.toLowerCase());
+      /*
+       * Giữ cấu trúc URL ảnh của hệ thống AZERST.
+       * API /images/ trên máy chủ cần hỗ trợ đường dẫn này.
+       */
 
-      const {div,id} = createItem(item.file,filename);
+      const finalURL = imageURL(filename);
+
+      entry.url = finalURL;
+      entry.status = "success";
+
+      urlEl.value = finalURL;
+
+      boxEl.style.display = "block";
+
+      fillEl.style.width = "100%";
+
+      trackEl.style.display = "none";
+
+      setStatus(
+        id,
+        "Tải lên thành công",
+        "ok"
+      );
+
+      itemEl.classList.remove("error-item");
+
+      updateUI();
+      updateGlobalProgress();
+
+      return;
+
+    }catch(error){
+
+      console.error(
+        `UPLOAD ERROR ${filename} - ${attempt}:`,
+        error
+      );
+
+      const message = getErrorMessage(error);
+
+      if(attempt < MAX_RETRIES){
+
+        setStatus(
+          id,
+          `Kết nối thất bại. Đang thử lại (${attempt}/${MAX_RETRIES})...`
+        );
+
+        fillEl.style.background = "#ffaa00";
+
+        await delay(
+          Math.min(attempt * 1500,6000)
+        );
+
+        if(!document.body.contains(itemEl)){
+
+          entry.status = "removed";
+
+          return;
+
+        }
+
+        fillEl.style.background =
+          "linear-gradient(90deg,var(--red),var(--orange))";
+
+      }else{
+
+        entry.status = "error";
+
+        setStatus(
+          id,
+          "Lỗi: " + message,
+          "err"
+        );
+
+        if(retryBtn){
+          retryBtn.style.display = "inline-block";
+        }
+
+        fillEl.style.background = "#ff0000";
+
+        itemEl.classList.add("error-item");
+
+        showToast(message);
+
+      }
+
+    }
+
+  }
+
+  updateUI();
+  updateGlobalProgress();
+
+}
+
+/* =====================================================
+   HÀNG ĐỢI 5 LUỒNG
+   ===================================================== */
+
+function processQueue(){
+
+  while(activeUploads < MAX_CONCURRENT){
+
+    const item = uploads.find(
+      entry => entry.status === "pending"
+    );
+
+    if(!item) break;
+
+    activeUploads++;
+
+    item.status = "uploading";
+
+    uploadSingle(item)
+
+      .catch(error => {
+
+        console.error("QUEUE ERROR:",error);
+
+        item.status = "error";
+
+        setStatus(
+          item.id,
+          "Lỗi: " + getErrorMessage(error),
+          "err"
+        );
+
+        const retry = filesList.querySelector(
+          `[data-retry="${item.id}"]`
+        );
+
+        if(retry){
+          retry.style.display = "inline-block";
+        }
+
+      })
+
+      .finally(() => {
+
+        activeUploads = Math.max(
+          0,
+          activeUploads - 1
+        );
+
+        updateUI();
+        updateGlobalProgress();
+
+        processQueue();
+
+      });
+
+  }
+
+}
+
+/* =====================================================
+   XỬ LÝ ẢNH
+   ===================================================== */
+
+btnProcess.addEventListener("click",async() => {
+
+  if(processing) return;
+
+  if(stagedFiles.length === 0){
+
+    showToast("Vui lòng chọn ảnh trước!");
+
+    return;
+
+  }
+
+  processing = true;
+
+  btnProcess.disabled = true;
+
+  btnProcess.textContent = "ĐANG XỬ LÝ...";
+
+  try{
+
+    const existingNames = new Set(
+
+      uploads.map(item =>
+        item.filename.toLowerCase()
+      )
+
+    );
+
+    const batch = [...stagedFiles];
+
+    let addedCount = 0;
+
+    for(const item of batch){
+
+      let name = cleanName(item.name);
+
+      if(!name){
+        name = randomName();
+      }
+
+      const ext = getExt(item.file);
+
+      const baseName = name;
+
+      let filename = `${baseName}.${ext}`;
+
+      let suffix = 2;
+
+      while(
+        existingNames.has(filename.toLowerCase())
+      ){
+
+        filename =
+          `${baseName}_${suffix}.${ext}`;
+
+        suffix++;
+
+      }
+
+      existingNames.add(
+        filename.toLowerCase()
+      );
+
+      const {div,id} = createItem(
+        item.file,
+        filename
+      );
 
       filesList.appendChild(div);
 
       uploads.push({
+
         id,
         file:item.file,
         filename,
         url:null,
         status:"pending"
+
       });
 
       URL.revokeObjectURL(item.preview);
+
       addedCount++;
+
     }
 
     stagedFiles = [];
+
     renderStagedFiles();
 
     if(addedCount > 0){
+
       resultSection.style.display = "flex";
+
       updateUI();
+      updateGlobalProgress();
+
+      showToast(
+        `Bắt đầu xử lý ${addedCount} ảnh!`
+      );
+
       processQueue();
 
-      showToast(`Bắt đầu xử lý ${addedCount} ảnh!`);
     }
 
   }catch(error){
-    console.error("Lỗi xử lý ảnh:",error);
+
+    console.error("PROCESS ERROR:",error);
+
     showToast("Có lỗi khi xử lý ảnh!");
+
   }finally{
+
+    processing = false;
+
     btnProcess.disabled = false;
-    btnProcess.textContent = "XỬ LÝ ẢNH";
+
+    btnProcess.textContent =
+      stagedFiles.length
+        ? `XỬ LÝ ${stagedFiles.length} ẢNH`
+        : "XỬ LÝ ẢNH";
+
   }
+
 });
 
-/* ================= TIẾN TRÌNH TỔNG ================= */
+/* =====================================================
+   CHỌN ẢNH
+   ===================================================== */
 
-function updateGlobalProgress(){
-  const total = uploads.length;
+fileInput.addEventListener("change",event => {
 
-  if(total === 0){
-    globalTrack.style.display = "none";
-    globalFill.style.width = "0%";
-    return;
-  }
+  handleFiles(event.target.files);
 
-  const done = uploads.filter(
-    u => u.status === "success" || u.status === "error"
-  ).length;
-
-  const percent = Math.round((done / total) * 100);
-
-  globalFill.style.width = `${percent}%`;
-
-  if(done === total){
-    setTimeout(() => {
-      if(uploads.every(
-        u => u.status === "success" || u.status === "error"
-      )){
-        globalTrack.style.display = "none";
-        globalFill.style.width = "0%";
-      }
-    },1000);
-  }
-}
-
-/* ================= CẬP NHẬT GIAO DIỆN ================= */
-
-function updateUI(){
-  const total = uploads.length;
-
-  if(total === 0){
-    resultSection.style.display = "none";
-    btnCopyAll.style.display = "none";
-    return;
-  }
-
-  resultSection.style.display = "flex";
-  btnCopyAll.style.display = total >= 1 ? "block" : "none";
-
-  const success = uploads.filter(
-    u => u.status === "success"
-  ).length;
-
-  // Chỉ cho sao chép khi có ít nhất một ảnh tải thành công
-  btnCopyAll.disabled = success === 0;
-
-  // Hiển thị số ảnh đã tải thành công
-  btnCopyAll.textContent =
-    `SAO CHÉP TẤT CẢ ẢNH (${success}/${total})`;
-}
-
-/* ================= UPLOAD ẢNH ================= */
-
-async function uploadSingle(file,filename,id,attempt=1){
-  const stEl = document.getElementById(`st-${id}`);
-  const boxEl = document.getElementById(`box-${id}`);
-  const urlEl = document.getElementById(`url-${id}`);
-  const trackEl = document.getElementById(`track-${id}`);
-  const fillEl = document.getElementById(`fill-${id}`);
-
-  if(!stEl || !boxEl || !urlEl || !trackEl || !fillEl) return;
-
-  const retryBtn = stEl.parentElement.querySelector(".btn-retry");
-
-  stEl.className = "f-status";
-  stEl.querySelector("span").textContent = `Đang tải... (Lần ${attempt})`;
-
-  if(retryBtn) retryBtn.style.display = "none";
-
-  trackEl.style.display = "block";
-  fillEl.style.width = "0%";
-
-  const entry = uploads.find(u => u.id === id);
-
-  if(entry) entry.status = "uploading";
-
-  updateUI();
-
-  try{
-    await upload(`images/${filename}`,file,{
-      access:"public",
-      handleUploadUrl:IMAGE_SERVER + "/api/upload",
-      multipart:true,
-
-      onUploadProgress:(progress) => {
-        if(!progress) return;
-
-        let pct = Math.round(progress.percentage || 0);
-
-        if(pct === 0) pct = 1;
-
-        fillEl.style.width = `${pct}%`;
-        stEl.querySelector("span").textContent = `Đang tải... ${pct}%`;
-      }
-    });
-
-    const finalURL = imageURL(filename);
-
-    stEl.className = "f-status ok";
-    stEl.querySelector("span").textContent = "Tải lên thành công";
-
-    fillEl.style.width = "100%";
-
-    setTimeout(() => {
-      if(trackEl) trackEl.style.display = "none";
-    },500);
-
-    boxEl.style.display = "block";
-    urlEl.value = finalURL;
-
-    if(entry){
-      entry.url = finalURL;
-      entry.status = "success";
-    }
-
-  }catch(err){
-    console.error(`Lỗi up ảnh ${filename} (Lần ${attempt}):`,err);
-
-    let errorMsg = "Lỗi kết nối";
-
-    if(typeof err === "string"){
-      errorMsg = err;
-    }else if(err?.message){
-      errorMsg = err.message;
-    }
-
-    if(errorMsg.includes("Failed to retrieve the client token")){
-      errorMsg = "Server quá tải";
-    }
-
-    // Tự động thử lại tối đa 5 lần
-    if(attempt < 5){
-      stEl.querySelector("span").textContent =
-        `Đang chờ máy chủ, thử lại (${attempt}/5)...`;
-
-      fillEl.style.background = "#ffaa00";
-
-      await delay(1500);
-
-      if(!document.getElementById(`st-${id}`)) return;
-
-      fillEl.style.background =
-        "linear-gradient(90deg,var(--red),var(--orange))";
-
-      return uploadSingle(file,filename,id,attempt+1);
-    }
-
-    stEl.className = "f-status err";
-    stEl.querySelector("span").textContent = `Lỗi: ${errorMsg}`;
-
-    if(retryBtn) retryBtn.style.display = "inline-block";
-
-    fillEl.style.background = "#ff0000";
-
-    stEl.closest(".file-item").classList.add("error-item");
-
-    if(entry) entry.status = "error";
-  }
-
-  updateGlobalProgress();
-  updateUI();
-}
-
-/* ================= HÀNG ĐỢI 5 LUỒNG ================= */
-
-function processQueue(){
-  if(activeUploads >= MAX_CONCURRENT) return;
-
-  const pendingItems = uploads.filter(
-    u => u.status === "pending"
-  );
-
-  if(pendingItems.length === 0){
-    if(activeUploads === 0){
-      globalTrack.style.display = "none";
-    }
-    return;
-  }
-
-  globalTrack.style.display = "block";
-
-  for(const item of pendingItems){
-    if(activeUploads >= MAX_CONCURRENT) break;
-
-    item.status = "uploading";
-    activeUploads++;
-
-    uploadSingle(item.file,item.filename,item.id)
-      .catch(err => console.error("Lỗi hàng đợi:",err))
-      .finally(() => {
-        activeUploads--;
-        processQueue();
-      });
-  }
-}
-
-/* ================= SỰ KIỆN CHỌN ẢNH ================= */
-
-fileInput.addEventListener("change",(e) => {
-  handleFiles(e.target.files);
 });
 
-/* ================= KÉO THẢ ẢNH ================= */
+/* =====================================================
+   KÉO THẢ
+   ===================================================== */
 
-dropZone.addEventListener("dragover",e => {
-  e.preventDefault();
+dropZone.addEventListener("dragover",event => {
+
+  event.preventDefault();
+
   dropZone.classList.add("dragover");
+
 });
 
 dropZone.addEventListener("dragleave",() => {
+
   dropZone.classList.remove("dragover");
+
 });
 
-dropZone.addEventListener("drop",e => {
-  e.preventDefault();
+dropZone.addEventListener("drop",event => {
+
+  event.preventDefault();
+
   dropZone.classList.remove("dragover");
 
-  if(e.dataTransfer && e.dataTransfer.files){
-    handleFiles(e.dataTransfer.files);
+  if(event.dataTransfer?.files){
+
+    handleFiles(event.dataTransfer.files);
+
   }
+
 });
 
-/* ================= COPY / XÓA / THỬ LẠI ================= */
+/* =====================================================
+   COPY / XÓA / THỬ LẠI
+   ===================================================== */
 
-filesList.addEventListener("click",async(e) => {
-  const copyBtn = e.target.closest("[data-copy]");
-  const removeBtn = e.target.closest("[data-remove]");
-  const retryBtn = e.target.closest("[data-retry]");
+filesList.addEventListener("click",async event => {
+
+  const copyBtn =
+    event.target.closest("[data-copy]");
+
+  const removeBtn =
+    event.target.closest("[data-remove]");
+
+  const retryBtn =
+    event.target.closest("[data-retry]");
+
+  /* COPY MỘT ẢNH */
 
   if(copyBtn){
+
     const id = Number(copyBtn.dataset.copy);
-    const entry = uploads.find(u => u.id === id);
 
-    if(entry && entry.url){
-      const ok = await copyText(entry.url);
+    const entry = uploads.find(
+      item => item.id === id
+    );
 
-      if(ok){
-        showToast("Sao chép thành công!");
-      }else{
-        showToast("Không thể sao chép link!");
-      }
+    if(entry?.url){
+
+      const success = await copyText(entry.url);
+
+      showToast(
+        success
+          ? "Sao chép link thành công!"
+          : "Không thể sao chép link!"
+      );
+
     }
+
   }
 
+  /* XÓA ẢNH */
+
   if(removeBtn){
+
     const id = Number(removeBtn.dataset.remove);
-    const entry = uploads.find(u => u.id === id);
 
-    if(entry && entry.status === "uploading"){
-      showToast("Ảnh đang tải lên, vui lòng chờ!");
+    const entry = uploads.find(
+      item => item.id === id
+    );
+
+    if(entry?.status === "uploading"){
+
+      showToast(
+        "Ảnh đang tải lên, vui lòng chờ!"
+      );
+
       return;
+
     }
 
-    const itemEl = removeBtn.closest(".file-item");
-    const img = itemEl?.querySelector(".thumb img");
+    const itemEl =
+      removeBtn.closest(".file-item");
 
-    if(img && img.src.startsWith("blob:")){
+    const img =
+      itemEl?.querySelector(".thumb img");
+
+    if(img?.src.startsWith("blob:")){
+
       URL.revokeObjectURL(img.src);
+
     }
 
-    itemEl.remove();
+    itemEl?.remove();
 
-    uploads = uploads.filter(u => u.id !== id);
+    uploads = uploads.filter(
+      item => item.id !== id
+    );
 
     updateUI();
     updateGlobalProgress();
+
   }
+
+  /* THỬ LẠI */
 
   if(retryBtn){
+
     const id = Number(retryBtn.dataset.retry);
-    const entry = uploads.find(u => u.id === id);
+
+    const entry = uploads.find(
+      item => item.id === id
+    );
 
     if(entry && entry.status === "error"){
+
       entry.status = "pending";
 
-      const itemEl = retryBtn.closest(".file-item");
+      entry.url = null;
 
-      itemEl.classList.remove("error-item");
+      const itemEl =
+        retryBtn.closest(".file-item");
 
-      document.getElementById(`fill-${id}`).style.background =
-        "linear-gradient(90deg,var(--red),var(--orange))";
+      itemEl?.classList.remove("error-item");
+
+      const box = $(`box-${id}`);
+      const track = $(`track-${id}`);
+      const fill = $(`fill-${id}`);
+
+      if(box){
+        box.style.display = "none";
+      }
+
+      if(track){
+        track.style.display = "block";
+      }
+
+      if(fill){
+        fill.style.width = "0%";
+
+        fill.style.background =
+          "linear-gradient(90deg,var(--red),var(--orange))";
+      }
+
+      retryBtn.style.display = "none";
+
+      setStatus(
+        id,
+        "Đang chờ thử lại..."
+      );
+
+      updateUI();
+      updateGlobalProgress();
 
       processQueue();
+
     }
+
   }
+
 });
 
-/* ================= SAO CHÉP TẤT CẢ ẢNH ================= */
+/* =====================================================
+   SAO CHÉP TẤT CẢ ẢNH
+   ===================================================== */
 
 btnCopyAll.addEventListener("click",async() => {
 
-  // Chỉ lấy những ảnh đã tải lên thành công
   const successfulImages = uploads.filter(
-    u => u.status === "success" && u.url
+
+    item =>
+      item.status === "success" &&
+      item.url
+
   );
 
   if(successfulImages.length === 0){
-    showToast("Chưa có ảnh nào tải lên thành công!");
+
+    showToast(
+      "Chưa có ảnh nào tải lên thành công!"
+    );
+
     return;
+
   }
 
-  // Tự động đánh số và lấy tên ảnh + URL
   const formattedText = successfulImages
+
     .map((item,index) => {
 
-      // Bỏ phần đuôi file để lấy tên ảnh
-      const imageName = item.filename.replace(/\.[^.]+$/,"");
+      const imageName =
+        item.filename.replace(/\.[^.]+$/,"");
 
       return `${index + 1}. ${imageName}
--- LINK: ${item.url}`;
+-- LINK : ${item.url}`;
 
     })
+
     .join("\n\n");
 
-  const ok = await copyText(formattedText);
+  const success = await copyText(formattedText);
 
-  if(ok){
-    showToast(
-      `Đã sao chép ${successfulImages.length} ảnh thành công!`
-    );
-  }else{
-    showToast("Không thể sao chép danh sách ảnh!");
-  }
+  showToast(
+
+    success
+      ? `Đã sao chép ${successfulImages.length} ảnh thành công!`
+      : "Không thể sao chép danh sách ảnh!"
+
+  );
+
 });
+
+/* =====================================================
+   KHỞI TẠO
+   ===================================================== */
+
+updateUI();
+updateGlobalProgress();
+
+console.log("AZERST UPLOAD READY");
 
 </script>
 
